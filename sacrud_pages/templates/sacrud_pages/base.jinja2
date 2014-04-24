@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Load json data in javascript tree</title>
+    <script src="http://code.jquery.com/jquery-1.10.1.js"></script>
+    <script src="http://mbraak.github.io/jqTree/tree.jquery.js"></script>
+    <link rel="stylesheet" href="http://mbraak.github.io/jqTree/jqtree.css">
+</head>
+<body>
+
+<ul class="sitemap">
+{% for item in pages recursive %}
+    <li><a href="{{ item.id|e }}">{{ item }}</a>
+    {% if item.children %}
+        <ul class="submenu">{{ loop(item.children) }}</ul>
+    {% endif %}</li>
+{% endfor %}
+</ul>
+
+[
+{% for item in pages recursive %}
+    {
+      label: '{{ item }}',
+      children: [
+      {% if item.children %}
+          {{ loop(item.children) }}
+      {% endif %}
+      ]
+    },
+{% endfor %}
+]
+
+<div id="tree1"></div>
+
+<script>
+    $(function() {
+        var data = [
+          {% for item in pages recursive %}
+              {
+                label: '{{ item }}',
+                children: [
+                  {% if item.children %}
+                      {{ loop(item.children) }}
+                  {% endif %}
+                ]
+              },
+          {% endfor %}
+        ];
+
+        $('#tree1').tree({
+            data: data
+        });
+    });
+</script>
+
+
+</body>
+</html>
