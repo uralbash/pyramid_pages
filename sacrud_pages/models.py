@@ -9,13 +9,13 @@
 """
 Model of Pages
 """
-from sqlalchemy import Boolean, Column, Integer, String, Text
-from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy import Boolean, Column, Integer, schema, String, Text
+from sqlalchemy.ext.declarative import declarative_base, declared_attr
 
 from sqlalchemy_mptt import BaseNestedSets
-from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+metadata = schema.MetaData()
+Base = declarative_base(metadata=metadata)
 
 
 class MPTTPages(Base, BaseNestedSets):

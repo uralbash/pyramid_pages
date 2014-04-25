@@ -7,6 +7,7 @@
 # Distributed under terms of the MIT license.
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
+
 from models import MPTTPages
 
 __version__ = "0.0.1a"
@@ -24,9 +25,7 @@ def index_view(request):
 def includeme(config):
     config.include('pyramid_jinja2')
     config.add_jinja2_search_path("sacrud_pages:templates")
-
     config.add_static_view('/sacrud_pages_static', 'sacrud_pages:static')
-
     config.add_route('mptt_pages', '/mptt_pages')
 
     config.scan()
