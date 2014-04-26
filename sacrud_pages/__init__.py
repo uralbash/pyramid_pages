@@ -10,6 +10,7 @@ from pyramid.view import view_config
 
 from models import MPTTPages
 
+
 __version__ = "0.0.1a"
 
 

@@ -9,13 +9,12 @@
 """
 Model of Pages
 """
-from sqlalchemy import Boolean, Column, Integer, schema, String, Text
+from sqlalchemy import Boolean, Column, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 
 from sqlalchemy_mptt import BaseNestedSets
 
-metadata = schema.MetaData()
-Base = declarative_base(metadata=metadata)
+Base = declarative_base()
 
 
 class MPTTPages(Base, BaseNestedSets):
@@ -44,3 +43,5 @@ class MPTTPages(Base, BaseNestedSets):
 
     def __repr__(self):
         return "MPTTPages(%s, %s, %s)" % (self.id, self.left, self.right)
+
+MPTTPages.register_tree()
