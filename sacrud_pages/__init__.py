@@ -31,9 +31,10 @@ def page_move(request):
     page = request.dbsession.query(MPTTPages).filter_by(id=node).one()
 
     if method == 'inside':
-        print "foo", page.move_inside(left_sibling)
+        page.move_inside(left_sibling)
     if method == 'after':
-        print "baaaaaaaaar"
+        page.move_after(left_sibling)
+    # TODO: return JSON tree
     return ''
 
 
