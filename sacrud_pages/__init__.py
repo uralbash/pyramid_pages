@@ -39,11 +39,23 @@ def page_move(request):
     return ''
 
 
+@view_config(route_name='page_insert', renderer='json',
+             permission=NO_PERMISSION_REQUIRED)
+def page_insert(request):
+    parent_id = request.matchdict['parent_id']
+    node = MPTTPages(parent_id=parent_id)
+    request.dbsession.add(node)
+    request.dbsession.flush()
+
+    return {'label': str(node), 'id': node.id}
+
+
 def includeme(config):
     config.include('pyramid_jinja2')
     config.add_jinja2_search_path("sacrud_pages:templates")
     config.add_static_view('/sacrud_pages_static', 'sacrud_pages:static')
     config.add_route('mptt_pages', '/mptt_pages/')
     config.add_route('page_move', '/move/{node}/{method}/{leftsibling}/')
+    config.add_route('page_insert', '/insert_to/{parent_id}')
 
     config.scan()

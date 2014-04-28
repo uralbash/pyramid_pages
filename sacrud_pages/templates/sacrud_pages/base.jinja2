@@ -3,12 +3,24 @@
 <head>
     <meta charset="utf-8">
     <title>Load json data in javascript tree</title>
-    <script src="http://code.jquery.com/jquery-1.10.1.js"></script>
-    <script src="http://mbraak.github.io/jqTree/tree.jquery.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.js"/></script>
+    <script src="http://mbraak.github.io/jqTree/tree.jquery.js"/></script>
+    <script src="http://daviduv.github.io/jqTreeContextMenu/jqTreeContextMenu.js"></script>
     <link rel="stylesheet" href="http://mbraak.github.io/jqTree/jqtree.css">
+    <link rel="stylesheet" href="http://daviduv.github.io/jqTreeContextMenu/css/bootstrap.min.css">
 </head>
 <body>
-<div id="tree1"></div>
+<center>
+  <div style="width:200px">
+    <div id="tree1"></div>
+  </div>
+</center>
+<ul id="myMenu" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  <li class="edit"><a href="#edit"><i class="icon-edit"></i> Edit</a></li>
+  <li class="delete"><a href="#delete"><i class="icon-remove"></i> Delete</a></li>
+  <li class="divider"></li>
+  <li class="add"><a href="#add"><i class="icon-plus"></i> Add</a></li>
+</ul>
 
 <script>
     $(function() {
@@ -26,26 +38,23 @@
           {% endfor %}
         ];
 
-        $('#tree1').tree({
+        var $tree = $('#tree1');
+        $tree.tree({
             data: data,
-            dragAndDrop: true
+            dragAndDrop: true,
+            usecontextmenu: true
         });
 
-        $('#tree1').bind(
+        $tree.bind(
             'tree.dblclick',
             function(event) {
                 // event.node is the clicked node
-                console.log(event.node);
                 window.location = "/admin/mptt_pages/update/" + event.node.id;
             });
 
-        $('#tree1').bind(
+        $tree.bind(
             'tree.move',
             function(event) {
-                console.log('moved_node', event.move_info.moved_node);
-                console.log('target_node', event.move_info.target_node);
-                console.log('position', event.move_info.position);
-                console.log('previous_parent', event.move_info.previous_parent);
                 event.preventDefault();
                 var url = "/move/" + event.move_info.moved_node.id + "/" +
                           event.move_info.position + "/" +
@@ -55,6 +64,29 @@
                     event.move_info.do_move();
                 }
             });
+
+        $tree.jqTreeContextMenu($('#myMenu'), {
+          "delete": function (node) {
+              var url = "/admin/mptt_pages/delete/" + node.id;
+              var status = $.ajax({'url': url, "async": false});
+              $tree.tree('removeNode', node);
+          },
+          "edit": function (node) {
+              window.location = "/admin/mptt_pages/update/" + node.id;
+          },
+          "add": function (parent_node) {
+              var url = "/insert_to/" + parent_node.id;
+              var new_node = $.ajax({'url': url, "async": false});
+              if(new_node){
+                $tree.tree(
+                  'appendNode',
+                  {label: new_node.responseJSON.label,
+                   id: new_node.responseJSON.id},
+                  parent_node
+                );
+              }
+          }
+        });
     });
 </script>
 </body>

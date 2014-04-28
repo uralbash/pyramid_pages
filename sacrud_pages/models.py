@@ -18,8 +18,6 @@ Base = declarative_base()
 
 
 class MPTTPages(Base, BaseNestedSets):
-    """ https://bitbucket.org/zzzeek/sqlalchemy/src/73095b353124/examples/nested_sets/nested_sets.py?at=master
-    """
     __tablename__ = "mptt_pages"
 
     id = Column(Integer, primary_key=True)
