@@ -14,16 +14,7 @@ from models import MPTTPages
 __version__ = "0.0.1a"
 
 
-@view_config(route_name='mptt_pages', renderer='/sacrud_pages/base.jinja2',
-             permission=NO_PERMISSION_REQUIRED)
-def index_view(request):
-    pages = request.dbsession.query(MPTTPages)\
-        .filter_by(parent_id=None).order_by(MPTTPages.id).all()
-    context = {'pages': pages}
-    return context
-
-
-@view_config(route_name='page_move', renderer='json',
+@view_config(route_name='sacrud_pages_move', renderer='json',
              permission=NO_PERMISSION_REQUIRED)
 def page_move(request):
     node = request.matchdict['node']
@@ -39,7 +30,7 @@ def page_move(request):
     return ''
 
 
-@view_config(route_name='page_insert', renderer='json',
+@view_config(route_name='sacrud_pages_insert', renderer='json',
              permission=NO_PERMISSION_REQUIRED)
 def page_insert(request):
     parent_id = request.matchdict['parent_id']
@@ -50,7 +41,7 @@ def page_insert(request):
     return {'label': str(node), 'id': node.id}
 
 
-@view_config(route_name='get_tree', renderer='json',
+@view_config(route_name='sacrud_pages_get_tree', renderer='json',
              permission=NO_PERMISSION_REQUIRED)
 def get_tree(request):
     def recursive_node_to_dict(node):
@@ -76,9 +67,8 @@ def includeme(config):
     config.add_jinja2_search_path("sacrud_pages:templates")
     config.add_static_view('/sacrud_pages_static', 'sacrud_pages:static')
 
-    config.add_route('mptt_pages', '/mptt_pages/')
-    config.add_route('page_move', '/move/{node}/{method}/{leftsibling}/')
-    config.add_route('page_insert', '/insert_to/{parent_id}')
-    config.add_route('get_tree', '/get_tree/')
+    config.add_route('sacrud_pages_move', '/sacrud_pages/move/{node}/{method}/{leftsibling}/')
+    config.add_route('sacrud_pages_insert', '/sacrud_pages/insert/{parent_id}')
+    config.add_route('sacrud_pages_get_tree', '/sacrud_pages/get_tree/')
 
     config.scan()
