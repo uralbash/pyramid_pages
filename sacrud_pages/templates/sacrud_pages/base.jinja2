@@ -1,16 +1,26 @@
 <link rel="stylesheet" href="http://daviduv.github.io/jqTreeContextMenu/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://mbraak.github.io/jqTree/jqtree.css">
 
-<center>
-  <div style="width:200px">
-    <div id="tree1"></div>
-  </div>
-</center>
-<ul id="myMenu" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-  <li class="edit"><a href="#edit"><i class="icon-edit"></i> Edit</a></li>
-  <li class="delete"><a href="#delete"><i class="icon-remove"></i> Delete</a></li>
-  <li class="divider"></li>
-  <li class="add"><a href="#add"><i class="icon-plus"></i> Add</a></li>
+<div class="widget">
+    <div class="widget-title">MPTT_PAGES</div>
+    <div class="widget-content">
+        <div class="widget-tree" id="sacrud-tree"></div>
+    </div>
+                        
+    
+</div>
+
+<ul id="sacrud-tree-menu" class="dropdown-menu">
+    <li class="edit">
+        <a href="#edit"><i class="icon-edit"></i> Edit</a>
+    </li>
+    <li class="delete">
+        <a href="#delete"><i class="icon-remove"></i> Delete</a>
+    </li>
+    <li class="divider"></li>
+    <li class="add">
+        <a href="#add"><i class="icon-plus"></i> Add</a>
+    </li>
 </ul>
 
 <script src="http://code.jquery.com/jquery-1.10.1.js"></script>
@@ -21,7 +31,7 @@
         var url = "/get_tree/";
         var data = $.ajax({"url": url, "async": false});
 
-        var $tree = $('#tree1');
+        var $tree = $('#sacrud-tree');
         $tree.tree({
             data: data.responseJSON,
             dragAndDrop: true,
@@ -48,28 +58,29 @@
                 }
             });
 
-        $tree.jqTreeContextMenu($('#myMenu'), {
+        $tree.jqTreeContextMenu($('#sacrud-tree-menu'), {
           "delete": function (node) {
               var url = "/admin/mptt_pages/delete/" + node.id;
               var status = $.ajax({'url': url, "async": false});
               $tree.tree('removeNode', node);
           },
           "edit": function (node) {
-              window.location = "/admin/mptt_pages/update/" + node.id;
+            window.location = "/admin/mptt_pages/update/" + node.id;
           },
           "add": function (parent_node) {
               var url = "/insert_to/" + parent_node.id;
               var new_node = $.ajax({'url': url, "async": false});
               if(new_node){
                 $tree.tree(
-                  'appendNode',
-                  {label: new_node.responseJSON.label,
-                   id: new_node.responseJSON.id},
-                  parent_node
+                    'appendNode',
+                        {
+                            label: new_node.responseJSON.label,
+                            id: new_node.responseJSON.id
+                        },
+                    parent_node
                 );
-              }
+            }
           }
         });
     });
 </script>
-
