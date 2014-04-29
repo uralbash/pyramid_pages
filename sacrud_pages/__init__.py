@@ -70,12 +70,12 @@ def get_tree(request):
 
     return tree
 
-    import ipdb; ipdb.set_trace()  # XXX BREAKPOINT
 
 def includeme(config):
     config.include('pyramid_jinja2')
     config.add_jinja2_search_path("sacrud_pages:templates")
     config.add_static_view('/sacrud_pages_static', 'sacrud_pages:static')
+
     config.add_route('mptt_pages', '/mptt_pages/')
     config.add_route('page_move', '/move/{node}/{method}/{leftsibling}/')
     config.add_route('page_insert', '/insert_to/{parent_id}')
