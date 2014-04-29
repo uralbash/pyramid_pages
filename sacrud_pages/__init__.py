@@ -50,6 +50,27 @@ def page_insert(request):
     return {'label': str(node), 'id': node.id}
 
 
+@view_config(route_name='get_tree', renderer='json',
+             permission=NO_PERMISSION_REQUIRED)
+def get_tree(request):
+    def recursive_node_to_dict(node):
+        result = {
+            'id': node.id,
+            'label': str(node),
+        }
+        children = [recursive_node_to_dict(c) for c in node.children]
+        if children:
+            result['children'] = children
+        return result
+    pages = request.dbsession.query(MPTTPages)\
+        .filter_by(parent_id=None).order_by(MPTTPages.id).all()
+    tree = []
+    for i, page in enumerate(pages):
+        tree.append(recursive_node_to_dict(page))
+
+    return tree
+
+
 def includeme(config):
     config.include('pyramid_jinja2')
     config.add_jinja2_search_path("sacrud_pages:templates")
@@ -57,5 +78,6 @@ def includeme(config):
     config.add_route('mptt_pages', '/mptt_pages/')
     config.add_route('page_move', '/move/{node}/{method}/{leftsibling}/')
     config.add_route('page_insert', '/insert_to/{parent_id}')
+    config.add_route('get_tree', '/get_tree/')
 
     config.scan()

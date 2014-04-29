@@ -1,15 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Load json data in javascript tree</title>
-    <script src="http://code.jquery.com/jquery-1.10.1.js"/></script>
-    <script src="http://mbraak.github.io/jqTree/tree.jquery.js"/></script>
-    <script src="http://daviduv.github.io/jqTreeContextMenu/jqTreeContextMenu.js"></script>
-    <link rel="stylesheet" href="http://mbraak.github.io/jqTree/jqtree.css">
-    <link rel="stylesheet" href="http://daviduv.github.io/jqTreeContextMenu/css/bootstrap.min.css">
-</head>
-<body>
+<link rel="stylesheet" href="http://daviduv.github.io/jqTreeContextMenu/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://mbraak.github.io/jqTree/jqtree.css">
+
 <center>
   <div style="width:200px">
     <div id="tree1"></div>
@@ -22,25 +13,17 @@
   <li class="add"><a href="#add"><i class="icon-plus"></i> Add</a></li>
 </ul>
 
+<script src="http://code.jquery.com/jquery-1.10.1.js"></script>
+<script src="http://mbraak.github.io/jqTree/tree.jquery.js"></script>
+<script src="http://daviduv.github.io/jqTreeContextMenu/jqTreeContextMenu.js"></script>
 <script>
     $(function() {
-        var data = [
-          {% for item in pages recursive %}
-              {
-                label: '{{ item }}',
-                id: '{{ item.id }}',
-                children: [
-                  {% if item.children %}
-                      {{ loop(item.children) }}
-                  {% endif %}
-                ]
-              },
-          {% endfor %}
-        ];
+        var url = "/get_tree/";
+        var data = $.ajax({"url": url, "async": false});
 
         var $tree = $('#tree1');
         $tree.tree({
-            data: data,
+            data: data.responseJSON,
             dragAndDrop: true,
             usecontextmenu: true
         });
@@ -59,7 +42,7 @@
                 var url = "/move/" + event.move_info.moved_node.id + "/" +
                           event.move_info.position + "/" +
                           event.move_info.target_node.id + "/";
-                var status = $.ajax({"url": url, "async": false}).status
+                var status = $.ajax({"url": url, "async": false}).status;
                 if (status==200) {
                     event.move_info.do_move();
                 }
@@ -89,5 +72,4 @@
         });
     });
 </script>
-</body>
-</html>
+
