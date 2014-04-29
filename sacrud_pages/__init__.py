@@ -70,6 +70,7 @@ def get_tree(request):
 
     return tree
 
+    import ipdb; ipdb.set_trace()  # XXX BREAKPOINT
 
 def includeme(config):
     config.include('pyramid_jinja2')

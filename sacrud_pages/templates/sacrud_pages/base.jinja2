@@ -25,13 +25,13 @@
         $tree.tree({
             data: data.responseJSON,
             dragAndDrop: true,
-            usecontextmenu: true
+            usecontextmenu: true,
+            autoOpen: true,
         });
 
         $tree.bind(
             'tree.dblclick',
             function(event) {
-                // event.node is the clicked node
                 window.location = "/admin/mptt_pages/update/" + event.node.id;
             });
 
