@@ -44,22 +44,7 @@ def page_insert(request):
 @view_config(route_name='sacrud_pages_get_tree', renderer='json',
              permission=NO_PERMISSION_REQUIRED)
 def get_tree(request):
-    def recursive_node_to_dict(node):
-        result = {
-            'id': node.id,
-            'label': str(node),
-        }
-        children = [recursive_node_to_dict(c) for c in node.children]
-        if children:
-            result['children'] = children
-        return result
-    pages = request.dbsession.query(MPTTPages)\
-        .filter_by(parent_id=None).order_by(MPTTPages.id).all()
-    tree = []
-    for i, page in enumerate(pages):
-        tree.append(recursive_node_to_dict(page))
-
-    return tree
+    return MPTTPages.get_tree(request.dbsession, json=True)
 
 
 def includeme(config):
