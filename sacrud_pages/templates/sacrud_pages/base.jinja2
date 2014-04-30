@@ -11,8 +11,8 @@
 </div>
 
 <ul id="sacrud-tree-menu" class="dropdown-menu">
-    <li class="edit">
-        <a href="#edit"><i class="icon-eye-open"></i> Visible</a>
+    <li class="visible">
+        <a href="#visible"><i class="icon-eye-open"></i> Visible</a>
     </li>
     <li class="divider"></li>
     <li class="edit">
@@ -85,7 +85,7 @@
             window.location = "{{ request.route_url('sa_home') }}mptt_pages/update/" + node.id;
           },
           "add": function (parent_node) {
-              var url = "/sacrud_pages/insert/" + parent_node.id;
+              var url = "/sacrud_pages/insert/" + parent_node.id + '/';
               var new_node = $.ajax({'url': url, "async": false});
               if(new_node){
                 $tree.tree(
@@ -96,7 +96,17 @@
                         },
                     parent_node
                 );
-            }
+              }
+          },
+          "visible": function (node) {
+              var url = "/sacrud_pages/visible/" + node.id + '/';
+              var visible = $.ajax({'url': url, "async": false}).responseJSON.visible;
+              var element = $(node.element).find('.jqtree-title').first();
+              if(visible){
+                  element.removeClass('not_visible');
+              } else {
+                  element.addClass('not_visible');
+              }
           }
         });
     });

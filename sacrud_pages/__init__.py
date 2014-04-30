@@ -49,13 +49,25 @@ def get_tree(request):
     return MPTTPages.get_tree(request.dbsession, json=True, json_fields=fields)
 
 
+@view_config(route_name='sacrud_pages_visible', renderer='json',
+             permission=NO_PERMISSION_REQUIRED)
+def page_visible(request):
+    node = request.matchdict['node']
+    node = request.dbsession.query(MPTTPages).filter_by(id=node).one()
+    node.visible = not node.visible
+    request.dbsession.add(node)
+    request.dbsession.flush()
+
+    return {"visible": node.visible}
+
 def includeme(config):
     config.include('pyramid_jinja2')
     config.add_jinja2_search_path("sacrud_pages:templates")
     config.add_static_view('/sacrud_pages_static', 'sacrud_pages:static')
 
     config.add_route('sacrud_pages_move', '/sacrud_pages/move/{node}/{method}/{leftsibling}/')
-    config.add_route('sacrud_pages_insert', '/sacrud_pages/insert/{parent_id}')
+    config.add_route('sacrud_pages_insert', '/sacrud_pages/insert/{parent_id}/')
     config.add_route('sacrud_pages_get_tree', '/sacrud_pages/get_tree/')
+    config.add_route('sacrud_pages_visible', '/sacrud_pages/visible/{node}/')
 
     config.scan()
