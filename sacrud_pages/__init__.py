@@ -44,7 +44,9 @@ def page_insert(request):
 @view_config(route_name='sacrud_pages_get_tree', renderer='json',
              permission=NO_PERMISSION_REQUIRED)
 def get_tree(request):
-    return MPTTPages.get_tree(request.dbsession, json=True)
+    def fields(node):
+        return {'visible': node.visible}
+    return MPTTPages.get_tree(request.dbsession, json=True, json_fields=fields)
 
 
 def includeme(config):
