@@ -44,13 +44,4 @@ class MPTTPages(Base, BaseNestedSets):
         return "MPTTPages(%s, %s, %s, %s) %s" % (self.id, self.left, self.right,
                                                  self.tree_id, self.name)
 
-    @property
-    def parents2(self):
-        allparents = []
-        p = self.parent
-        while p:
-            allparents.append(p)
-            p = p.parent
-        return allparents
-
 MPTTPages.register_tree()
