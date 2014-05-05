@@ -10,7 +10,6 @@ from pyramid.view import view_config
 
 from models import MPTTPages
 
-
 __version__ = "0.0.1a"
 
 
@@ -26,7 +25,6 @@ def page_move(request):
         page.move_inside(left_sibling)
     if method == 'after':
         page.move_after(left_sibling)
-    # TODO: return JSON tree
     return ''
 
 
@@ -60,6 +58,41 @@ def page_visible(request):
 
     return {"visible": node.visible}
 
+
+@view_config(route_name='sacrud_pages_view', renderer='json',
+             permission=NO_PERMISSION_REQUIRED)
+def page_view(context, request):
+    return {"subobjects": str(context),
+            "node": str(context.node)}
+
+
+def root_factory(request):
+    class Resource(object):
+        def __init__(self, subobjects, node):
+            self.subobjects = subobjects
+            self.node = node
+
+        def __getitem__(self, name):
+            return self.subobjects[name]
+
+        def __repr__(self):
+            return "<%s> (%s)" % (self.node, self.subobjects)
+
+    def recursive_node_to_dict(node):
+        result = {}
+        children = {str(c.name): recursive_node_to_dict(c) for c in node.children}
+        result.update(children)
+        return Resource(result, node)
+
+    query = request.dbsession.query(MPTTPages)
+    nodes = query.filter_by(parent_id=None).all()
+    tree = {}
+    for i, node in enumerate(nodes):
+        tree[str(node.name)] = Resource(recursive_node_to_dict(node), node)
+
+    return tree
+
+
 def includeme(config):
     config.include('pyramid_jinja2')
     config.add_jinja2_search_path("sacrud_pages:templates")
@@ -69,5 +102,7 @@ def includeme(config):
     config.add_route('sacrud_pages_insert', '/sacrud_pages/insert/{parent_id}/')
     config.add_route('sacrud_pages_get_tree', '/sacrud_pages/get_tree/')
     config.add_route('sacrud_pages_visible', '/sacrud_pages/visible/{node}/')
+    config.add_route('sacrud_pages_view', '/*traverse',
+                     factory='sacrud_pages.root_factory')
 
     config.scan()

@@ -22,7 +22,7 @@ class MPTTPages(Base, BaseNestedSets):
 
     id = Column(Integer, primary_key=True)
 
-    name = Column(String)
+    name = Column(String, nullable=False)
     description = Column(Text)
 
     visible = Column(Boolean)
@@ -41,7 +41,16 @@ class MPTTPages(Base, BaseNestedSets):
                 cls.parent_id, cls.left, cls.right]
 
     def __repr__(self):
-        return "MPTTPages(%s, %s, %s, %s)" % (self.id, self.left, self.right,
-                                              self.tree_id)
+        return "MPTTPages(%s, %s, %s, %s) %s" % (self.id, self.left, self.right,
+                                                 self.tree_id, self.name)
+
+    @property
+    def parents2(self):
+        allparents = []
+        p = self.parent
+        while p:
+            allparents.append(p)
+            p = p.parent
+        return allparents
 
 MPTTPages.register_tree()

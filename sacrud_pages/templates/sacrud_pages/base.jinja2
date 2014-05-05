@@ -78,8 +78,10 @@
         $tree.jqTreeContextMenu($('#sacrud-tree-menu'), {
           "delete": function (node) {
               var url = "{{ request.route_url('sa_home') }}mptt_pages/delete/" + node.id;
-              var status = $.ajax({'url': url, "async": false});
-              $tree.tree('removeNode', node);
+              var status = $.ajax({'url': url, "async": false}).status;
+              if (status==200) {
+                $tree.tree('removeNode', node);
+              }
           },
           "edit": function (node) {
             window.location = "{{ request.route_url('sa_home') }}mptt_pages/update/" + node.id;
