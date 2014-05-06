@@ -23,6 +23,7 @@ class MPTTPages(Base, BaseNestedSets):
     id = Column(Integer, primary_key=True)
 
     name = Column(String, nullable=False)
+    slug = Column(String, nullable=False, unique=True)
     description = Column(Text)
 
     visible = Column(Boolean)
@@ -48,7 +49,7 @@ class MPTTPages(Base, BaseNestedSets):
 
     @declared_attr
     def sacrud_detail_col(cls):
-        return [('', [cls.name, cls.description, cls.visible]),
+        return [('', [cls.name, cls.slug, cls.description, cls.visible]),
                 ('SEO', [cls.seo_title, cls.seo_keywords, cls.seo_description,
                          cls.seo_metatags])
                 ]

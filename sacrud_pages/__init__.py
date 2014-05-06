@@ -79,14 +79,14 @@ def root_factory(request):
             return "<%s> (%s)" % (self.node, self.subobjects)
 
     def recursive_node_to_dict(node):
-        children = {str(c.name): recursive_node_to_dict(c) for c in node.children}
+        children = {str(c.slug): recursive_node_to_dict(c) for c in node.children}
         return Resource(children, node)
 
     query = request.dbsession.query(MPTTPages)
     nodes = query.filter_by(parent_id=None).all()
     tree = {}
     for node in nodes:
-        tree[str(node.name)] = Resource(recursive_node_to_dict(node), node)
+        tree[str(node.slug)] = Resource(recursive_node_to_dict(node), node)
 
     return tree
 
