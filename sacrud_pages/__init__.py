@@ -10,7 +10,6 @@ from pyramid.view import view_config
 
 from models import MPTTPages
 
-
 __version__ = "0.0.1a"
 
 
@@ -26,7 +25,6 @@ def page_move(request):
         page.move_inside(left_sibling)
     if method == 'after':
         page.move_after(left_sibling)
-    # TODO: return JSON tree
     return ''
 
 
@@ -44,7 +42,53 @@ def page_insert(request):
 @view_config(route_name='sacrud_pages_get_tree', renderer='json',
              permission=NO_PERMISSION_REQUIRED)
 def get_tree(request):
-    return MPTTPages.get_tree(request.dbsession, json=True)
+    def fields(node):
+        return {'visible': node.visible}
+    return MPTTPages.get_tree(request.dbsession, json=True, json_fields=fields)
+
+
+@view_config(route_name='sacrud_pages_visible', renderer='json',
+             permission=NO_PERMISSION_REQUIRED)
+def page_visible(request):
+    node = request.matchdict['node']
+    node = request.dbsession.query(MPTTPages).filter_by(id=node).one()
+    node.visible = not node.visible
+    request.dbsession.add(node)
+    request.dbsession.flush()
+
+    return {"visible": node.visible}
+
+
+@view_config(route_name='sacrud_pages_view', renderer='json',
+             permission=NO_PERMISSION_REQUIRED)
+def page_view(context, request):
+    return {"subobjects": str(context),
+            "node": str(context.node)}
+
+
+def root_factory(request):
+    class Resource(object):
+        def __init__(self, subobjects, node):
+            self.subobjects = subobjects
+            self.node = node
+
+        def __getitem__(self, name):
+            return self.subobjects[name]
+
+        def __repr__(self):
+            return "<%s> (%s)" % (self.node, self.subobjects)
+
+    def recursive_node_to_dict(node):
+        children = {str(c.name): recursive_node_to_dict(c) for c in node.children}
+        return Resource(children, node)
+
+    query = request.dbsession.query(MPTTPages)
+    nodes = query.filter_by(parent_id=None).all()
+    tree = {}
+    for node in nodes:
+        tree[str(node.name)] = Resource(recursive_node_to_dict(node), node)
+
+    return tree
 
 
 def includeme(config):
@@ -53,7 +97,10 @@ def includeme(config):
     config.add_static_view('/sacrud_pages_static', 'sacrud_pages:static')
 
     config.add_route('sacrud_pages_move', '/sacrud_pages/move/{node}/{method}/{leftsibling}/')
-    config.add_route('sacrud_pages_insert', '/sacrud_pages/insert/{parent_id}')
+    config.add_route('sacrud_pages_insert', '/sacrud_pages/insert/{parent_id}/')
     config.add_route('sacrud_pages_get_tree', '/sacrud_pages/get_tree/')
+    config.add_route('sacrud_pages_visible', '/sacrud_pages/visible/{node}/')
+    config.add_route('sacrud_pages_view', '/*traverse',
+                     factory='sacrud_pages.root_factory')
 
     config.scan()

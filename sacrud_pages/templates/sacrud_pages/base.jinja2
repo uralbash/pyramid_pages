@@ -9,6 +9,10 @@
 </div>
 
 <ul id="sacrud-tree-menu" class="dropdown-menu">
+    <li class="visible">
+        <a href="#visible"><i class="icon-eye-open"></i> Visible</a>
+    </li>
+    <li class="divider"></li>
     <li class="edit">
         <a href="#edit"><i class="icon-edit"></i> Edit</a>
     </li>
@@ -24,6 +28,12 @@
 <script src="http://code.jquery.com/jquery-1.10.1.js"></script>
 <script src="http://mbraak.github.io/jqTree/tree.jquery.js"></script>
 <script src="http://daviduv.github.io/jqTreeContextMenu/jqTreeContextMenu.js"></script>
+<style>
+.not_visible {
+  background: #AAA;
+  color: #333 !important;
+}
+</style>
 <script>
     $(function() {
         var url = "{{ request.route_url('sacrud_pages_get_tree') }}";
@@ -35,6 +45,12 @@
             dragAndDrop: true,
             usecontextmenu: true,
             autoOpen: true,
+
+            onCreateLi: function(node, $li) {
+                if(!node.visible) {
+                  $li.find('.jqtree-title').addClass('not_visible');
+                }
+            }
         });
 
         $tree.bind(
@@ -60,14 +76,16 @@
         $tree.jqTreeContextMenu($('#sacrud-tree-menu'), {
           "delete": function (node) {
               var url = "{{ request.route_url('sa_home') }}mptt_pages/delete/" + node.id;
-              var status = $.ajax({'url': url, "async": false});
-              $tree.tree('removeNode', node);
+              var status = $.ajax({'url': url, "async": false}).status;
+              if (status==200) {
+                $tree.tree('removeNode', node);
+              }
           },
           "edit": function (node) {
             window.location = "{{ request.route_url('sa_home') }}mptt_pages/update/" + node.id;
           },
           "add": function (parent_node) {
-              var url = "/sacrud_pages/insert/" + parent_node.id;
+              var url = "/sacrud_pages/insert/" + parent_node.id + '/';
               var new_node = $.ajax({'url': url, "async": false});
               if(new_node){
                 $tree.tree(
@@ -78,7 +96,17 @@
                         },
                     parent_node
                 );
-            }
+              }
+          },
+          "visible": function (node) {
+              var url = "/sacrud_pages/visible/" + node.id + '/';
+              var visible = $.ajax({'url': url, "async": false}).responseJSON.visible;
+              var element = $(node.element).find('.jqtree-title').first();
+              if(visible){
+                  element.removeClass('not_visible');
+              } else {
+                  element.addClass('not_visible');
+              }
           }
         });
     });
