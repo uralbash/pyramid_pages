@@ -59,11 +59,11 @@ def page_visible(request):
     return {"visible": node.visible}
 
 
-@view_config(route_name='sacrud_pages_view', renderer='json',
+@view_config(route_name='sacrud_pages_view', renderer='/sacrud_pages/index.jinja2',
              permission=NO_PERMISSION_REQUIRED)
 def page_view(context, request):
-    return {"subobjects": str(context),
-            "node": str(context.node)}
+    return {"page_context": context,
+            "page": context.node}
 
 
 def root_factory(request):
