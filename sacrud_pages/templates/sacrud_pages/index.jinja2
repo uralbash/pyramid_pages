@@ -2,6 +2,15 @@
 <html>
 <head>
   <meta charset="utf-8" />
+
+  <title>
+    {% if page.seo_title %}
+      {{ page.seo_title }}
+    {% else %}
+      {{ page.name }}
+    {% endif %}
+  </title>
+
   {{ page.seo_keywords }}
   {{ page.seo_description }}
   {{ page.seo_metatags|safe }}

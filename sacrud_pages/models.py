@@ -28,6 +28,7 @@ class MPTTPages(Base, BaseNestedSets):
     visible = Column(Boolean)
 
     # SEO paty
+    seo_title = Column(String, nullable=True)
     seo_keywords = Column(String, nullable=True)
     seo_description = Column(String, nullable=True)
     seo_metatags = Column(Text, nullable=True)
@@ -48,7 +49,7 @@ class MPTTPages(Base, BaseNestedSets):
     @declared_attr
     def sacrud_detail_col(cls):
         return [('', [cls.name, cls.description, cls.visible]),
-                ('SEO', [cls.seo_keywords, cls.seo_description,
+                ('SEO', [cls.seo_title, cls.seo_keywords, cls.seo_description,
                          cls.seo_metatags])
                 ]
 
