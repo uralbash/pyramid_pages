@@ -27,6 +27,11 @@ class MPTTPages(Base, BaseNestedSets):
 
     visible = Column(Boolean)
 
+    # SEO paty
+    seo_keywords = Column(String, nullable=True)
+    seo_description = Column(String, nullable=True)
+    seo_metatags = Column(Text, nullable=True)
+
     # SACRUD
     items_per_page = 20
     verbose_name = u'MPTT pages'
@@ -39,6 +44,13 @@ class MPTTPages(Base, BaseNestedSets):
     def sacrud_list_col(cls):
         return [cls.id, cls.level, cls.tree_id,
                 cls.parent_id, cls.left, cls.right]
+
+    @declared_attr
+    def sacrud_detail_col(cls):
+        return [('', [cls.name, cls.description, cls.visible]),
+                ('SEO', [cls.seo_keywords, cls.seo_description,
+                         cls.seo_metatags])
+                ]
 
     def __repr__(self):
         return "MPTTPages(%s, %s, %s, %s) %s" % (self.id, self.left, self.right,
