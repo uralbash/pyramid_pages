@@ -55,7 +55,6 @@ class MPTTPages(Base, BaseNestedSets):
                 ]
 
     def __repr__(self):
-        return u"MPTTPages(%s, %s, %s, %s) %s" % (self.id, self.left, self.right,
-                                                 self.tree_id, self.name)
+        return self.name
 
 MPTTPages.register_tree()
