@@ -9,12 +9,39 @@
 """
 Model of Pages
 """
-from sqlalchemy import Boolean, Column, Integer, String, Text
+import sqlalchemy.types as types
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm.session import Session
 
 from sqlalchemy_mptt import BaseNestedSets
 
 Base = declarative_base()
+
+
+class ChoiceType(types.TypeDecorator):
+
+    impl = types.String
+
+    def __init__(self, choices, **kw):
+        self.choices = dict(choices)
+        super(ChoiceType, self).__init__(**kw)
+
+    def process_bind_param(self, value, dialect):
+        val = [k for k, v in self.choices.iteritems() if k == value or v == value]
+        if val:
+            return val[0]
+        return ''
+
+    def process_result_value(self, value, dialect):
+        return self.choices[value]
+
+REDIRECT_CHOICES = (
+    ('', '200'),
+    ('Moved Permanently', '301'),
+    ('Moved Temporarily', '302'),
+)
 
 
 class MPTTPages(Base, BaseNestedSets):
@@ -27,6 +54,14 @@ class MPTTPages(Base, BaseNestedSets):
     description = Column(Text)
 
     visible = Column(Boolean)
+
+    # Redirection
+    redirect_url = Column(String)
+    redirect_page = Column(Integer, ForeignKey('mptt_pages.id'))
+    redirect_type = Column(ChoiceType(choices=REDIRECT_CHOICES))
+    redirect = relationship("MPTTPages", foreign_keys=[redirect_page],
+                            remote_side=[id]  # for show in sacrud
+                            )
 
     # SEO paty
     seo_title = Column(String, nullable=True)
@@ -50,11 +85,21 @@ class MPTTPages(Base, BaseNestedSets):
     @declared_attr
     def sacrud_detail_col(cls):
         return [('', [cls.name, cls.slug, cls.description, cls.visible]),
+                ('Redirection', [cls.redirect_url, cls.redirect_page,
+                                 cls.redirect_type]),
                 ('SEO', [cls.seo_title, cls.seo_keywords, cls.seo_description,
                          cls.seo_metatags])
                 ]
 
     def __repr__(self):
         return self.name
+
+    def get_url(self):
+        t = self.__class__
+        session = Session.object_session(self)
+        branch = session.query(t.slug).filter(t.left <= self.left)\
+            .filter(t.right >= self.right)\
+            .filter(t.tree_id == self.tree_id).order_by(t.left)
+        return '/'.join(map(lambda x: x[0], branch))
 
 MPTTPages.register_tree()
