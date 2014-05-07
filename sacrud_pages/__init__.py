@@ -76,7 +76,7 @@ def root_factory(request):
             return self.subobjects[name]
 
         def __repr__(self):
-            return "<%s> (%s)" % (self.node, self.subobjects)
+            return "<%s>" % self.node
 
     def recursive_node_to_dict(node):
         children = {str(c.slug): recursive_node_to_dict(c) for c in node.children}
