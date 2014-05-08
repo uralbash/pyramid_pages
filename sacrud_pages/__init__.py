@@ -71,7 +71,6 @@ def page_view(context, request):
         if not page.redirect_type or page.redirect_type == '200':
             context['page'] = page.redirect
         else:
-            print page.redirect.get_url
             return Response(status_code=int(page.redirect_type),
                             location=page.redirect.get_url())
     if page.redirect_url:
