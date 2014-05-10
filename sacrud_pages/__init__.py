@@ -109,6 +109,8 @@ def includeme(config):
     config.add_jinja2_search_path("sacrud_pages:templates")
     config.add_static_view('/sacrud_pages_static', 'sacrud_pages:static')
 
+    config.add_static_view('/sa_pages_static', 'sacrud_pages:static')
+
     config.add_route('sacrud_pages_move', '/sacrud_pages/move/{node}/{method}/{leftsibling}/')
     config.add_route('sacrud_pages_insert', '/sacrud_pages/insert/{parent_id}/')
     config.add_route('sacrud_pages_get_tree', '/sacrud_pages/get_tree/')
