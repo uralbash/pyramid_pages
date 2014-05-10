@@ -5,6 +5,7 @@
 # Copyright © 2014 uralbash <root@uralbash.ru>
 #
 # Distributed under terms of the MIT license.
+from pyramid.response import Response
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
 
@@ -59,11 +60,23 @@ def page_visible(request):
     return {"visible": node.visible}
 
 
-@view_config(route_name='sacrud_pages_view', renderer='json',
+@view_config(route_name='sacrud_pages_view', renderer='/sacrud_pages/index.jinja2',
              permission=NO_PERMISSION_REQUIRED)
 def page_view(context, request):
-    return {"subobjects": str(context),
-            "node": str(context.node)}
+    page = context.node
+    context = {'page': context.node,
+               'page_context': context}
+
+    if page.redirect_page:
+        if not page.redirect_type or page.redirect_type == '200':
+            context['page'] = page.redirect
+        else:
+            return Response(status_code=int(page.redirect_type),
+                            location='/'+page.redirect.get_url())
+    if page.redirect_url:
+        return Response(status_code=int(page.redirect_type),
+                        location=page.redirect_url)
+    return context
 
 
 def root_factory(request):
@@ -76,17 +89,17 @@ def root_factory(request):
             return self.subobjects[name]
 
         def __repr__(self):
-            return "<%s> (%s)" % (self.node, self.subobjects)
+            return "<%s>" % self.node
 
     def recursive_node_to_dict(node):
-        children = {str(c.name): recursive_node_to_dict(c) for c in node.children}
+        children = {str(c.slug): recursive_node_to_dict(c) for c in node.children}
         return Resource(children, node)
 
     query = request.dbsession.query(MPTTPages)
     nodes = query.filter_by(parent_id=None).all()
     tree = {}
     for node in nodes:
-        tree[str(node.name)] = Resource(recursive_node_to_dict(node), node)
+        tree[str(node.slug)] = Resource(recursive_node_to_dict(node), node)
 
     return tree
 
