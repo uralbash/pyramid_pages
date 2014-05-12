@@ -9,33 +9,15 @@
 """
 Model of Pages
 """
-import sqlalchemy.types as types
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.session import Session
 
 from sqlalchemy_mptt import BaseNestedSets
+from sacrud.exttype import ChoiceType
 
 Base = declarative_base()
-
-
-class ChoiceType(types.TypeDecorator):
-
-    impl = types.String
-
-    def __init__(self, choices, **kw):
-        self.choices = dict(choices)
-        super(ChoiceType, self).__init__(**kw)
-
-    def process_bind_param(self, value, dialect):
-        val = [k for k, v in self.choices.iteritems() if k == value or v == value]
-        if val:
-            return val[0]
-        return ''
-
-    def process_result_value(self, value, dialect):
-        return self.choices[value]
 
 REDIRECT_CHOICES = (
     ('', '200'),
