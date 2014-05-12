@@ -79,41 +79,11 @@ def page_view(context, request):
     return context
 
 
-def root_factory(request):
-    class Resource(object):
-        def __init__(self, subobjects, node):
-            self.subobjects = subobjects
-            self.node = node
-
-        def __getitem__(self, name):
-            return self.subobjects[name]
-
-        def __repr__(self):
-            return "<%s>" % self.node
-
-    def recursive_node_to_dict(node):
-        children = {str(c.slug): recursive_node_to_dict(c) for c in node.children}
-        return Resource(children, node)
-
-    query = request.dbsession.query(MPTTPages)
-    nodes = query.filter_by(parent_id=None).all()
-    tree = {}
-    for node in nodes:
-        tree[str(node.slug)] = Resource(recursive_node_to_dict(node), node)
-
-    return tree
-
-
 def includeme(config):
     config.include('pyramid_jinja2')
     config.add_jinja2_search_path("sacrud_pages:templates")
     config.add_static_view('/static_pages', 'sacrud_pages:static/sacrud_pages/')
 
-    config.add_route('sacrud_pages_move', '/sacrud_pages/move/{node}/{method}/{leftsibling}/')
-    config.add_route('sacrud_pages_insert', '/sacrud_pages/insert/{parent_id}/')
-    config.add_route('sacrud_pages_get_tree', '/sacrud_pages/get_tree/')
-    config.add_route('sacrud_pages_visible', '/sacrud_pages/visible/{node}/')
-    config.add_route('sacrud_pages_view', '/*traverse',
-                     factory='sacrud_pages.root_factory')
+    config.include('sacrud_pages.routes')
 
     config.scan()
