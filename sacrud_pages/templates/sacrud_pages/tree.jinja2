@@ -1,8 +1,31 @@
 <link rel="stylesheet" href="http://daviduv.github.io/jqTreeContextMenu/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://mbraak.github.io/jqTree/jqtree.css">
+<link href="{{ request.static_url('sacrud_pages:static/css/sacrud_pages.css') }}" rel="stylesheet" type="text/css" />
+<style>
+.not_visible {
+  background: #eee;
+  color: #333 !important;
+  padding: 0.2em 0.5em;
+}
+</style>
 
 <div class="widget">
     <div class="widget-title">MPTT_PAGES</div>
+    <div class="widget-toolbar">
+        <div class="toolbar clear-fix">
+            <div class="toolbar-button">
+                <div class="toolbar-button__item toolbar-button__item_state_disable">
+                     <button type="submit" name="form.submitted" class="toolbar-button__item-button">Add</button>
+                </div>
+                <div class="toolbar-button__item toolbar-button__item_type_red">
+                    <div class="toolbar-button__item-name">Delete</div>
+                </div>
+                <div class="toolbar-button__item">
+                    <a href="#" class="toolbar-button__item-link">Hide</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="widget-content">
         <div class="widget-tree" id="sacrud-tree"></div>
     </div>
@@ -27,12 +50,6 @@
 
 <script src="http://mbraak.github.io/jqTree/tree.jquery.js"></script>
 <script src="http://daviduv.github.io/jqTreeContextMenu/jqTreeContextMenu.js"></script>
-<style>
-.not_visible {
-  background: #AAA;
-  color: #333 !important;
-}
-</style>
 <script>
     $(function() {
         var url = "{{ request.route_url('sacrud_pages_get_tree') }}";
