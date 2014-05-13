@@ -15,7 +15,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm.session import Session
 
 from sqlalchemy_mptt import BaseNestedSets
-from sacrud.exttype import ChoiceType
+from sacrud.exttype import ChoiceType, SlugType
 
 Base = declarative_base()
 
@@ -32,7 +32,7 @@ class MPTTPages(Base, BaseNestedSets):
     id = Column(Integer, primary_key=True)
 
     name = Column(String, nullable=False)
-    slug = Column(String, nullable=False, unique=True)
+    slug = Column(SlugType('string_name', False), nullable=False, unique=True)
     description = Column(Text)
 
     visible = Column(Boolean)
