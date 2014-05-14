@@ -1,2 +1,3 @@
 pyramid
 SQLAlchemy>=0.7
+sqlalchemy_mptt
