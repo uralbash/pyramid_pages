@@ -16,7 +16,6 @@ setup(
     license="BSD",
     description='Tree pages for pyramid CRUD interface sacrud',
     long_description=open('README.md').read(),
-    test_suite="nose.collector",
     install_requires=[
         "sqlalchemy",
     ],
