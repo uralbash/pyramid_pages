@@ -31,17 +31,6 @@ def page_move(request):
     return ''
 
 
-@view_config(route_name='sacrud_pages_insert', renderer='json',
-             permission=NO_PERMISSION_REQUIRED)
-def page_insert(request):
-    parent_id = request.matchdict['parent_id']
-    node = MPTTPages(parent_id=parent_id)
-    request.dbsession.add(node)
-    request.dbsession.flush()
-
-    return {'label': str(node), 'id': node.id}
-
-
 @view_config(route_name='sacrud_pages_get_tree', renderer='json',
              permission=NO_PERMISSION_REQUIRED)
 def get_tree(request):

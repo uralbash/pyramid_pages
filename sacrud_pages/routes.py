@@ -41,7 +41,6 @@ def root_factory(request):
 
 def includeme(config):
     config.add_route('sacrud_pages_move', '/sacrud_pages/move/{node}/{method}/{leftsibling}/')
-    config.add_route('sacrud_pages_insert', '/sacrud_pages/insert/{parent_id}/')
     config.add_route('sacrud_pages_get_tree', '/sacrud_pages/get_tree/')
     config.add_route('sacrud_pages_visible', '/sacrud_pages/visible/{node}/')
     config.add_route('sacrud_pages_view', '/*traverse',
