@@ -112,3 +112,12 @@ class TestTree(unittest.TestCase):
                          self.session.query(MPTTPages.id,
                                             MPTTPages.name,
                                             MPTTPages.parent_id).all())
+
+    def test_repr(self):
+        page = self.session.query(MPTTPages).filter_by(id=1).one()
+        self.assertEqual(page.__repr__(), "About company")
+
+    def test_get_url(self):
+        page = self.session.query(MPTTPages).filter_by(id=6).one()
+        url = page.get_url()
+        self.assertEqual(u'about-company/our-history/kompania-itcase', url)
