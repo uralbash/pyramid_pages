@@ -16,7 +16,6 @@ from pyramid import testing
 from pyramid.config import Configurator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from zope.sqlalchemy import ZopeTransactionExtension
 
 from sacrud_pages.models import MPTTPages
 
@@ -202,3 +201,24 @@ class ViewPageTest(BaseTest):
         response = page_view(context, request)
         self.assertEqual(response.location, '/foo12/foo15/foo16')
         self.assertEqual(response.status_code, 301)
+
+
+class PageVisibleTest(BaseTest):
+
+    def _callFUT(self, request):
+        from sacrud_pages.views import page_visible
+        return page_visible(request)
+
+    def test_it(self):
+        request = testing.DummyRequest()
+        request.set_property(mock_dbsession, 'dbsession', reify=True)
+        request.matchdict['node'] = 12
+        response = self._callFUT(request)
+        request.dbsession.commit()
+        self.assertEqual(response, {'visible': False})
+        response = self._callFUT(request)
+        request.dbsession.commit()
+        self.assertEqual(response, {'visible': True})
+        response = self._callFUT(request)
+        request.dbsession.commit()
+        self.assertEqual(response, {'visible': False})
