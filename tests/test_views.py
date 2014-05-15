@@ -82,7 +82,7 @@ def add_mptt_pages(session):
         {'id': '22', 'slug': 'foo22', 'name': 'foo22', 'visible': True, 'parent_id': '21', 'tree_id': '12'},
     )
     add_fixture(MPTTPages, pages, session)
-    transaction.commit()
+    session.commit()
 
 
 def get_app(DBSession):
@@ -91,12 +91,10 @@ def get_app(DBSession):
     settings['sqlalchemy.url'] = DBSession.bind.engine.url
 
     # Database
-    try:
-        MPTTPages.__table__.drop(DBSession.bind.engine)
-    except:
-        pass
-    MPTTPages.__table__.create(DBSession.bind.engine)
+    MPTTPages.__table__.drop(DBSession.bind.engine, checkfirst=True)
+    MPTTPages.__table__.create(DBSession.bind.engine, checkfirst=True)
     transaction.commit()
+
     add_mptt_pages(DBSession)
 
     # SACRUD
@@ -110,16 +108,18 @@ def get_app(DBSession):
     return config.make_wsgi_app()
 
 
+def mock_dbsession(request={}):
+    dburl = "sqlite:///test.sqlite"
+    engine = create_engine(dburl)
+    DBSession = scoped_session(sessionmaker())
+    DBSession.configure(bind=engine)
+    return DBSession
+
+
 class BaseTest(unittest.TestCase):
 
     def setUp(self):
-        dburl = "sqlite:///test.sqlite"
-        engine = create_engine(dburl)
-        DBSession = scoped_session(
-            sessionmaker(extension=ZopeTransactionExtension()))
-        DBSession.configure(bind=engine)
-        self.DBSession = DBSession
-
+        DBSession = mock_dbsession()
         app = get_app(DBSession)
 
         from webtest import TestApp
@@ -127,9 +127,6 @@ class BaseTest(unittest.TestCase):
 
     def tearDown(self):
         del self.testapp
-
-    def get_db(self, request):
-        return self.DBSession
 
 
 class RootFactoryTest(BaseTest):
@@ -140,7 +137,7 @@ class RootFactoryTest(BaseTest):
 
     def test_it(self):
         request = testing.DummyRequest()
-        request.set_property(self.get_db, 'dbsession', reify=True)
+        request.set_property(mock_dbsession, 'dbsession', reify=True)
         tree = self._callFUT(request)
         self.assertEqual(str(tree),
                          "{'about-company': <About company>, 'foo12': <foo12>}")
@@ -153,9 +150,55 @@ class ViewPageTest(BaseTest):
     def test_location(self):
         from sacrud_pages.views import page_view
         from sacrud_pages.routes import Resource, recursive_node_to_dict
-        page = self.DBSession.query(MPTTPages).filter_by(name="Technology").one()
+        DBSession = mock_dbsession()
+        page = DBSession.query(MPTTPages).filter_by(name="Technology").one()
         context = Resource(recursive_node_to_dict(page), page)
         request = testing.DummyRequest()
         response = page_view(context, request)
         self.assertEqual(str(response),
                          str("{'page_context': <Technology>, 'page': Technology}"))
+
+    def test_redirect_200(self):
+        from sacrud_pages.views import page_view
+        from sacrud_pages.routes import Resource, recursive_node_to_dict
+        DBSession = mock_dbsession()
+        page = DBSession.query(MPTTPages).filter_by(name="Technology").one()
+        redirect = DBSession.query(MPTTPages).filter_by(name="foo16").one()
+        page.redirect_type = "200"
+        page.redirect_page = redirect.id
+        DBSession.add(page)
+        DBSession.commit()
+        context = Resource(recursive_node_to_dict(page), page)
+        request = testing.DummyRequest()
+        response = page_view(context, request)
+        self.assertEqual(str(response),
+                         str("{'page_context': <Technology>, 'page': foo16}"))
+
+    def test_redirect_url(self):
+        from sacrud_pages.views import page_view
+        from sacrud_pages.routes import Resource, recursive_node_to_dict
+        DBSession = mock_dbsession()
+        page = DBSession.query(MPTTPages).filter_by(name="Technology").one()
+        page.redirect_url = "http://ya.ru"
+        DBSession.add(page)
+        DBSession.commit()
+        context = Resource(recursive_node_to_dict(page), page)
+        request = testing.DummyRequest()
+        response = page_view(context, request)
+        self.assertEqual(response.location, "http://ya.ru")
+
+    def test_redirect_301(self):
+        from sacrud_pages.views import page_view
+        from sacrud_pages.routes import Resource, recursive_node_to_dict
+        DBSession = mock_dbsession()
+        page = DBSession.query(MPTTPages).filter_by(name="Technology").one()
+        redirect = DBSession.query(MPTTPages).filter_by(name="foo16").one()
+        page.redirect_type = "301"
+        page.redirect_page = redirect.id
+        DBSession.add(page)
+        DBSession.commit()
+        context = Resource(recursive_node_to_dict(page), page)
+        request = testing.DummyRequest()
+        response = page_view(context, request)
+        self.assertEqual(response.location, '/foo12/foo15/foo16')
+        self.assertEqual(response.status_code, 301)
