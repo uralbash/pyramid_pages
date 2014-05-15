@@ -77,7 +77,7 @@ def hello_world(request):
                     '<br /><a href="about-company">About company page</a>')
 
 
-if __name__ == '__main__':
+def get_app():
     config = Configurator()
     settings = config.registry.settings
     settings['sqlalchemy.url'] = "sqlite:///example.sqlite"
@@ -102,6 +102,9 @@ if __name__ == '__main__':
     config.include("sacrud_pages")
 
     config.scan()
-    app = config.make_wsgi_app()
+    return config.make_wsgi_app()
+
+if __name__ == '__main__':
+    app = get_app()
     server = make_server('0.0.0.0', 8080, app)
     server.serve_forever()
