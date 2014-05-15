@@ -146,3 +146,16 @@ class RootFactoryTest(BaseTest):
                          "{'about-company': <About company>, 'foo12': <foo12>}")
         self.assertEqual(str(tree['about-company'].__getitem__('our-history')),
                          '<Our history>')
+
+
+class ViewPageTest(BaseTest):
+
+    def test_location(self):
+        from sacrud_pages.views import page_view
+        from sacrud_pages.routes import Resource, recursive_node_to_dict
+        page = self.DBSession.query(MPTTPages).filter_by(name="Technology").one()
+        context = Resource(recursive_node_to_dict(page), page)
+        request = testing.DummyRequest()
+        response = page_view(context, request)
+        self.assertEqual(str(response),
+                         str("{'page_context': <Technology>, 'page': Technology}"))

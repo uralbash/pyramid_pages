@@ -12,22 +12,24 @@ Routes for sacrud_pages
 from models import MPTTPages
 
 
+class Resource(object):
+    def __init__(self, subobjects, node):
+        self.subobjects = subobjects
+        self.node = node
+
+    def __getitem__(self, name):
+        return self.subobjects[name]
+
+    def __repr__(self):
+        return "<%s>" % self.node
+
+
+def recursive_node_to_dict(node):
+    children = {str(c.slug): recursive_node_to_dict(c) for c in node.children}
+    return Resource(children, node)
+
+
 def root_factory(request):
-    class Resource(object):
-        def __init__(self, subobjects, node):
-            self.subobjects = subobjects
-            self.node = node
-
-        def __getitem__(self, name):
-            return self.subobjects[name]
-
-        def __repr__(self):
-            return "<%s>" % self.node
-
-    def recursive_node_to_dict(node):
-        children = {str(c.slug): recursive_node_to_dict(c) for c in node.children}
-        return Resource(children, node)
-
     query = request.dbsession.query(MPTTPages)
     nodes = query.filter_by(parent_id=None).all()
     tree = {}
