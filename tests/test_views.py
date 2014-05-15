@@ -144,3 +144,5 @@ class RootFactoryTest(BaseTest):
         tree = self._callFUT(request)
         self.assertEqual(str(tree),
                          "{'about-company': <About company>, 'foo12': <foo12>}")
+        self.assertEqual(str(tree['about-company'].__getitem__('our-history')),
+                         '<Our history>')
