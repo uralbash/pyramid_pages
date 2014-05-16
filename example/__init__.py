@@ -14,11 +14,10 @@ from wsgiref.simple_server import make_server
 import transaction
 from pyramid.config import Configurator
 from pyramid.response import Response
-from sqlalchemy import engine_from_config
+from sqlalchemy import Column, engine_from_config, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
-from sqlalchemy import Column, Integer
 
 from sacrud.common.sa_helpers import TableProperty
 from sacrud_pages.models import BasePages
