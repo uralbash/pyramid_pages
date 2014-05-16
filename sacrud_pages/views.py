@@ -13,8 +13,6 @@ from pyramid.response import Response
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
 
-from models import MPTTPages
-
 
 @view_config(route_name='sacrud_pages_move', renderer='json',
              permission=NO_PERMISSION_REQUIRED)
@@ -22,7 +20,9 @@ def page_move(request):
     node = request.matchdict['node']
     method = request.matchdict['method']
     left_sibling = request.matchdict['leftsibling']
-    page = request.dbsession.query(MPTTPages).filter_by(id=node).one()
+
+    table = request.sacrud_pages_model
+    page = request.dbsession.query(table).filter_by(id=node).one()
 
     if method == 'inside':
         page.move_inside(left_sibling)
@@ -36,14 +36,16 @@ def page_move(request):
 def get_tree(request):
     def fields(node):
         return {'visible': node.visible}
-    return MPTTPages.get_tree(request.dbsession, json=True, json_fields=fields)
+    table = request.sacrud_pages_model
+    return table.get_tree(request.dbsession, json=True, json_fields=fields)
 
 
 @view_config(route_name='sacrud_pages_visible', renderer='json',
              permission=NO_PERMISSION_REQUIRED)
 def page_visible(request):
     node = request.matchdict['node']
-    node = request.dbsession.query(MPTTPages).filter_by(id=node).one()
+    table = request.sacrud_pages_model
+    node = request.dbsession.query(table).filter_by(id=node).one()
     node.visible = not node.visible
     request.dbsession.add(node)
     request.dbsession.flush()

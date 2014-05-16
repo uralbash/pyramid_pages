@@ -9,7 +9,6 @@
 """
 Routes for sacrud_pages
 """
-from models import MPTTPages
 
 
 class Resource(object):
@@ -30,7 +29,8 @@ def recursive_node_to_dict(node):
 
 
 def root_factory(request):
-    query = request.dbsession.query(MPTTPages)
+    table = request.sacrud_pages_model
+    query = request.dbsession.query(table)
     nodes = query.filter_by(parent_id=None).all()
     tree = {}
     for node in nodes:
