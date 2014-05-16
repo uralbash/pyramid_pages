@@ -95,8 +95,10 @@ def get_app():
         pass
 
     # SACRUD
+    settings['sacrud.models'] = {'': {'tables': [MPTTPages],
+                                      'column': 1,
+                                      'position': 1}, }
     config.include('sacrud.pyramid_ext', route_prefix='/admin')
-    settings['sacrud.models'] = {'Pages': [MPTTPages], }
 
     # sacrud_pages - put it after all routes
     config.include("sacrud_pages")
