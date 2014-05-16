@@ -26,14 +26,6 @@ REDIRECT_CHOICES = (
 )
 
 
-class TableProperty(object):
-    def __init__(self, func):
-        self.func = func
-
-    def __get__(self, inst, cls):
-        return self.func(cls.__table__)
-
-
 class BasePages(BaseNestedSets):
 
     name = Column(String, nullable=False)
@@ -52,9 +44,9 @@ class BasePages(BaseNestedSets):
 
     @declared_attr
     def redirect(cls):
-        return relationship(cls, foreign_keys=[cls.redirect_page] ,
+        return relationship(cls, foreign_keys=[cls.redirect_page],
                             remote_side=[cls.id],  # for show in sacrud
-                            primaryjoin=lambda: foreign(cls.redirect_page)==cls.id,
+                            primaryjoin=lambda: foreign(cls.redirect_page) == cls.id,
                             )
 
     # SEO paty
@@ -71,8 +63,6 @@ class BasePages(BaseNestedSets):
                         'content': [description],
                         'name': [name], }
 
-
-
     def __repr__(self):
         return self.name
 
@@ -83,27 +73,3 @@ class BasePages(BaseNestedSets):
             .filter(t.right >= self.right)\
             .filter(t.tree_id == self.tree_id).order_by(t.left)
         return '/'.join(map(lambda x: x[0], branch))
-
-
-class MPTTPages(BasePages, Base):
-    __tablename__ = "mptt_pages"
-
-    id = Column(Integer, primary_key=True)
-
-    @TableProperty
-    def sacrud_list_col(cls):
-        col = cls.columns
-        return [col.name, col.level, col.tree_id,
-                col.parent_id, col.left, col.right]
-
-    @TableProperty
-    def sacrud_detail_col(cls):
-        col = cls.columns
-        return [('', [col.name, col.slug, col.description, col.visible]),
-                ('Redirection', [col.redirect_url, col.redirect_page,
-                                 col.redirect_type]),
-                ('SEO', [col.seo_title, col.seo_keywords, col.seo_description,
-                         col.seo_metatags])
-                ]
-
-MPTTPages.register_tree()
