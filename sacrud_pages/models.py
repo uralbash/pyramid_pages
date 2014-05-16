@@ -11,7 +11,7 @@ Model of Pages
 """
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, foreign
 from sqlalchemy.orm.session import Session
 
 from sqlalchemy_mptt import BaseNestedSets
@@ -26,7 +26,7 @@ REDIRECT_CHOICES = (
 )
 
 
-class ClassProperty(object):
+class TableProperty(object):
     def __init__(self, func):
         self.func = func
 
@@ -48,13 +48,14 @@ class BasePages(BaseNestedSets):
 
     @declared_attr
     def redirect_page(cls):
-        return Column(Integer, ForeignKey('mptt_pages.id'))
+        return Column(Integer, ForeignKey('%s.id' % cls.__tablename__))
 
-    #@declared_attr
-    #def redirect(cls):
-        #return relationship("MPTTPages", foreign_keys=[cls.redirect_page],
-                            #remote_side=[cls.id]  # for show in sacrud
-                            #)
+    @declared_attr
+    def redirect(cls):
+        return relationship(cls, foreign_keys=[cls.redirect_page] ,
+                            remote_side=[cls.id],  # for show in sacrud
+                            primaryjoin=lambda: foreign(cls.redirect_page)==cls.id,
+                            )
 
     # SEO paty
     seo_title = Column(String, nullable=True)
@@ -89,13 +90,13 @@ class MPTTPages(BasePages, Base):
 
     id = Column(Integer, primary_key=True)
 
-    @ClassProperty
+    @TableProperty
     def sacrud_list_col(cls):
         col = cls.columns
         return [col.name, col.level, col.tree_id,
                 col.parent_id, col.left, col.right]
 
-    @ClassProperty
+    @TableProperty
     def sacrud_detail_col(cls):
         col = cls.columns
         return [('', [col.name, col.slug, col.description, col.visible]),

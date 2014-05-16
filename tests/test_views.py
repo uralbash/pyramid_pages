@@ -136,6 +136,7 @@ class RootFactoryTest(BaseTest):
 
     def test_it(self):
         request = testing.DummyRequest()
+        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         tree = self._callFUT(request)
         self.assertEqual(str(tree),
@@ -211,6 +212,7 @@ class PageVisibleTest(BaseTest):
 
     def test_it(self):
         request = testing.DummyRequest()
+        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         request.matchdict['node'] = 12
         response = self._callFUT(request)
@@ -232,6 +234,7 @@ class GetTreeTest(BaseTest):
 
     def test_it(self):
         request = testing.DummyRequest()
+        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         response = self._callFUT(request)
         self.assertEqual([{'visible': True, 'children': [{'visible': True, 'children': [{'visible': True, 'id': 3, 'label': u'And Pyramid'}], 'id': 2, 'label': u'We \u2665  gevent'}, {'visible': False, 'children': [{'visible': True, 'id': 5, 'label': u'foo'}, {'visible': False, 'id': 6, 'label': u'\u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f ITCase'}], 'id': 4, 'label': u'Our history'}, {'visible': True, 'children': [{'visible': True, 'children': [{'visible': False, 'id': 9, 'label': u'Technology'}], 'id': 8, 'label': u'Wordwide'}, {'visible': True, 'children': [{'visible': True, 'id': 11, 'label': u'at a glance'}], 'id': 10, 'label': u'What we do'}], 'id': 7, 'label': u'Our strategy'}], 'id': 1, 'label': u'About company'}, {'visible': True, 'children': [{'visible': False, 'children': [{'visible': False, 'id': 14, 'label': u'foo14'}], 'id': 13, 'label': u'foo13'}, {'visible': True, 'children': [{'visible': True, 'id': 16, 'label': u'foo16'}, {'visible': True, 'id': 17, 'label': u'foo17'}], 'id': 15, 'label': u'foo15'}, {'visible': True, 'children': [{'visible': True, 'children': [{'visible': True, 'id': 20, 'label': u'foo20'}], 'id': 19, 'label': u'foo19'}, {'visible': True, 'children': [{'visible': True, 'id': 22, 'label': u'foo22'}], 'id': 21, 'label': u'foo21'}], 'id': 18, 'label': u'foo18'}], 'id': 12, 'label': u'foo12'}],
@@ -246,6 +249,7 @@ class PageMoveTest(BaseTest):
 
     def test_inside_method(self):
         request = testing.DummyRequest()
+        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         request.matchdict['node'] = 5
         request.matchdict['method'] = 'inside'
@@ -258,6 +262,7 @@ class PageMoveTest(BaseTest):
 
     def test_after_method(self):
         request = testing.DummyRequest()
+        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         request.matchdict['node'] = 5
         request.matchdict['method'] = 'after'
