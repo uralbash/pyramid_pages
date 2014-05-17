@@ -33,6 +33,7 @@ class BasePages(BaseNestedSets):
     description = Column(Text)
 
     visible = Column(Boolean)
+    in_menu = Column(Boolean)
 
     # Redirection
     redirect_url = Column(String)

@@ -20,7 +20,7 @@ class Resource(object):
         return self.subobjects[name]
 
     def __repr__(self):
-        return "<%s>" % self.node
+        return "<%s>" % self.node.name.encode('utf-8')
 
 
 def recursive_node_to_dict(node):
@@ -40,8 +40,8 @@ def root_factory(request):
 
 
 def includeme(config):
-    config.add_route('sacrud_pages_move', '/sacrud_pages/move/{node}/{method}/{leftsibling}/')
-    config.add_route('sacrud_pages_get_tree', '/sacrud_pages/get_tree/')
-    config.add_route('sacrud_pages_visible', '/sacrud_pages/visible/{node}/')
-    config.add_route('sacrud_pages_view', '/*traverse',
+    config.add_route('sacrud_pages_move',       '/sacrud_pages/move/{node}/{method}/{leftsibling}/')
+    config.add_route('sacrud_pages_get_tree',   '/sacrud_pages/get_tree/')
+    config.add_route('sacrud_pages_visible',    '/sacrud_pages/visible/{node}/')
+    config.add_route('sacrud_pages_view',       '/*traverse',
                      factory='sacrud_pages.routes.root_factory')
