@@ -9,6 +9,7 @@
 """
 Views for sacrud_pages
 """
+from pyramid.httpexceptions import HTTPNotFound
 from pyramid.response import Response
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
@@ -57,6 +58,10 @@ def page_visible(request):
              permission=NO_PERMISSION_REQUIRED)
 def page_view(context, request):
     page = context.node
+
+    if not page.visible:
+        raise HTTPNotFound
+
     context = {'page': context.node,
                'page_context': context}
 
