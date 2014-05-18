@@ -243,6 +243,8 @@ class ViewPageTest(BaseTest):
             page_view(context, request)
         except HTTPNotFound:
             pass
+        else:
+            raise Exception("HTTPNotFound not work")
 
 
 class PageVisibleTest(BaseTest):

@@ -11,11 +11,13 @@ Model of Pages
 """
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
-from sqlalchemy.orm import relationship, foreign
+from sqlalchemy.orm import foreign, relationship
 from sqlalchemy.orm.session import Session
 
-from sqlalchemy_mptt import BaseNestedSets
 from sacrud.exttype import ChoiceType, SlugType
+from sqlalchemy_mptt import BaseNestedSets
+
+from .common import get_pages_menu
 
 Base = declarative_base()
 
@@ -74,3 +76,8 @@ class BasePages(BaseNestedSets):
             .filter(t.right >= self.right)\
             .filter(t.tree_id == self.tree_id).order_by(t.left)
         return '/'.join(map(lambda x: x[0], branch))
+
+    def get_menu(self, **kwargs):
+        t = self.__class__
+        session = Session.object_session(self)
+        return get_pages_menu(session, t, **kwargs)

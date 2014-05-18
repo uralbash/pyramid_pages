@@ -22,5 +22,9 @@
   {{ page.name }}
   <br />
   {{ page.description|safe }}
+  <br />
+  {% with menu=page.get_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
+    {% include 'sacrud_pages/menu.jinja2' with context %}
+  {% endwith %}
 </body>
 </html>
