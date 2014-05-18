@@ -9,33 +9,15 @@
 """
 Model of Pages
 """
-import sqlalchemy.types as types
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, foreign
 from sqlalchemy.orm.session import Session
 
 from sqlalchemy_mptt import BaseNestedSets
+from sacrud.exttype import ChoiceType, SlugType
 
 Base = declarative_base()
-
-
-class ChoiceType(types.TypeDecorator):
-
-    impl = types.String
-
-    def __init__(self, choices, **kw):
-        self.choices = dict(choices)
-        super(ChoiceType, self).__init__(**kw)
-
-    def process_bind_param(self, value, dialect):
-        val = [k for k, v in self.choices.iteritems() if k == value or v == value]
-        if val:
-            return val[0]
-        return ''
-
-    def process_result_value(self, value, dialect):
-        return self.choices[value]
 
 REDIRECT_CHOICES = (
     ('', '200'),
@@ -44,23 +26,28 @@ REDIRECT_CHOICES = (
 )
 
 
-class MPTTPages(Base, BaseNestedSets):
-    __tablename__ = "mptt_pages"
-
-    id = Column(Integer, primary_key=True)
+class BasePages(BaseNestedSets):
 
     name = Column(String, nullable=False)
-    slug = Column(String, nullable=False, unique=True)
+    slug = Column(SlugType('string_name', False), nullable=False, unique=True)
     description = Column(Text)
 
     visible = Column(Boolean)
+    in_menu = Column(Boolean)
 
     # Redirection
     redirect_url = Column(String)
-    redirect_page = Column(Integer, ForeignKey('mptt_pages.id'))
     redirect_type = Column(ChoiceType(choices=REDIRECT_CHOICES))
-    redirect = relationship("MPTTPages", foreign_keys=[redirect_page],
-                            remote_side=[id]  # for show in sacrud
+
+    @declared_attr
+    def redirect_page(cls):
+        return Column(Integer, ForeignKey('%s.id' % cls.__tablename__))
+
+    @declared_attr
+    def redirect(cls):
+        return relationship(cls, foreign_keys=[cls.redirect_page],
+                            remote_side=[cls.id],  # for show in sacrud
+                            primaryjoin=lambda: foreign(cls.redirect_page) == cls.id,
                             )
 
     # SEO paty
@@ -77,20 +64,6 @@ class MPTTPages(Base, BaseNestedSets):
                         'content': [description],
                         'name': [name], }
 
-    @declared_attr
-    def sacrud_list_col(cls):
-        return [cls.id, cls.level, cls.tree_id,
-                cls.parent_id, cls.left, cls.right]
-
-    @declared_attr
-    def sacrud_detail_col(cls):
-        return [('', [cls.name, cls.slug, cls.description, cls.visible]),
-                ('Redirection', [cls.redirect_url, cls.redirect_page,
-                                 cls.redirect_type]),
-                ('SEO', [cls.seo_title, cls.seo_keywords, cls.seo_description,
-                         cls.seo_metatags])
-                ]
-
     def __repr__(self):
         return self.name
 
@@ -101,5 +74,3 @@ class MPTTPages(Base, BaseNestedSets):
             .filter(t.right >= self.right)\
             .filter(t.tree_id == self.tree_id).order_by(t.left)
         return '/'.join(map(lambda x: x[0], branch))
-
-MPTTPages.register_tree()

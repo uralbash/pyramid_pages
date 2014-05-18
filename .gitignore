@@ -13,8 +13,9 @@ cover
 build
 dist
 *.egg-info
-example
 TODO
 TODO.txt
 nohup.out
 .cache
+example.sqlite
+test.sqlite
