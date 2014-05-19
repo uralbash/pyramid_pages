@@ -1,21 +1,16 @@
-<link rel="stylesheet" href="http://daviduv.github.io/jqTreeContextMenu/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://mbraak.github.io/jqTree/jqtree.css">
-<link href="/static_sacrud_pages/css/style.css" rel="stylesheet" type="text/css" />
+<!--
+  <link rel="stylesheet" href="http://daviduv.github.io/jqTreeContextMenu/css/bootstrap.min.css">
+-->
 
-<style>
-.not_visible {
-  background: #eee;
-  color: #333 !important;
-  padding: 0.2em 0.5em;
-}
-</style>
+<link href="/static_sacrud_pages/css/jqtree.css" rel="stylesheet" type="text/css" />
+<link href="/static_sacrud_pages/css/sacrud_pages.css" rel="stylesheet" type="text/css" />
 
 <div class="widget">
     <div class="widget-title">MPTT_PAGES</div>
     <div class="widget-toolbar">
         <div class="toolbar clear-fix">
             <div class="toolbar-button">
-                <div class="toolbar-button__item toolbar-button__item_state_disable">
+                <div class="toolbar-button__item">
                      <button type="submit" name="form.submitted" class="toolbar-button__item-button">Add</button>
                 </div>
                 <div class="toolbar-button__item toolbar-button__item_type_red">
@@ -33,24 +28,23 @@
 </div>
 
 <ul id="sacrud-tree-menu" class="dropdown-menu">
-    <li class="visible">
-        <a href="#visible"><i class="icon-eye-open"></i> Visible</a>
+    <li class="dropdown-menu__item">
+        <a href="#visible" class="dropdown-menu__item-link"><i class="icon-eye-open"></i> Visible</a>
     </li>
-    <li class="divider"></li>
-    <li class="edit">
-        <a href="#edit"><i class="icon-edit"></i> Edit</a>
+    <li class="dropdown-menu__item">
+        <a href="#edit" class="dropdown-menu__item-link"><i class="icon-edit"></i> Edit</a>
     </li>
-    <li class="delete">
-        <a href="#delete"><i class="icon-remove"></i> Delete</a>
+    <li class="dropdown-menu__item">
+        <a href="#delete" class="dropdown-menu__item-link"><i class="icon-remove"></i> Delete</a>
     </li>
-    <li class="divider"></li>
-    <li class="add">
-        <a href="#add"><i class="icon-plus"></i> Add</a>
+    <li class="dropdown-menu__item">
+        <a href="#add" class="dropdown-menu__item-link"><i class="icon-plus"></i> Add</a>
     </li>
 </ul>
 
-<script src="http://mbraak.github.io/jqTree/tree.jquery.js"></script>
-<script src="http://daviduv.github.io/jqTreeContextMenu/jqTreeContextMenu.js"></script>
+<script src="/static_sacrud_pages/js/jqTree/tree.jquery.js"></script>
+<script src="/static_sacrud_pages/js/jqTree/jqTreeContextMenu.js"></script>
+
 <script>
     $(function() {
         var url = "{{ request.route_url('sacrud_pages_get_tree') }}";
@@ -65,7 +59,7 @@
 
             onCreateLi: function(node, $li) {
                 if(!node.visible) {
-                  $li.find('.jqtree-title').addClass('not_visible');
+                  $li.find('.jqtree-title').addClass('jqtree-hidden');
                 }
             }
         });
@@ -120,9 +114,9 @@
               var visible = $.ajax({'url': url, "async": false}).responseJSON.visible;
               var element = $(node.element).find('.jqtree-title').first();
               if(visible){
-                  element.removeClass('not_visible');
+                  element.removeClass('jqtree-hidden');
               } else {
-                  element.addClass('not_visible');
+                  element.addClass('jqtree-hidden');
               }
           }
         });
