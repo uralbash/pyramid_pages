@@ -62,8 +62,9 @@ def page_view(context, request):
     if not page.visible:
         raise HTTPNotFound
 
-    context = {'page': context.node,
-               'page_context': context}
+    context = {'page': page,
+               'page_resource': context,
+               }
 
     if page.redirect_page:
         if not page.redirect_type or page.redirect_type == '200':

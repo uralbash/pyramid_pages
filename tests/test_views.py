@@ -167,9 +167,14 @@ class RootFactoryTest(BaseTest):
         request = testing.DummyRequest()
         request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
         request.set_property(mock_dbsession, 'dbsession', reify=True)
+        DBSession = request.dbsession
         tree = self._callFUT(request)
-        self.assertEqual(str(tree),
-                         "{'about-company': <About company>, 'foo12': <foo12>}")
+        page1 = DBSession.query(MPTTPages).filter_by(name="About company").one()
+        self.assertEqual(tree['about-company'].node, page1)
+
+        page2 = DBSession.query(MPTTPages).filter_by(name="foo12").one()
+        self.assertEqual(tree['foo12'].node, page2)
+
         self.assertEqual(str(tree['about-company'].__getitem__('our-history')),
                          '<Our history>')
 
@@ -184,8 +189,8 @@ class ViewPageTest(BaseTest):
         context = Resource(recursive_node_to_dict(page), page)
         request = testing.DummyRequest()
         response = page_view(context, request)
-        self.assertEqual(str(response),
-                         str("{'page_context': <at a glance>, 'page': at a glance}"))
+        self.assertEqual(response['page_resource'].node, page)
+        self.assertEqual(response['page'], page)
 
     def test_redirect_200(self):
         from sacrud_pages.views import page_view
@@ -200,8 +205,8 @@ class ViewPageTest(BaseTest):
         context = Resource(recursive_node_to_dict(page), page)
         request = testing.DummyRequest()
         response = page_view(context, request)
-        self.assertEqual(str(response),
-                         str("{'page_context': <at a glance>, 'page': foo16}"))
+        self.assertEqual(response['page_resource'].node, page)
+        self.assertEqual(response['page'], redirect)
 
     def test_redirect_url(self):
         from sacrud_pages.views import page_view
@@ -243,6 +248,8 @@ class ViewPageTest(BaseTest):
             page_view(context, request)
         except HTTPNotFound:
             pass
+        else:
+            raise Exception("HTTPNotFound not work")
 
 
 class PageVisibleTest(BaseTest):
