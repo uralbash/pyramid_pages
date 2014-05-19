@@ -23,15 +23,20 @@ Base = declarative_base()
 
 REDIRECT_CHOICES = (
     ('', '200'),
-    ('Moved Permanently', '301'),
-    ('Moved Temporarily', '302'),
+    ('Moved Permanently (301)', '301'),
+    ('Moved Temporarily (302)', '302'),
 )
 
 
 class BasePages(BaseNestedSets):
 
     name = Column(String, nullable=False)
-    slug = Column(SlugType('string_name', False), nullable=False, unique=True)
+    slug = Column(SlugType('string_name', False), nullable=False, unique=True,
+                  info={"verbose_name": "URL (slug)",
+                        "description":
+                        """Example: <br />
+                           /about => http://mysite.com/about/<br />
+                           contacts => http://mysite.com/about/contacts"""})
     description = Column(Text)
 
     visible = Column(Boolean)
@@ -47,17 +52,37 @@ class BasePages(BaseNestedSets):
 
     @declared_attr
     def redirect(cls):
-        return relationship(cls, foreign_keys=[cls.redirect_page],
-                            remote_side=[cls.id],  # for show in sacrud
-                            primaryjoin=lambda: foreign(cls.redirect_page) == cls.id,
-                            )
+        return relationship(
+            cls, foreign_keys=[cls.redirect_page],
+            remote_side=[cls.id],  # for show in sacrud
+            primaryjoin=lambda: foreign(cls.redirect_page) == cls.id,
+        )
 
-    # SEO paty
-    seo_title = Column(String, nullable=True)
-    seo_keywords = Column(String, nullable=True)
-    seo_description = Column(String, nullable=True)
-    seo_metatags = Column(Text, nullable=True)
-
+    # SEO
+    seo_title = Column(String, nullable=True,
+                       info={"verbose_name": "Title",
+                             "description":
+                             "Generate: &lt;title&gt;Value&lt;/title&gt;"})
+    seo_keywords = Column(String, nullable=True,
+                          info={"verbose_name": "META Keywords",
+                                "description":
+                                """Generate:
+                                  &lt;meta name=''keywords''
+                                  content=/"Value/" /&gt;"""})
+    seo_description = Column(String, nullable=True,
+                             info={"verbose_name": "META Description",
+                                   "description":
+                                   """Generate:
+                                      &lt;meta name='description'
+                                      content='Value' /&gt;"""})
+    seo_metatags = Column(Text, nullable=True,
+                          info={"verbose_name": "META Tags",
+                                "description":
+                                """Example: <br />
+                                   &lt;meta name='robots' content='Allow'/&gt;
+                                   <br />&lt;meta property='og:image'
+                                   content='http://mysite.com/logo.png'
+                                   /&gt;"""})
     # SACRUD
     items_per_page = 20
     verbose_name = u'MPTT pages'
