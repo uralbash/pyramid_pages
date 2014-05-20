@@ -10,9 +10,7 @@
     <div class="widget-toolbar">
         <div class="toolbar clear-fix">
             <div class="toolbar-button">
-                <div class="toolbar-button__item">
-                     <button type="submit" name="form.submitted" class="toolbar-button__item-button">Add</button>
-                </div>
+              {% include "sacrud/forms/actions/add.jinja2" %}
             </div>
         </div>
     </div>
@@ -30,9 +28,6 @@
     </li>
     <li class="dropdown-menu__item">
         <a href="#delete" class="dropdown-menu__item-link"><i class="icon-remove"></i> Delete</a>
-    </li>
-    <li class="dropdown-menu__item">
-        <a href="#add" class="dropdown-menu__item-link"><i class="icon-plus"></i> Add</a>
     </li>
 </ul>
 
@@ -94,20 +89,6 @@
           },
           "edit": function (node) {
             window.location = "{{ request.route_url('sa_home') }}mptt_pages/update/" + node.id;
-          },
-          "add": function (parent_node) {
-              var url = "/sacrud_pages/insert/" + parent_node.id + '/';
-              var new_node = $.ajax({'url': url, "async": false});
-              if(new_node){
-                $tree.tree(
-                    'appendNode',
-                        {
-                            label: new_node.responseJSON.label,
-                            id: new_node.responseJSON.id
-                        },
-                    parent_node
-                );
-              }
           },
           "visible": function (node) {
               var url = "/sacrud_pages/visible/" + node.id + '/';
