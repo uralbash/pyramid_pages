@@ -58,8 +58,8 @@
                 }
                 if(node.redirect) {
                   dom_node.after('<span class="jqtree-label jqtree-redirect ' +
-                                  node.CSSredirect + '">-> ' +
-                                  node.redirect + '</span>');
+                                  node.CSSredirect + '">' +
+                                  '301 — ' + node.redirect + '</span>');
                 }
             }
         });

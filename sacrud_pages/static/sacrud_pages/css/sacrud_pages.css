@@ -29,6 +29,34 @@
 	background: #F4F9FE !important;
 	border: solid 1px #ccc;
 }
+.jqtree-label
+{
+
+	padding: 0.3em 0.5em 0.2em 0.5em;
+	border-radius: 3px;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	-khtml-border-radius:3px;
+	display: inline-block;
+	margin: 0 0 0 0.2em;
+}
+.jqtree-redirect
+{
+	font: 0.7em Arial;
+	color: #fff;
+}
+.jqtree-redirect-200
+{
+	background: #159818;
+}
+.jqtree-redirect-301
+{
+	background: #84B6EB;
+}
+.jqtree-redirect-302
+{
+	background: #CC317C;
+}
 .dropdown-menu
 {
 	min-width: 150px;
