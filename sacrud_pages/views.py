@@ -36,10 +36,12 @@ def page_move(request):
              permission=NO_PERMISSION_REQUIRED)
 def get_tree(request):
     def fields(node):
+        redirect_code = node.redirect_type or '200'
         return {'visible': node.visible,
-                'CSSredirect': 'jqtree-redirect-%s' % node.redirect_type,
+                'CSSredirect': 'jqtree-redirect-%s' % redirect_code,
                 'redirect': '%s' % (node.redirect or node.redirect_url or ''),
-                'redirect_code': '%s' % node.redirect_type}
+                'redirect_code': '%s' % redirect_code
+                }
     table = request.sacrud_pages_model
     return table.get_tree(request.dbsession, json=True, json_fields=fields)
 
@@ -80,6 +82,6 @@ def page_view(context, request):
             return Response(status_code=int(page.redirect_type),
                             location='/'+page.redirect.get_url())
     if page.redirect_url:
-        return Response(status_code=int(page.redirect_type),
+        return Response(status_code=int(page.redirect_type or '200'),
                         location=page.redirect_url)
     return context
