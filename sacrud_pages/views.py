@@ -38,7 +38,8 @@ def get_tree(request):
     def fields(node):
         return {'visible': node.visible,
                 'CSSredirect': 'jqtree-redirect-%s' % node.redirect_type,
-                'redirect': '%s' % (node.redirect or node.redirect_url or '')}
+                'redirect': '%s' % (node.redirect or node.redirect_url or ''),
+                'redirect_code': '%s' % node.redirect_type}
     table = request.sacrud_pages_model
     return table.get_tree(request.dbsession, json=True, json_fields=fields)
 

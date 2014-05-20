@@ -24,7 +24,7 @@ class Resource(object):
 
 
 def recursive_node_to_dict(node):
-    children = {str(c.slug or '/'): recursive_node_to_dict(c) for c in node.children}
+    children = {str(c.slug or ''): recursive_node_to_dict(c) for c in node.children}
     return Resource(children, node)
 
 
@@ -34,7 +34,7 @@ def root_factory(request):
     nodes = query.filter_by(parent_id=None).all()
     tree = {}
     for node in nodes:
-        tree[str(node.slug or '')] = Resource(recursive_node_to_dict(node), node)
+        tree[node.slug or '/'] = Resource(recursive_node_to_dict(node), node)
 
     return tree
 
