@@ -31,7 +31,7 @@ REDIRECT_CHOICES = (
 class BasePages(BaseNestedSets):
 
     name = Column(String, nullable=False)
-    slug = Column(SlugType('string_name', False), nullable=False, unique=True,
+    slug = Column(SlugType('string_name', False), unique=True,
                   info={"verbose_name": "URL (slug)",
                         "description":
                         """Example: <br />

@@ -52,8 +52,14 @@
             autoOpen: true,
 
             onCreateLi: function(node, $li) {
+                dom_node = $li.find('.jqtree-title');
                 if(!node.visible) {
-                  $li.find('.jqtree-title').addClass('jqtree-hidden');
+                  dom_node.addClass('jqtree-hidden');
+                }
+                dom_node.addClass(node.classes);
+                if(node.redirect) {
+                  dom_node.after('<span class="jqtree-label jqtree-redirect">-> ' +
+                                  node.redirect + '</span>');
                 }
             }
         });
