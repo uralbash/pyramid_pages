@@ -34,7 +34,7 @@ def root_factory(request):
     nodes = query.filter_by(parent_id=None).all()
     tree = {}
     for node in nodes:
-        tree[node.slug or '/'] = Resource(recursive_node_to_dict(node), node)
+        tree[node.slug or ''] = Resource(recursive_node_to_dict(node), node)
 
     return tree
 

@@ -35,7 +35,6 @@ class BasePages(BaseNestedSets):
                   info={"verbose_name": "URL (slug)",
                         "description":
                         """Example: <br />
-                           /about => http://mysite.com/about/<br />
                            contacts => http://mysite.com/about/contacts"""})
     description = Column(Text)
 
