@@ -9,6 +9,7 @@
 """
 Routes for sacrud_pages
 """
+from sqlalchemy import or_
 
 
 class Resource(object):
@@ -28,15 +29,24 @@ def recursive_node_to_dict(node):
     return Resource(children, node)
 
 
-def root_factory(request):
-    table = request.sacrud_pages_model
-    query = request.dbsession.query(table)
-    nodes = query.filter_by(parent_id=None).all()
+def get_root_factory(dbsession, table):
+    query = dbsession.query(table)
+    nodes = query.filter(or_(table.parent_id == None,
+                             table.parent.has(table.slug == '/'))).all()
     tree = {}
     for node in nodes:
-        tree[node.slug or ''] = Resource(recursive_node_to_dict(node), node)
+        if node.slug:
+            tree[node.slug] = Resource(recursive_node_to_dict(node), node)
+        else:
+            tree[''] = Resource({}, node)
 
     return tree
+
+
+def root_factory(request):
+    table = request.sacrud_pages_model
+    dbsession = request.dbsession
+    return get_root_factory(dbsession, table)
 
 
 def includeme(config):

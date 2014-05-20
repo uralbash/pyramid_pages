@@ -31,7 +31,7 @@ REDIRECT_CHOICES = (
 class BasePages(BaseNestedSets):
 
     name = Column(String, nullable=False)
-    slug = Column(SlugType('string_name', False), unique=True,
+    slug = Column(SlugType('string_name', False), unique=True, nullable=False,
                   info={"verbose_name": "URL (slug)",
                         "description":
                         """Example: <br />
@@ -47,7 +47,8 @@ class BasePages(BaseNestedSets):
 
     @declared_attr
     def redirect_page(cls):
-        return Column(Integer, ForeignKey('%s.id' % cls.__tablename__))
+        return Column(Integer, ForeignKey('%s.id' % cls.__tablename__,
+                                          ondelete='CASCADE'))
 
     @declared_attr
     def redirect(cls):
@@ -99,7 +100,9 @@ class BasePages(BaseNestedSets):
         branch = session.query(t.slug).filter(t.left <= self.left)\
             .filter(t.right >= self.right)\
             .filter(t.tree_id == self.tree_id).order_by(t.left)
-        return '/'.join(map(lambda x: x[0], branch))
+        branch = map(lambda x: x[0], branch)
+        branch = filter(lambda x: x != '/', branch)
+        return '/'.join(branch)
 
     def get_menu(self, **kwargs):
         t = self.__class__

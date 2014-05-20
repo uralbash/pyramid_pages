@@ -1,6 +1,6 @@
 <ul class="menu">
 {% for node, children in menu.iteritems() recursive %}
-  <li><a href="/{{ node.get_url()|e }}">{{ node.name }}</a>
+  <li><a href="{{ request.host_url + '/' + node.get_url() }}">{{ node.name }}</a>
     <ul class="submenu">{{ loop(children.items()) }}</ul>
   </li>
 {% endfor %}
