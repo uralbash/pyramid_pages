@@ -56,9 +56,9 @@
                 if(!node.visible) {
                   dom_node.addClass('jqtree-hidden');
                 }
-                dom_node.addClass(node.classes);
                 if(node.redirect) {
-                  dom_node.after('<span class="jqtree-label jqtree-redirect">-> ' +
+                  dom_node.after('<span class="jqtree-label jqtree-redirect ' +
+                                  node.CSSredirect + '">-> ' +
                                   node.redirect + '</span>');
                 }
             }
