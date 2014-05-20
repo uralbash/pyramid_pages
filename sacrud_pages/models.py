@@ -22,7 +22,7 @@ from .common import get_pages_menu
 Base = declarative_base()
 
 REDIRECT_CHOICES = (
-    ('', '200'),
+    ('OK (200)', '200'),
     ('Moved Permanently (301)', '301'),
     ('Moved Temporarily (302)', '302'),
 )
