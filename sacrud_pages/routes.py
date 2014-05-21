@@ -37,8 +37,6 @@ def get_root_factory(dbsession, table):
     for node in nodes:
         if node.slug:
             tree[node.slug] = Resource(recursive_node_to_dict(node), node)
-        else:
-            tree[''] = Resource({}, node)
 
     return tree
 
