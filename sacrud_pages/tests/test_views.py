@@ -15,12 +15,15 @@ import transaction
 from pyramid import testing
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPNotFound
+from pyramid.traversal import ResourceTreeTraverser
 from sqlalchemy import Column, create_engine, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from sacrud.common.sa_helpers import TableProperty
 from sacrud_pages.models import BasePages
+from sacrud_pages.routes import get_root_factory
+from sacrud_pages.views import page_view
 
 Base = declarative_base()
 
@@ -144,6 +147,12 @@ def mock_dbsession(request={}):
     return DBSession
 
 
+def get_view_context(dbsession, request):
+    root_factory = get_root_factory(dbsession, MPTTPages)
+    traverse = ResourceTreeTraverser(root_factory)
+    return traverse(request)['context']
+
+
 class BaseTest(unittest.TestCase):
 
     def setUp(self):
@@ -164,37 +173,48 @@ class RootFactoryTest(BaseTest):
         return root_factory(request)
 
     def test_it(self):
+        def _p(name):
+            return DBSession.query(MPTTPages).filter_by(name=name).one()
+
         request = testing.DummyRequest()
         request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         DBSession = request.dbsession
         tree = self._callFUT(request)
-        page1 = DBSession.query(MPTTPages).filter_by(name="About company").one()
-        self.assertEqual(tree['about-company'].node, page1)
-
-        page2 = DBSession.query(MPTTPages).filter_by(name="foo12").one()
-        self.assertEqual(tree['foo12'].node, page2)
-
+        self.assertEqual(tree['about-company'].node, _p("About company"))
+        self.assertEqual(tree['foo12'].node, _p("foo12"))
         self.assertEqual(str(tree['about-company'].__getitem__('our-history')),
                          '<Our history>')
 
+        # root node with slash path
+        p = _p("foo12")
+        p.slug = '/'
+        DBSession.add(p)
+        DBSession.commit()
+        tree = self._callFUT(request)
+        self.assertEqual({u'about-company': _p("About company"),
+                          u'foo15': _p("foo15"), u'foo13': _p("foo13"),
+                          '/': _p("foo12"), u'foo18': _p("foo18")},
+                         {k: v.node for k, v in tree.items()})
+
 
 class ViewPageTest(BaseTest):
+    def get_request(self, page):
+        request = testing.DummyRequest()
+        request.path = '/' + page.get_url()
+        request.matchdict['traverse'] = request.path.split('/')
+        return request
 
     def test_location(self):
-        from sacrud_pages.views import page_view
-        from sacrud_pages.routes import Resource, recursive_node_to_dict
         DBSession = mock_dbsession()
         page = DBSession.query(MPTTPages).filter_by(name="at a glance").one()
-        context = Resource(recursive_node_to_dict(page), page)
-        request = testing.DummyRequest()
+        request = self.get_request(page)
+        context = get_view_context(DBSession, request)
         response = page_view(context, request)
         self.assertEqual(response['page_resource'].node, page)
         self.assertEqual(response['page'], page)
 
     def test_redirect_200(self):
-        from sacrud_pages.views import page_view
-        from sacrud_pages.routes import Resource, recursive_node_to_dict
         DBSession = mock_dbsession()
         page = DBSession.query(MPTTPages).filter_by(name="at a glance").one()
         redirect = DBSession.query(MPTTPages).filter_by(name="foo16").one()
@@ -202,28 +222,24 @@ class ViewPageTest(BaseTest):
         page.redirect_page = redirect.id
         DBSession.add(page)
         DBSession.commit()
-        context = Resource(recursive_node_to_dict(page), page)
-        request = testing.DummyRequest()
+        request = self.get_request(page)
+        context = get_view_context(DBSession, request)
         response = page_view(context, request)
         self.assertEqual(response['page_resource'].node, page)
         self.assertEqual(response['page'], redirect)
 
     def test_redirect_url(self):
-        from sacrud_pages.views import page_view
-        from sacrud_pages.routes import Resource, recursive_node_to_dict
         DBSession = mock_dbsession()
         page = DBSession.query(MPTTPages).filter_by(name="at a glance").one()
         page.redirect_url = "http://ya.ru"
         DBSession.add(page)
         DBSession.commit()
-        context = Resource(recursive_node_to_dict(page), page)
-        request = testing.DummyRequest()
+        request = self.get_request(page)
+        context = get_view_context(DBSession, request)
         response = page_view(context, request)
         self.assertEqual(response.location, "http://ya.ru")
 
     def test_redirect_301(self):
-        from sacrud_pages.views import page_view
-        from sacrud_pages.routes import Resource, recursive_node_to_dict
         DBSession = mock_dbsession()
         page = DBSession.query(MPTTPages).filter_by(name="at a glance").one()
         redirect = DBSession.query(MPTTPages).filter_by(name="foo16").one()
@@ -231,25 +247,35 @@ class ViewPageTest(BaseTest):
         page.redirect_page = redirect.id
         DBSession.add(page)
         DBSession.commit()
-        context = Resource(recursive_node_to_dict(page), page)
-        request = testing.DummyRequest()
+        request = self.get_request(page)
+        context = get_view_context(DBSession, request)
         response = page_view(context, request)
         self.assertEqual(response.location, '/foo12/foo15/foo16')
         self.assertEqual(response.status_code, 301)
 
     def test_visible_false(self):
-        from sacrud_pages.views import page_view
-        from sacrud_pages.routes import Resource, recursive_node_to_dict
         DBSession = mock_dbsession()
         page = DBSession.query(MPTTPages).filter_by(name="Technology").one()
-        context = Resource(recursive_node_to_dict(page), page)
-        request = testing.DummyRequest()
+        request = self.get_request(page)
+        context = get_view_context(DBSession, request)
         try:
             page_view(context, request)
         except HTTPNotFound:
             pass
         else:
             raise Exception("HTTPNotFound not work")
+
+    def test_node_with_slash_path(self):
+        DBSession = mock_dbsession()
+        page = DBSession.query(MPTTPages).filter_by(name="foo12").one()
+        page.slug = '/'
+        DBSession.add(page)
+        DBSession.commit()
+        request = self.get_request(page)
+        context = get_view_context(DBSession, request)
+        response = page_view(context, request)
+        self.assertEqual(response['page_resource'].node, page)
+        self.assertEqual(response['page'], page)
 
 
 class PageVisibleTest(BaseTest):
