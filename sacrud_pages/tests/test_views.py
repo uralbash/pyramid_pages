@@ -245,8 +245,6 @@ class ViewPageTest(BaseTest):
             page_view(context, request)
         except HTTPNotFound:
             pass
-        else:
-            raise Exception("HTTPNotFound not work")
 
     def test_node_with_slash_path(self):
         DBSession = mock_dbsession()
@@ -259,6 +257,16 @@ class ViewPageTest(BaseTest):
         response = page_view(context, request)
         self.assertEqual(response['page_resource'].node, page)
         self.assertEqual(response['page'], page)
+
+    def test_root_path_404(self):
+        DBSession = mock_dbsession()
+        request = testing.DummyRequest()
+        request.path = '/'
+        context = get_view_context(DBSession, request)
+        try:
+            page_view(context, request)
+        except HTTPNotFound:
+            pass
 
 
 class PageVisibleTest(BaseTest):

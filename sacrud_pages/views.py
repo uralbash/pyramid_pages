@@ -66,6 +66,9 @@ def page_view(context, request):
         if request.path in context:
             context = context[request.path]
 
+    if not hasattr(context, 'node'):
+        raise HTTPNotFound
+
     page = context.node
 
     if not page.visible:
