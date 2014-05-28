@@ -13,6 +13,7 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid.response import Response
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
+from sacrud.common.sa_helpers import pk_to_list
 
 
 @view_config(route_name='sacrud_pages_move', renderer='json',
@@ -37,10 +38,18 @@ def page_move(request):
 def get_tree(request):
     def fields(node):
         redirect_code = node.redirect_type or '200'
+        url_delete = request.route_url('sa_delete', table=node.__tablename__,
+                                       pk=pk_to_list(node))
+        url_update = request.route_url('sa_update', table=node.__tablename__,
+                                       pk=pk_to_list(node))
+        url_visible = request.route_url('sacrud_pages_visible', node=node.id)
         return {'visible': node.visible,
                 'CSSredirect': 'jqtree-redirect-%s' % redirect_code,
                 'redirect': '%s' % (node.redirect or node.redirect_url or ''),
-                'redirect_code': '%s' % redirect_code
+                'redirect_code': '%s' % redirect_code,
+                'url_delete': url_delete,
+                'url_update': url_update,
+                'url_visible': url_visible,
                 }
     table = request.sacrud_pages_model
     return table.get_tree(request.dbsession, json=True, json_fields=fields)

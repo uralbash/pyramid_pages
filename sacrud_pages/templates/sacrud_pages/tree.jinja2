@@ -60,10 +60,9 @@
         });
 
         $tree.bind(
-            'tree.dblclick',
+            'tree.click',
             function(event) {
-                window.location = "{{ request.route_url('sa_home') }}mptt_pages/update/" +
-                                  event.node.id;
+                window.location = event.node.url_update;
             });
 
         $tree.bind(
@@ -81,17 +80,17 @@
 
         $tree.jqTreeContextMenu($('#sacrud-tree-menu'), {
           "delete": function (node) {
-              var url = "{{ request.route_url('sa_home') }}mptt_pages/delete/" + node.id;
+              var url = node.url_delete;
               var status = $.ajax({'url': url, "async": false}).status;
               if (status==200) {
                 $tree.tree('removeNode', node);
               }
           },
           "edit": function (node) {
-            window.location = "{{ request.route_url('sa_home') }}mptt_pages/update/" + node.id;
+            window.location = node.url_update;
           },
           "visible": function (node) {
-              var url = "/sacrud_pages/visible/" + node.id + '/';
+              var url = node.url_visible;
               var visible = $.ajax({'url': url, "async": false}).responseJSON.visible;
               var element = $(node.element).find('.jqtree-title').first();
               if(visible){
