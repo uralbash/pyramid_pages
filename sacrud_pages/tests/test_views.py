@@ -111,13 +111,15 @@ def get_app(DBSession):
 
     add_mptt_pages(DBSession)
 
-    config.set_request_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
+    config.include('pyramid_jinja2')
+    config.commit()
 
     # SACRUD
     config.include('sacrud.pyramid_ext', route_prefix='/admin')
     settings['sacrud.models'] = {'Pages': [MPTTPages], }
 
     # sacrud_pages - put it after all routes
+    config.set_request_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
     config.include("sacrud_pages")
 
     config.scan()
@@ -332,3 +334,17 @@ class PageMoveTest(BaseTest):
         moved_page = request.dbsession.query(MPTTPages).filter_by(id=5).one()
         self.assertEqual('', response)
         self.assertEqual(10, moved_page.parent_id)
+
+    def test_before_method(self):
+        request = testing.DummyRequest()
+        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
+        request.set_property(mock_dbsession, 'dbsession', reify=True)
+        request.matchdict['node'] = 7
+        request.matchdict['method'] = 'before'
+        request.matchdict['leftsibling'] = 1
+        response = self._callFUT(request)
+        request.dbsession.commit()
+        moved_page = request.dbsession.query(MPTTPages).filter_by(id=7).one()
+        self.assertEqual('', response)
+        self.assertEqual(None, moved_page.parent_id)
+        self.assertEqual(1, moved_page.tree_id)

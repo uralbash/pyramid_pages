@@ -30,6 +30,8 @@ def page_move(request):
         page.move_inside(left_sibling)
     if method == 'after':
         page.move_after(left_sibling)
+    if method == 'before':
+        page.move_before(left_sibling)
     return ''
 
 
