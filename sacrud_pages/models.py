@@ -52,10 +52,11 @@ class BasePages(BaseNestedSets):
 
     @declared_attr
     def redirect(cls):
+        pk = getattr(cls, cls.get_pk())
         return relationship(
             cls, foreign_keys=[cls.redirect_page],
-            remote_side=[cls.id],  # for show in sacrud
-            primaryjoin=lambda: foreign(cls.redirect_page) == cls.id,
+            remote_side=cls.get_class_pk(),  # for show in sacrud relation
+            primaryjoin=lambda: foreign(cls.redirect_page) == pk,
         )
 
     # SEO

@@ -28,7 +28,9 @@ Base = declarative_base()
 class MPTTPages(BasePages, Base):
     __tablename__ = "mptt_pages"
 
-    id = Column(Integer, primary_key=True)
+    pk = Column('id', Integer, primary_key=True)
+
+    sqlalchemy_mptt_pk_name = 'pk'
 
     @TableProperty
     def sacrud_list_col(cls):
@@ -126,9 +128,12 @@ def get_app():
     settings['sacrud.models'] = {'': {'tables': [MPTTPages],
                                       'column': 1,
                                       'position': 1}, }
+    config.include('pyramid_jinja2')
     config.include('sacrud.pyramid_ext', route_prefix='/admin')
 
     # sacrud_pages - put it after all routes
+    config.set_request_property(lambda x: MPTTPages,
+                                'sacrud_pages_model', reify=True)
     config.include("sacrud_pages")
 
     config.scan()

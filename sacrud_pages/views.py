@@ -24,7 +24,8 @@ def page_move(request):
     left_sibling = request.matchdict['leftsibling']
 
     table = request.sacrud_pages_model
-    page = request.dbsession.query(table).filter_by(id=node).one()
+    pk = getattr(table, table.get_pk())
+    page = request.dbsession.query(table).filter(pk == node).one()
 
     if method == 'inside':
         page.move_inside(left_sibling)
@@ -39,12 +40,13 @@ def page_move(request):
              permission=NO_PERMISSION_REQUIRED)
 def get_tree(request):
     def fields(node):
+        pk = getattr(node, node.get_pk())
         redirect_code = node.redirect_type or '200'
         url_delete = request.route_url('sa_delete', table=node.__tablename__,
                                        pk=pk_to_list(node))
         url_update = request.route_url('sa_update', table=node.__tablename__,
                                        pk=pk_to_list(node))
-        url_visible = request.route_url('sacrud_pages_visible', node=node.id)
+        url_visible = request.route_url('sacrud_pages_visible', node=pk)
         return {'visible': node.visible,
                 'CSSredirect': 'jqtree-redirect-%s' % redirect_code,
                 'redirect': '%s' % (node.redirect or node.redirect_url or ''),
@@ -62,7 +64,8 @@ def get_tree(request):
 def page_visible(request):
     node = request.matchdict['node']
     table = request.sacrud_pages_model
-    node = request.dbsession.query(table).filter_by(id=node).one()
+    pk = getattr(table, table.get_pk())
+    node = request.dbsession.query(table).filter(pk == node).one()
     node.visible = not node.visible
     request.dbsession.add(node)
     request.dbsession.flush()
