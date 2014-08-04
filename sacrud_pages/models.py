@@ -47,7 +47,8 @@ class BasePages(BaseNestedSets):
 
     @declared_attr
     def redirect_page(cls):
-        return Column(Integer, ForeignKey('%s.id' % cls.__tablename__,
+        return Column(Integer, ForeignKey('%s.%s' % (cls.__tablename__,
+                                                     cls.get_db_pk()),
                                           ondelete='CASCADE'))
 
     @declared_attr

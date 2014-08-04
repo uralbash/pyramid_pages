@@ -79,7 +79,8 @@ def page_visible(request):
     return {"visible": node.visible}
 
 
-@view_config(route_name='sacrud_pages_view', renderer='/sacrud_pages/index.jinja2',
+@view_config(route_name='sacrud_pages_view',
+             renderer='/sacrud_pages/index.jinja2',
              permission=NO_PERMISSION_REQUIRED)
 def page_view(context, request):
     if type(context) == dict:

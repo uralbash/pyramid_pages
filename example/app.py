@@ -28,9 +28,9 @@ Base = declarative_base()
 class MPTTPages(BasePages, Base):
     __tablename__ = "mptt_pages"
 
-    pk = Column('id', Integer, primary_key=True)
+    id = Column('id', Integer, primary_key=True)
 
-    sqlalchemy_mptt_pk_name = 'pk'
+    # sqlalchemy_mptt_pk_name = 'pk'
 
     @TableProperty
     def sacrud_list_col(cls):
@@ -72,31 +72,31 @@ def add_mptt_tree(session):
     session.query(MPTTPages).delete()
     transaction.commit()
     tree1 = (
-        {'pk': '1', 'slug': 'about-company', 'name': 'About company', 'visible': True, 'parent_id': None},
-        {'pk': '2', 'slug': 'we-love-gevent', 'name': u'We ♥ gevent', 'visible': True, 'parent_id': '1'},
-        {'pk': '3', 'slug': 'and-pyramid', 'name': 'And Pyramid', 'visible': True, 'parent_id': '2'},
-        {'pk': '4', 'slug': 'our-history', 'name': 'Our history', 'visible': False, 'parent_id': '1'},
-        {'pk': '5', 'slug': 'foo', 'name': 'foo', 'visible': True, 'parent_id': '4'},
-        {'pk': '6', 'slug': 'kompania-itcase', 'name': u'компания ITCase', 'visible': False, 'parent_id': '4'},
-        {'pk': '7', 'slug': 'our-strategy', 'name': 'Our strategy', 'visible': True, 'parent_id': '1'},
-        {'pk': '8', 'slug': 'wordwide', 'name': 'Wordwide', 'visible': True, 'parent_id': '7'},
-        {'pk': '9', 'slug': 'technology', 'name': 'Technology', 'visible': False, 'parent_id': '8'},
-        {'pk': '10', 'slug': 'what-we-do', 'name': 'What we do', 'visible': True, 'parent_id': '7'},
-        {'pk': '11', 'slug': 'at-a-glance', 'name': 'at a glance', 'visible': True, 'parent_id': '10'},
+        {'id': '1', 'slug': 'about-company', 'name': 'About company', 'visible': True, 'parent_id': None},
+        {'id': '2', 'slug': 'we-love-gevent', 'name': u'We ♥ gevent', 'visible': True, 'parent_id': '1'},
+        {'id': '3', 'slug': 'and-pyramid', 'name': 'And Pyramid', 'visible': True, 'parent_id': '2'},
+        {'id': '4', 'slug': 'our-history', 'name': 'Our history', 'visible': False, 'parent_id': '1'},
+        {'id': '5', 'slug': 'foo', 'name': 'foo', 'visible': True, 'parent_id': '4'},
+        {'id': '6', 'slug': 'kompania-itcase', 'name': u'компания ITCase', 'visible': False, 'parent_id': '4'},
+        {'id': '7', 'slug': 'our-strategy', 'name': 'Our strategy', 'visible': True, 'parent_id': '1'},
+        {'id': '8', 'slug': 'wordwide', 'name': 'Wordwide', 'visible': True, 'parent_id': '7'},
+        {'id': '9', 'slug': 'technology', 'name': 'Technology', 'visible': False, 'parent_id': '8'},
+        {'id': '10', 'slug': 'what-we-do', 'name': 'What we do', 'visible': True, 'parent_id': '7'},
+        {'id': '11', 'slug': 'at-a-glance', 'name': 'at a glance', 'visible': True, 'parent_id': '10'},
     )
 
     tree2 = (
-        {'pk': '12', 'slug': 'foo12', 'name': 'foo12', 'visible': True, 'parent_id': None, 'tree_id': '12'},
-        {'pk': '13', 'slug': 'foo13', 'name': 'foo13', 'visible': False, 'parent_id': '12', 'tree_id': '12'},
-        {'pk': '14', 'slug': 'foo14', 'name': 'foo14', 'visible': False, 'parent_id': '13', 'tree_id': '12'},
-        {'pk': '15', 'slug': 'foo15', 'name': 'foo15', 'visible': True, 'parent_id': '12', 'tree_id': '12'},
-        {'pk': '16', 'slug': 'foo16', 'name': 'foo16', 'visible': True, 'parent_id': '15', 'tree_id': '12'},
-        {'pk': '17', 'slug': 'foo17', 'name': 'foo17', 'visible': True, 'parent_id': '15', 'tree_id': '12'},
-        {'pk': '18', 'slug': 'foo18', 'name': 'foo18', 'visible': True, 'parent_id': '12', 'tree_id': '12'},
-        {'pk': '19', 'slug': 'foo19', 'name': 'foo19', 'visible': True, 'parent_id': '18', 'tree_id': '12'},
-        {'pk': '20', 'slug': 'foo20', 'name': 'foo20', 'visible': True, 'parent_id': '19', 'tree_id': '12'},
-        {'pk': '21', 'slug': 'foo21', 'name': 'foo21', 'visible': True, 'parent_id': '18', 'tree_id': '12'},
-        {'pk': '22', 'slug': 'foo22', 'name': 'foo22', 'visible': True, 'parent_id': '21', 'tree_id': '12'},
+        {'id': '12', 'slug': 'foo12', 'name': 'foo12', 'visible': True, 'parent_id': None, 'tree_id': '2'},
+        {'id': '13', 'slug': 'foo13', 'name': 'foo13', 'visible': False, 'parent_id': '12', 'tree_id': '2'},
+        {'id': '14', 'slug': 'foo14', 'name': 'foo14', 'visible': False, 'parent_id': '13', 'tree_id': '2'},
+        {'id': '15', 'slug': 'foo15', 'name': 'foo15', 'visible': True, 'parent_id': '12', 'tree_id': '2'},
+        {'id': '16', 'slug': 'foo16', 'name': 'foo16', 'visible': True, 'parent_id': '15', 'tree_id': '2'},
+        {'id': '17', 'slug': 'foo17', 'name': 'foo17', 'visible': True, 'parent_id': '15', 'tree_id': '2'},
+        {'id': '18', 'slug': 'foo18', 'name': 'foo18', 'visible': True, 'parent_id': '12', 'tree_id': '2'},
+        {'id': '19', 'slug': 'foo19', 'name': 'foo19', 'visible': True, 'parent_id': '18', 'tree_id': '2'},
+        {'id': '20', 'slug': 'foo20', 'name': 'foo20', 'visible': True, 'parent_id': '19', 'tree_id': '2'},
+        {'id': '21', 'slug': 'foo21', 'name': 'foo21', 'visible': True, 'parent_id': '18', 'tree_id': '2'},
+        {'id': '22', 'slug': 'foo22', 'name': 'foo22', 'visible': True, 'parent_id': '21', 'tree_id': '2'},
     )
     add_fixture(MPTTPages, tree1, session)
     add_fixture(MPTTPages, tree2, session)
