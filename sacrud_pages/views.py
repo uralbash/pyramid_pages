@@ -16,6 +16,12 @@ from pyramid.view import view_config
 from sacrud.common.sa_helpers import pk_to_list
 
 
+def _get_redirect_code(node):
+    if node.redirect_type:
+        return node.redirect_type[0]
+    return '200'
+
+
 @view_config(route_name='sacrud_pages_move', renderer='json',
              permission=NO_PERMISSION_REQUIRED)
 def page_move(request):
@@ -41,7 +47,7 @@ def page_move(request):
 def get_tree(request):
     def fields(node):
         pk = getattr(node, node.get_pk())
-        redirect_code = node.redirect_type or '200'
+        redirect_code = _get_redirect_code(node)
         url_delete = request.route_url('sa_delete', table=node.__tablename__,
                                        pk=pk_to_list(node))
         url_update = request.route_url('sa_update', table=node.__tablename__,
@@ -92,13 +98,15 @@ def page_view(context, request):
                'page_resource': context,
                }
 
+    redirect_type = _get_redirect_code(page)
+
     if page.redirect_page:
-        if not page.redirect_type or page.redirect_type == '200':
+        if redirect_type == '200':
             context['page'] = page.redirect
         else:
-            return Response(status_code=int(page.redirect_type),
+            return Response(status_code=int(redirect_type),
                             location='/'+page.redirect.get_url())
     if page.redirect_url:
-        return Response(status_code=int(page.redirect_type or '200'),
+        return Response(status_code=int(redirect_type),
                         location=page.redirect_url)
     return context
