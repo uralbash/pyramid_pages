@@ -22,13 +22,11 @@ from sacrud_pages.models import BasePages
 Base = declarative_base()
 
 
-class MPTTPages(BasePages, Base):
+class MPTTPages(Base, BasePages):
     __tablename__ = "mptt_pages"
 
     pk = Column('id', Integer, primary_key=True)
     sqlalchemy_mptt_pk_name = 'pk'
-
-MPTTPages.register_tree()
 
 
 def add_fixture(model, fixtures, session):

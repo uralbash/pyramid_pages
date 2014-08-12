@@ -32,8 +32,6 @@ class MPTTPages(BasePages, Base):
 
     id = Column(Integer, primary_key=True)
 
-MPTTPages.register_tree()
-
 
 def add_fixture(model, fixtures, session):
     """

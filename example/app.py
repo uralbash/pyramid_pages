@@ -48,8 +48,6 @@ class MPTTPages(BasePages, Base):
                          col.seo_metatags])
                 ]
 
-MPTTPages.register_tree()
-
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
