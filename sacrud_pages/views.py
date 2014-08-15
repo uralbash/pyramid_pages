@@ -13,7 +13,7 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid.response import Response
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
-from sacrud.common.sa_helpers import pk_to_list
+from sacrud.common import pk_to_list
 
 
 def _get_redirect_code(node):

@@ -113,8 +113,8 @@ def get_app(DBSession):
     config.commit()
 
     # SACRUD
-    config.include('sacrud.pyramid_ext', route_prefix='/admin')
-    settings['sacrud.models'] = {'Pages': [MPTTPages], }
+    config.include('pyramid_sacrud', route_prefix='/admin')
+    settings['pyramid_sacrud.models'] = {'Pages': [MPTTPages], }
 
     # sacrud_pages - put it after all routes
     config.set_request_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
