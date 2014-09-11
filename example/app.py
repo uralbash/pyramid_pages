@@ -20,7 +20,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
 
 from sacrud.common.sa_helpers import TableProperty
-from sacrud_pages.models import BasePages
+from pyramid_sacrud_pages.models import BasePages
 
 Base = declarative_base()
 

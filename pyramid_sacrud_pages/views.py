@@ -80,7 +80,7 @@ def page_visible(request):
 
 
 @view_config(route_name='sacrud_pages_view',
-             renderer='/sacrud_pages/index.jinja2',
+             renderer='pyramid_sacrud_pages/index.jinja2',
              permission=NO_PERMISSION_REQUIRED)
 def page_view(context, request):
     if type(context) == dict:

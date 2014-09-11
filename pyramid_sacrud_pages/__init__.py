@@ -11,8 +11,8 @@ __version__ = "0.0.1a"
 def includeme(config):
     config.include('pyramid_jinja2')
     config.add_jinja2_extension('jinja2.ext.with_')
-    config.add_jinja2_search_path("sacrud_pages:templates")
-    config.add_static_view('/static_sacrud_pages', 'sacrud_pages:static')
+    config.add_jinja2_search_path("pyramid_sacrud_pages:templates")
+    config.add_static_view('/static_sacrud_pages', 'pyramid_sacrud_pages:static')
 
-    config.include('sacrud_pages.routes')
+    config.include('pyramid_sacrud_pages.routes')
     config.scan()

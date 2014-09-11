@@ -88,7 +88,7 @@ class BasePages(BaseNestedSets):
     # SACRUD
     items_per_page = 20
     verbose_name = u'MPTT pages'
-    sacrud_list_template = "/sacrud_pages/tree.jinja2"
+    sacrud_list_template = "pyramid_sacrud_pages/tree.jinja2"
     sacrud_css_class = {'tinymce': [description],
                         'content': [description],
                         'name': [name], }

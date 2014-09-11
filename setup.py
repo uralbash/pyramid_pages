@@ -1,15 +1,15 @@
-from sacrud_pages import __version__
+from pyramid_sacrud_pages import __version__
 from setuptools import setup
 
 
 setup(
-    name='sacrud_pages',
+    name='pyramid_sacrud_pages',
     version=__version__,
-    url='http://github.com/ITCase/sacrud_pages/',
+    url='http://github.com/ITCase/pyramid_sacrud_pages/',
     author='Svintsov Dmitry',
     author_email='root@uralbash.ru',
 
-    packages=['sacrud_pages'],
+    packages=['pyramid_sacrud_pages'],
     include_package_data=True,
     zip_safe=False,
     test_suite="nose.collector",

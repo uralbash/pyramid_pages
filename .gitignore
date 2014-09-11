@@ -9,9 +9,9 @@
 .settings
 .coverage
 .pydevproject
-sacrud_pages/.coverage
-sacrud_pages/TODO
-sacrud_pages/cover
+pyramid_sacrud_pages/.coverage
+pyramid_sacrud_pages/TODO
+pyramid_sacrud_pages/cover
 cover
 build
 dist

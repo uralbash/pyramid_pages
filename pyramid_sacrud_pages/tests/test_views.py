@@ -20,9 +20,9 @@ from sqlalchemy import Column, create_engine, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from sacrud_pages.models import BasePages
-from sacrud_pages.routes import get_root_factory
-from sacrud_pages.views import page_view
+from pyramid_sacrud_pages.models import BasePages
+from pyramid_sacrud_pages.routes import get_root_factory
+from pyramid_sacrud_pages.views import page_view
 
 Base = declarative_base()
 
@@ -118,7 +118,7 @@ def get_app(DBSession):
 
     # sacrud_pages - put it after all routes
     config.set_request_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
-    config.include("sacrud_pages")
+    config.include("pyramid_sacrud_pages")
 
     config.scan()
     return config.make_wsgi_app()
@@ -154,7 +154,7 @@ class BaseTest(unittest.TestCase):
 class RootFactoryTest(BaseTest):
 
     def _callFUT(self, request):
-        from sacrud_pages.routes import root_factory
+        from pyramid_sacrud_pages.routes import root_factory
         return root_factory(request)
 
     def test_it(self):
@@ -274,7 +274,7 @@ class ViewPageTest(BaseTest):
 class PageVisibleTest(BaseTest):
 
     def _callFUT(self, request):
-        from sacrud_pages.views import page_visible
+        from pyramid_sacrud_pages.views import page_visible
         return page_visible(request)
 
     def test_it(self):
@@ -304,7 +304,7 @@ class GetTreeTest(BaseTest):
 class PageMoveTest(BaseTest):
 
     def _callFUT(self, request):
-        from sacrud_pages.views import page_move
+        from pyramid_sacrud_pages.views import page_move
         return page_move(request)
 
     def test_inside_method(self):
