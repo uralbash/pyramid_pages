@@ -19,18 +19,17 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
 
-from sacrud.common.sa_helpers import TableProperty
+from sacrud.common import TableProperty
 from pyramid_sacrud_pages.models import BasePages
 
 Base = declarative_base()
+DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
 
 class MPTTPages(BasePages, Base):
     __tablename__ = "mptt_pages"
 
     id = Column('id', Integer, primary_key=True)
-
-    # sqlalchemy_mptt_pk_name = 'pk'
 
     @TableProperty
     def sacrud_list_col(cls):
@@ -47,10 +46,6 @@ class MPTTPages(BasePages, Base):
                 ('SEO', [col.seo_title, col.seo_keywords, col.seo_description,
                          col.seo_metatags])
                 ]
-
-
-DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
-Base = declarative_base()
 
 
 def add_fixture(model, fixtures, session):
@@ -123,18 +118,16 @@ def get_app():
         print e
 
     # SACRUD
-    settings['sacrud.models'] = {'': {'tables': [MPTTPages],
-                                      'column': 1,
-                                      'position': 1}, }
-    config.include('pyramid_jinja2')
-    config.include('sacrud.pyramid_ext', route_prefix='/admin')
+    settings['pyramid_sacrud.models'] = {'': {'tables': [MPTTPages],
+                                              'column': 1,
+                                              'position': 1}, }
+    config.include('pyramid_sacrud', route_prefix='/admin')
 
     # sacrud_pages - put it after all routes
     config.set_request_property(lambda x: MPTTPages,
                                 'sacrud_pages_model', reify=True)
-    config.include("sacrud_pages")
+    config.include("pyramid_sacrud_pages")
 
-    config.scan()
     return config.make_wsgi_app()
 
 if __name__ == '__main__':
