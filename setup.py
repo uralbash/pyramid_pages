@@ -1,30 +1,34 @@
-from pyramid_sacrud_pages import __version__
-from setuptools import setup
+import os
 
+from setuptools import find_packages, setup
+
+this = os.path.dirname(os.path.realpath(__file__))
+
+
+def read(name):
+    with open(os.path.join(this, name)) as f:
+        return f.read()
 
 setup(
     name='pyramid_sacrud_pages',
-    version=__version__,
+    version='0.0.1',
     url='http://github.com/ITCase/pyramid_sacrud_pages/',
     author='Svintsov Dmitry',
-    author_email='root@uralbash.ru',
-
-    packages=['pyramid_sacrud_pages'],
+    author_email='sacrud@uralbash.ru',
+    packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
     test_suite="nose.collector",
-    license="BSD",
+    license="MIT",
     description='Tree pages for pyramid CRUD interface sacrud',
-    long_description=open('README.md').read(),
-    install_requires=[
-        "sqlalchemy",
-    ],
+    long_description=read('README.md'),
+    install_requires=read('requirements.txt'),
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License (GPL)',
+        'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Natural Language :: Russian',
         'Operating System :: OS Independent',
@@ -36,9 +40,7 @@ setup(
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
         "Framework :: Pyramid ",
-        "Framework :: Flask",
         "Topic :: Internet",
         "Topic :: Database",
-        "License :: Repoze Public License",
     ],
 )
