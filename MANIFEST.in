@@ -1,0 +1,2 @@
+recursive-include pyramid_sacrud_pages/templates *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.jinja2 *.js *.html *.xml
+recursive-include pyramid_sacrud/static *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.jinja2 *.js *.html *.xml
