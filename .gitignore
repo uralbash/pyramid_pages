@@ -21,3 +21,5 @@ nohup.out
 example.sqlite
 test.sqlite
 .ropeproject
+_themes
+_build
