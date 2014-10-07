@@ -21,6 +21,7 @@ install:
 
   - pip install -r https://raw.githubusercontent.com/ITCase/pyramid_sacrud/master/requirements.txt
   - pip install git+http://github.com/ITCase/pyramid_sacrud.git
+  - pip install git+http://github.com/ITCase/sacrud.git
   - pip install -r requirements.txt
 
 script:
