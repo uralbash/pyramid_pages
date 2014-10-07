@@ -9,7 +9,7 @@ and traversal algorithm in URL dispath.
 
 See documentation http://pyramid-sacrud-pages.readthedocs.org/en/latest/
 
-.. image:: _static/img/index.png
+.. image:: https://raw.githubusercontent.com/ITCase/pyramid_sacrud_pages/master/docs/_static/img/index.png
     :alt: SACRUD pages tree
     :align: right
 
