@@ -23,6 +23,11 @@ We welcome any contribution: suggestions, ideas, commits with new futures, bug f
 
 If you have question, contact me sacrud@uralbash.ru
 
+License
+=======
+
+The project is licensed under the MIT license.
+
 .. |Build Status| image:: https://travis-ci.org/ITCase/pyramid_sacrud_pages.svg?branch=master
    :target: https://travis-ci.org/ITCase/pyramid_sacrud_pages
 .. |Coverage Status| image:: https://coveralls.io/repos/ITCase/pyramid_sacrud_pages/badge.png
