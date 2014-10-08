@@ -5,7 +5,7 @@ pyramid_sacrud_pages
 
 **pyramid_sacrud_pages** provides a collections of pages to your Pyramid application.
 This is very similar to **django.contrib.flatpages** but with a tree structure
-and traversal algorithm in URL dispath.
+and traversal algorithm in URL dispath. 
 
 | See documentation http://pyramid-sacrud-pages.readthedocs.org/en/latest/
 | Online example can be found here `pyramid_sacrud_example <http://pyramid-sacrud-example.readthedocs.org/en/latest/demo.html#online-on-runnable-com>`_
