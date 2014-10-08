@@ -23,6 +23,14 @@ Online example can be found here `pyramid_sacrud_example <http://pyramid-sacrud-
    configuration
    api
 
+Tutorials and Cookbook Recipes
+==============================
+
+.. toctree::
+   :maxdepth: 4
+
+   tutorial
+
 .. include:: contribute.rst
 
 

@@ -1,5 +1,8 @@
-Application configuration
-=========================
+Configuration
+=============
+
+Custom model for tree pages
+---------------------------
 
 Create model of tree pages.
 
@@ -31,6 +34,9 @@ Create model of tree pages.
                             col.seo_metatags])
                     ]
 
+Configure `pyramid_sacrud`
+--------------------------
+
 First, configure `pyramid_sacrud <https://github.com/ITCase/pyramid_sacrud>`_
 
 .. code-block:: python
@@ -45,6 +51,9 @@ First, configure `pyramid_sacrud <https://github.com/ITCase/pyramid_sacrud>`_
     settings['pyramid_sacrud.models'] = {'Tree pages': {'tables': [MPTTPages],
                                                         'position': 1,},
                                         }
+
+Configure `pyramid_sacrud_pages`
+--------------------------------
 
 Then add settings of `pyramid_sacrud_pages`
 
