@@ -10,6 +10,7 @@ and traversal algorithm in URL dispath.
 | See documentation http://pyramid-sacrud-pages.readthedocs.org/en/latest/
 | Online example can be found here `pyramid_sacrud_example <http://pyramid-sacrud-example.readthedocs.org/en/latest/demo.html#online-on-runnable-com>`_
 
+
 .. image:: https://raw.githubusercontent.com/ITCase/pyramid_sacrud_pages/master/docs/_static/img/index.png
     :alt: SACRUD pages tree
     :align: right

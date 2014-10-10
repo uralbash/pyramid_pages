@@ -21,7 +21,7 @@ setup(
     test_suite="nose.collector",
     license="MIT",
     description='Tree pages for pyramid CRUD interface sacrud',
-    long_description=read('README.md'),
+    long_description=read('README.rst'),
     install_requires=read('requirements.txt'),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
