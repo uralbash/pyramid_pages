@@ -27,7 +27,11 @@
 .jqtree-tree .jqtree-selected > .jqtree-element:hover .jqtree-title
 { 
 	background: #F4F9FE !important;
-	border: solid 1px #ccc;
+	border: solid 1px #ccc !important;
+}
+.jqtree-tree .jqtree-selected > .jqtree-element .jqtree-title.jqtree-hidden
+{
+	background: #eee !important;
 }
 .jqtree-label
 {
