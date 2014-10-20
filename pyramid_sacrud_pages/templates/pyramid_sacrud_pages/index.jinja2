@@ -4,16 +4,22 @@
   <meta charset="utf-8" />
 
   <title>
-    {% if page.seo_title %}
-      {{ page.seo_title }}
-    {% else %}
-      {{ page.name }}
-    {% endif %}
+      {% if page %}
+          {% if page.seo_title %}
+              {{ page.seo_title }}
+          {% else %}
+              {{ page.name }}
+          {% endif %}
+      {% endif %}
   </title>
 
-  {{ page.seo_keywords }}
-  {{ page.seo_description }}
-  {{ page.seo_metatags|safe }}
+  {% block meta %}
+      {% if page %}
+          {{ page.seo_keywords }}
+          {{ page.seo_description }}
+          {{ page.seo_metatags|safe }}
+      {% endif %}
+  {% endblock meta %}
 </head>
 <body>
   Redefine me in "<your static>/pyramid_sacrud_pages/index.jinja2"
