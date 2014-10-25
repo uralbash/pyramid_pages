@@ -1,6 +1,9 @@
 <link href="/static_sacrud_pages/css/jqtree.css" rel="stylesheet" type="text/css" />
 <link href="/static_sacrud_pages/css/sacrud_pages.css" rel="stylesheet" type="text/css" />
 
+<script src="{{ request.static_url('pyramid_sacrud_pages:static/js/jqTree/tree.jquery.js') }}"></script>
+<script src="{{ request.static_url('pyramid_sacrud_pages:static/js/jqTree/jqTreeContextMenu.js') }}"></script>
+
 <div class="widget widget_type_single">
     <div class="widget-title">MPTT_PAGES</div>
     <div class="widget-toolbar">
@@ -27,16 +30,13 @@
     </li>
 </ul>
 
-<script src="{{ request.static_url('pyramid_sacrud_pages:static/js/jquery.min.js') }}"></script>
-<script src="{{ request.static_url('pyramid_sacrud_pages:static/js/jqTree/tree.jquery.js') }}"></script>
-<script src="{{ request.static_url('pyramid_sacrud_pages:static/js/jqTree/jqTreeContextMenu.js') }}"></script>
 
 <script>
     $(function() {
         var url = "{{ request.route_url('sacrud_pages_get_tree') }}";
         var data = $.ajax({"url": url, "async": false});
-
         var $tree = $('#sacrud-tree');
+
         $tree.tree({
             data: data.responseJSON,
             dragAndDrop: true,
@@ -95,6 +95,7 @@
               } else {
                   element.addClass('jqtree-hidden');
               }
+              element.parents('.jqtree-selected').removeClass('jqtree-selected');
           }
         });
     });
