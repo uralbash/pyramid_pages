@@ -10,6 +10,7 @@
 Routes for sacrud_pages
 """
 from sqlalchemy import or_
+from .common import get_pages_model
 
 
 class Resource(object):
@@ -42,7 +43,7 @@ def get_root_factory(dbsession, table):
 
 
 def root_factory(request):
-    table = request.sacrud_pages_model
+    table = get_pages_model(request.registry.settings)
     dbsession = request.dbsession
     return get_root_factory(dbsession, table)
 

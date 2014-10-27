@@ -117,7 +117,8 @@ def get_app(DBSession):
     settings['pyramid_sacrud.models'] = {'Pages': [MPTTPages], }
 
     # sacrud_pages - put it after all routes
-    config.set_request_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
+    settings['pyramid_sacrud_pages.model_locations'] =\
+        'pyramid_sacrud_pages.tests.test_views:MPTTPages'
     config.include("pyramid_sacrud_pages")
 
     config.scan()
@@ -140,12 +141,24 @@ def get_view_context(dbsession, request):
 
 class BaseTest(unittest.TestCase):
 
+    def make_dummy_request(self):
+        request = testing.DummyRequest()
+
+        class Settings(object):
+            pass
+        request.registry = Settings()
+        request.registry.settings = {}
+        settings = request.registry.settings
+        settings['pyramid_sacrud_pages.model_locations'] = 'pyramid_sacrud_pages.tests.test_views:MPTTPages'
+        return request
+
     def setUp(self):
         DBSession = mock_dbsession()
         app = get_app(DBSession)
 
         from webtest import TestApp
         self.testapp = TestApp(app)
+        self.request = self.make_dummy_request()
 
     def tearDown(self):
         del self.testapp
@@ -161,8 +174,7 @@ class RootFactoryTest(BaseTest):
         def _p(name):
             return DBSession.query(MPTTPages).filter_by(name=name).one()
 
-        request = testing.DummyRequest()
-        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
+        request = self.request
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         DBSession = request.dbsession
         tree = self._callFUT(request)
@@ -279,7 +291,7 @@ class PageVisibleTest(BaseTest):
 
     def test_it(self):
         request = testing.DummyRequest()
-        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
+        request = self.request
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         request.matchdict['node'] = 12
         response = self._callFUT(request)
@@ -308,8 +320,7 @@ class PageMoveTest(BaseTest):
         return page_move(request)
 
     def test_inside_method(self):
-        request = testing.DummyRequest()
-        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
+        request = self.request
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         request.matchdict['node'] = 5
         request.matchdict['method'] = 'inside'
@@ -321,8 +332,7 @@ class PageMoveTest(BaseTest):
         self.assertEqual(11, moved_page.parent_id)
 
     def test_after_method(self):
-        request = testing.DummyRequest()
-        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
+        request = self.request
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         request.matchdict['node'] = 5
         request.matchdict['method'] = 'after'
@@ -334,8 +344,7 @@ class PageMoveTest(BaseTest):
         self.assertEqual(10, moved_page.parent_id)
 
     def test_before_method(self):
-        request = testing.DummyRequest()
-        request.set_property(lambda x: MPTTPages, 'sacrud_pages_model', reify=True)
+        request = self.request
         request.set_property(mock_dbsession, 'dbsession', reify=True)
         request.matchdict['node'] = 7
         request.matchdict['method'] = 'before'

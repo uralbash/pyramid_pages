@@ -57,9 +57,22 @@ Configure `pyramid_sacrud_pages`
 
 Then add settings of `pyramid_sacrud_pages`
 
+As string, support ini config
+
 .. code-block:: python
 
+    settings['pyramid_sacrud_pages.model_locations'] = 'youproject.models:MPTTPages'
     # pyramid_sacrud_pages - put it after all routes
-    config.set_request_property(lambda x: MPTTPages,
-                                'sacrud_pages_model', reify=True)
+    config.include("pyramid_sacrud_pages")
+
+Or just add model
+
+.. code-block:: python
+
+    from youproject.models import MPTTPages
+
+    ...
+
+    settings['pyramid_sacrud_pages.model_locations'] = MPTTPages
+    # pyramid_sacrud_pages - put it after all routes
     config.include("pyramid_sacrud_pages")

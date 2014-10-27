@@ -124,10 +124,8 @@ def get_app():
     config.include('pyramid_sacrud', route_prefix='/admin')
 
     # sacrud_pages - put it after all routes
-    config.set_request_property(lambda x: MPTTPages,
-                                'sacrud_pages_model', reify=True)
+    settings['pyramid_sacrud_pages.model_locations'] = MPTTPages  # or 'app:MPTTPages'
     config.include("pyramid_sacrud_pages")
-
     return config.make_wsgi_app()
 
 if __name__ == '__main__':

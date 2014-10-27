@@ -13,7 +13,10 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid.response import Response
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
+
 from sacrud.common import pk_to_list
+
+from .common import get_pages_model
 
 
 def _get_redirect_code(node):
@@ -29,7 +32,7 @@ def page_move(request):
     method = request.matchdict['method']
     left_sibling = request.matchdict['leftsibling']
 
-    table = request.sacrud_pages_model
+    table = get_pages_model(request.registry.settings)
     pk = getattr(table, table.get_pk())
     page = request.dbsession.query(table).filter(pk == node).one()
 
@@ -61,7 +64,7 @@ def get_tree(request):
                 'url_update': url_update,
                 'url_visible': url_visible,
                 }
-    table = request.sacrud_pages_model
+    table = get_pages_model(request.registry.settings)
     return table.get_tree(request.dbsession, json=True, json_fields=fields)
 
 
@@ -69,7 +72,7 @@ def get_tree(request):
              permission=NO_PERMISSION_REQUIRED)
 def page_visible(request):
     node = request.matchdict['node']
-    table = request.sacrud_pages_model
+    table = get_pages_model(request.registry.settings)
     pk = getattr(table, table.get_pk())
     node = request.dbsession.query(table).filter(pk == node).one()
     node.visible = not node.visible
