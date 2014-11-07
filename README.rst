@@ -1,4 +1,4 @@
-|Build Status| |Coverage Status| |Stories in Ready|
+|Build Status| |Coverage Status| |Stories in Ready| |PyPi|
 
 pyramid_sacrud_pages
 ====================
@@ -36,3 +36,5 @@ The project is licensed under the MIT license.
    :target: https://coveralls.io/r/ITCase/pyramid_sacrud_pages
 .. |Stories in Ready| image:: https://badge.waffle.io/itcase/pyramid_sacrud_pages.png?label=in%20progress&title=In%20Progress
    :target: https://waffle.io/itcase/pyramid_sacrud_pages
+.. |PyPI| image:: http://img.shields.io/pypi/dm/pyramid_sacrud_pages.svg
+   :target: https://pypi.python.org/pypi/pyramid_sacrud_pages/
