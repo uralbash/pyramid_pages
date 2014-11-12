@@ -1,35 +1,35 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" data-ng-app="myApp">
 <head>
-  <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-  <title>
-      {% if page %}
-          {% if page.seo_title %}
-              {{ page.seo_title }}
-          {% else %}
-              {{ page.name }}
-          {% endif %}
-      {% endif %}
-  </title>
+    <title>
+        {% if page %}
+            {% if page.seo_title %}
+                {{ page.seo_title }}
+            {% else %}
+                {{ page.name }}
+            {% endif %}
+        {% endif %}
+    </title>
 
-  {% block meta %}
-      {% if page %}
-          {{ page.seo_keywords }}
-          {{ page.seo_description }}
-          {{ page.seo_metatags|safe }}
-      {% endif %}
-  {% endblock meta %}
+    {% if page %}
+        <meta name="keywords" content="{{ page.seo_keywords }}" />
+        <meta name="description" content="{{ page.seo_description }}" />
+        {{ page.seo_metatags|safe }}
+    {% endif %}
+
 </head>
+
 <body>
-  Redefine me in "<your static>/pyramid_sacrud_pages/index.jinja2"
-  <br />
-  {{ page.name }}
-  <br />
-  {{ page.description|safe }}
-  <br />
-  {% with menu=page.get_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
-    {% include 'pyramid_sacrud_pages/menu.jinja2' with context %}
-  {% endwith %}
+    Redefine me in "<your static>/pyramid_sacrud_pages/index.jinja2"
+    <br />
+    {{ page.name }}
+    <br />
+    {{ page.description|safe }}
+    <br />
+    {% with menu=page.get_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
+        {% include 'pyramid_sacrud_pages/menu.jinja2' with context %}
+    {% endwith %}
 </body>
 </html>
