@@ -1,0 +1,5 @@
+{% if page %}
+    <meta name="keywords" content="{{ page.seo_keywords }}" />
+    <meta name="description" content="{{ page.seo_description }}" />
+    {{ page.seo_metatags|safe }}
+{% endif %}

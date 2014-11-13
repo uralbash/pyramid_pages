@@ -4,20 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <title>
-        {% if page %}
-            {% if page.seo_title %}
-                {{ page.seo_title }}
-            {% else %}
-                {{ page.name }}
-            {% endif %}
-        {% endif %}
+        {% include 'pyramid_sacrud_pages/title.jinja2' %}
     </title>
 
-    {% if page %}
-        <meta name="keywords" content="{{ page.seo_keywords }}" />
-        <meta name="description" content="{{ page.seo_description }}" />
-        {{ page.seo_metatags|safe }}
-    {% endif %}
+    {% include 'pyramid_sacrud_pages/meta.jinja2' %}
 
 </head>
 
