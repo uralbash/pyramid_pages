@@ -159,3 +159,12 @@ class TestTree(unittest.TestCase):
 
         menu = page.get_menu(to_lvl=-1)
         self.assertEqual(menu, {})
+
+    def test_sacrud_css_class(self):
+        page = self.session.query(MPTTPages).filter_by(pk=6).one()
+        columns = page.__table__.c
+        css_classes = page.sacrud_css_class
+        self.assertEqual(css_classes,
+                         {'content': [columns.description],
+                          'tinymce': [columns.description],
+                          'name': [columns.name]})
