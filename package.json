@@ -1,0 +1,35 @@
+{
+  "name": "pyramid_sacrud_pages",
+  "title": "Pyramid Sacrud Pages",
+  "description": "Pages plugin for Pyramid SQLAlchemy CRUD",
+  "version": "0.0.2",
+  "homepage": "https://github.com/ITCase/pyramid_sacrud_pages",
+  "author": {
+    "name": "ITCase",
+    "email": "info@itcase.pro"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ITCase/pyramid_sacrud_pages.git"
+  },
+  "bugs": "https://github.com/ITCase/pyramid_sacrud_pages/issues",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "devDependencies": {
+    "glob": "^4.1.3",
+    "gulp": "^3.8.10",
+    "gulp-autoprefixer": "^1.0.1",
+    "gulp-concat": "^2.4.1",
+    "gulp-minify-css": "^0.3.11",
+    "gulp-watch": "^1.2.0",
+    "minimatch": "^1.0.0",
+    "underscore": "^1.7.0"
+  }
+}

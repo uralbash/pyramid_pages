@@ -12,6 +12,7 @@
 pyramid_sacrud_pages/.coverage
 pyramid_sacrud_pages/TODO
 pyramid_sacrud_pages/cover
+node_modules
 cover
 build
 dist
