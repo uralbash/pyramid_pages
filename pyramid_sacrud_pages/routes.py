@@ -14,20 +14,15 @@ from .common import get_pages_model
 
 
 class Resource(object):
-    def __init__(self, subobjects, node):
-        self.subobjects = subobjects
+    def __init__(self, node):
         self.node = node
 
     def __getitem__(self, name):
-        return self.subobjects[name]
+        children = {str(c.slug or ''): Resource(c) for c in self.node.children}
+        return children[name]
 
     def __repr__(self):
         return "<%s>" % self.node.name.encode('utf-8')
-
-
-def recursive_node_to_dict(node):
-    children = {str(c.slug or ''): recursive_node_to_dict(c) for c in node.children}
-    return Resource(children, node)
 
 
 def get_root_factory(dbsession, table):
@@ -37,7 +32,7 @@ def get_root_factory(dbsession, table):
     tree = {}
     for node in nodes:
         if node.slug:
-            tree[node.slug] = Resource(recursive_node_to_dict(node), node)
+            tree[node.slug] = Resource(node)
 
     return tree
 
