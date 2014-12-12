@@ -114,3 +114,17 @@ def page_view(context, request):
         return Response(status_code=int(redirect_type),
                         location=page.redirect_url)
     return context
+
+
+class Root(dict):
+    __name__ = 'user'
+    __parent__ = None
+
+    def __init__(self, request):
+        dict.__init__(self)
+        self.request = request
+        self['user'] = {'foo': {}, 'bar': {}}
+
+@view_config(renderer='json', context=Root)
+def home(context, request):
+    return {'info': 'Project API'}
