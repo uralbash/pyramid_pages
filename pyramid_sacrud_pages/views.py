@@ -109,7 +109,7 @@ def page_view(context, request):
             context['page'] = page.redirect
         else:
             return Response(status_code=int(redirect_type),
-                            location='/'+page.redirect.get_url())
+                            location='/' + page.redirect.get_url())
     if page.redirect_url:
         return Response(status_code=int(redirect_type),
                         location=page.redirect_url)
