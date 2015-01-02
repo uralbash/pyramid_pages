@@ -1,4 +1,2 @@
-pyramid
-pyramid_sacrud
-SQLAlchemy>=0.7
-sqlalchemy_mptt
+pyramid_sacrud>=0.2.0
+sqlalchemy_mptt>=0.1.0
