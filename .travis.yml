@@ -23,6 +23,9 @@ python:
 install:
   - pip install nose coverage coveralls
   - pip install -r requirements.txt
+  - pip install git+http://github.com/ITCase/pyramid_sacrud.git
+  - pip install --upgrade --force-reinstall git+git://github.com/ITCase/sacrud_deform.git
+  - pip install --upgrade --force-reinstall git+git://github.com/ITCase/sacrud.git
 
 script:
   - nosetests --with-coverage --cover-package pyramid_sacrud_pages --cover-erase --with-doctest
