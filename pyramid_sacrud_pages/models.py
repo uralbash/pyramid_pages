@@ -9,6 +9,7 @@
 """
 Model of Pages
 """
+import deform
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import foreign, relationship
@@ -23,9 +24,9 @@ from .common import get_pages_menu
 Base = declarative_base()
 
 REDIRECT_CHOICES = (
-    ('OK (200)', '200'),
-    ('Moved Permanently (301)', '301'),
-    ('Moved Temporarily (302)', '302'),
+    ('200', 'OK (200)'),
+    ('301', 'Moved Permanently (301)'),
+    ('302', 'Moved Temporarily (302)'),
 )
 
 
@@ -33,11 +34,16 @@ class BasePages(BaseNestedSets):
 
     name = Column(String, nullable=False)
     slug = Column(SlugType('name', False), unique=True, nullable=False,
-                  info={"verbose_name": "URL (slug)",
+                  info={"colanderalchemy": {'title': "URL (slug)"},
                         "description":
                         """Example: <br />
                            contacts => http://mysite.com/about/contacts"""})
-    description = Column(Text)
+    description = Column(
+        Text,
+        info={'colanderalchemy': {
+            'title': 'Description',
+            'widget': deform.widget.TextAreaWidget(css_class='tinymce')}}
+    )
 
     visible = Column(Boolean)
     in_menu = Column(Boolean)
@@ -57,35 +63,38 @@ class BasePages(BaseNestedSets):
         pk = getattr(cls, cls.get_pk())
         return relationship(
             cls, foreign_keys=[cls.redirect_page],
+            info={"colanderalchemy": {'title': "Redirect page"}},
             remote_side=cls.get_class_pk(),  # for show in sacrud relation
             primaryjoin=lambda: foreign(cls.redirect_page) == pk,
         )
 
     # SEO
     seo_title = Column(String, nullable=True,
-                       info={"verbose_name": "Title",
+                       info={"colanderalchemy": {'title': "Title"},
                              "description":
                              "Generate: &lt;title&gt;Value&lt;/title&gt;"})
     seo_keywords = Column(String, nullable=True,
-                          info={"verbose_name": "META Keywords",
+                          info={"colanderalchemy": {'title': "META Keywords"},
                                 "description":
                                 """Generate:
                                   &lt;meta name=''keywords''
                                   content=/"Value/" /&gt;"""})
     seo_description = Column(String, nullable=True,
-                             info={"verbose_name": "META Description",
+                             info={"colanderalchemy": {'title': "META Description"},
                                    "description":
                                    """Generate:
                                       &lt;meta name='description'
                                       content='Value' /&gt;"""})
-    seo_metatags = Column(Text, nullable=True,
-                          info={"verbose_name": "META Tags",
-                                "description":
-                                """Example: <br />
-                                   &lt;meta name='robots' content='Allow'/&gt;
-                                   <br />&lt;meta property='og:image'
-                                   content='http://mysite.com/logo.png'
-                                   /&gt;"""})
+    seo_metatags = Column(
+        Text, nullable=True,
+        info={'colanderalchemy': {'title': 'META Tags',
+                                  'widget': deform.widget.TextAreaWidget()},
+              "description":
+              """Example: <br />
+              &lt;meta name='robots' content='Allow'/&gt;
+              <br />&lt;meta property='og:image'
+              content='http://mysite.com/logo.png'
+              /&gt;"""})
     # SACRUD
     items_per_page = 20
     verbose_name = u'MPTT pages'

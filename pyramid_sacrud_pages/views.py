@@ -20,9 +20,7 @@ from .common import get_pages_model
 
 
 def _get_redirect_code(node):
-    if node.redirect_type:
-        return node.redirect_type[0]
-    return '200'
+    return node.redirect_type or '200'
 
 
 @view_config(route_name='sacrud_pages_move', renderer='json',
@@ -114,17 +112,3 @@ def page_view(context, request):
         return Response(status_code=int(redirect_type),
                         location=page.redirect_url)
     return context
-
-
-class Root(dict):
-    __name__ = 'user'
-    __parent__ = None
-
-    def __init__(self, request):
-        dict.__init__(self)
-        self.request = request
-        self['user'] = {'foo': {}, 'bar': {}}
-
-@view_config(renderer='json', context=Root)
-def home(context, request):
-    return {'info': 'Project API'}
