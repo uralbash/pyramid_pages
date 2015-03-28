@@ -48,9 +48,7 @@ First, configure `pyramid_sacrud <https://github.com/ITCase/pyramid_sacrud>`_
     # SACRUD configuration
     config.include('pyramid_sacrud', route_prefix='/admin')
     settings = config.registry.settings
-    settings['pyramid_sacrud.models'] = {'Tree pages': {'tables': [MPTTPages],
-                                                        'position': 1,},
-                                        }
+    settings['pyramid_sacrud.models'] = (('Tree pages', [MPTTPages]), )
 
 Configure `pyramid_sacrud_pages`
 --------------------------------

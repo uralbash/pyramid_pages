@@ -132,9 +132,7 @@ and `pyramid_sacrud_pages`.
         DBSession.configure(bind=engine)
 
         # SACRUD
-        settings['pyramid_sacrud.models'] = {'': {'tables': [MPTTPages],
-                                                'column': 1,
-                                                'position': 1}, }
+        settings['pyramid_sacrud.models'] = (('Pages', [MPTTPages]), )
         config.include('pyramid_sacrud', route_prefix='/admin')
 
         # sacrud_pages - put it after all routes
