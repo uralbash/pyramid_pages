@@ -115,16 +115,14 @@ def get_app():
         add_mptt_tree(DBSession)
         transaction.commit()
     except Exception as e:
-        print e
+        print(e)
 
     # SACRUD
-    settings['pyramid_sacrud.models'] = {'': {'tables': [MPTTPages],
-                                              'column': 1,
-                                              'position': 1}, }
+    settings['pyramid_sacrud.models'] = (('Pages', [MPTTPages]),)
     config.include('pyramid_sacrud', route_prefix='/admin')
 
     # sacrud_pages - put it after all routes
-    settings['pyramid_sacrud_pages.model_locations'] = MPTTPages  # or 'app:MPTTPages'
+    settings['pyramid_sacrud_pages.model_locations'] = MPTTPages
     config.include("pyramid_sacrud_pages")
     return config.make_wsgi_app()
 
