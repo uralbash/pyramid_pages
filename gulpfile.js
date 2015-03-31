@@ -31,6 +31,10 @@ gulp.task('bower', function() {
         .pipe(gulp.dest('./pyramid_sacrud_pages/static/css/__bower_components/'))
         .pipe(map(function(code, filename) { gutil.log('Bower CSS ' + gutil.colors.green(filename));
     }))
+    gulp.src(mainBowerFiles({filter: (/.*\.js$/i)}), { base: 'bower_components' })
+        .pipe(gulp.dest('./pyramid_sacrud_pages/static/js/__bower_components/'))
+        .pipe(map(function(code, filename) { gutil.log('Bower JS ' + gutil.colors.green(filename));
+    }))
 });
 
 gulp.task('browserify', function() {

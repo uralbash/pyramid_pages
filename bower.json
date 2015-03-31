@@ -1,0 +1,38 @@
+{
+  "name": "pyramid_sacrud_pages",
+  "version": "0.0.4",
+  "homepage": "https://github.com/ITCase/pyramid_sacrud_pages",
+  "authors": [
+    "ITCase <info@itcase.pro>"
+  ],
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "jquery-ui": "~1.10.4",
+    "normalize.css": "~3.0.2",
+    "jqtree": "~1.0.0",
+    "speakingurl": "~1.1.0"
+  },
+  "overrides": {
+    "jquery": {
+      "main": []
+    },
+    "jquery-ui": {
+      "main": []
+    },
+    "jqtree": {
+      "main": [
+        "tree.jquery.js",
+        "jqtree-circle.png",
+        "jqtree.css"
+      ]
+    },
+    "speakingurl": {
+      "main": []
+    }
+  }
+}
