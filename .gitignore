@@ -24,3 +24,11 @@ test.sqlite
 .ropeproject
 _themes
 _build
+phantomjsdriver.log
+
+# Bower
+bower_components
+
+# JavaScript
+node_modules
+
