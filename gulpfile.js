@@ -17,7 +17,7 @@ var browserify = require('browserify'),
 
 gulp.task('browser-sync', function() {
     browserSync({
-        proxy: "127.0.0.1:6543",
+        proxy: "127.0.0.1:8080",
         logLevel: "silent",
     });
 });
@@ -77,11 +77,13 @@ gulp.task('watch', function() {
            './ps_pages/static/css/**/*.css',
            '!./ps_pages/static/css/__ps_pages.css'], { verbose: true }, batch(function () {
         gulp.start('css');
+        cb();
     }));
     watch(['./ps_pages/static/js/*.js',
            './ps_pages/static/js/**/*.js',
-           '!./ps_pages/static/js/__ps_pages.js'], { verbose: true }, batch(function () {
+           '!./ps_pages/static/js/__ps_pages.js'], { verbose: true }, batch(function (cb) {
         gulp.start('browserify');
+        cb();
     }));
 });
 

@@ -1,5 +1,7 @@
 require('jquery');
 require('jquery-ui');
+require('speakingurl');
+
 
 $(function() {
     var data = $.ajax({"url": data_url, "async": false});
@@ -15,10 +17,10 @@ $(function() {
             if(!node.visible) {
                 dom_node.addClass('jqtree-hidden');
             }
-            if(node.redirect) {
-                dom_node.after('<span class="jqtree-label jqtree-redirect ' +
-                    node.CSSredirect + '">' + node.redirect_code +
-                    ' — ' + node.redirect + '</span>');
+            if(node.redirect_code && node.redirect_code != '200'  ) {
+                dom_node.after(
+                  '<span class="jqtree-label jqtree-redirect ' + node.CSSredirect + '">'
+                  + node.redirect_code + ' — ' + node.redirect + '</span>');
           }
       }
     });
@@ -41,6 +43,16 @@ $(function() {
               event.move_info.do_move();
           }
       });
+
+  // $tree.bind(
+  //     'tree.contextmenu',
+  //       function(event) {
+  //           // The clicked node is 'event.node'
+  //           var node = event.node;
+  //           alert(node.name);
+  //       }
+  //   );
+
 
   $tree.jqTreeContextMenu($('#sacrud-tree-menu'), {
     "delete": function (node) {
@@ -65,4 +77,10 @@ $(function() {
         element.parents('.jqtree-selected').removeClass('jqtree-selected');
     }
   });
+
+  $("input[name='name'].form-control").on( "click", function() {
+    console.log( $( this ).text() );
+  });
+
+
 });

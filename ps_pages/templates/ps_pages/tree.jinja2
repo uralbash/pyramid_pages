@@ -1,4 +1,4 @@
-<link href="/static_sacrud_pages/css/__ps_pages.css" rel="stylesheet" type="text/css" />
+<link href="{{ request.static_url('ps_pages:static/css/__ps_pages.css') }}" rel="stylesheet" type="text/css" />
 
 <div class="widget widget_type_single">
     <div class="widget-title">MPTT_PAGES</div>
@@ -33,5 +33,3 @@
 <script src="{{ request.static_url('ps_pages:static/js/__ps_pages.js') }}"></script>
 <script src="{{ request.static_url('ps_pages:static/js/__bower_components/jqtree/tree.jquery.js') }}"></script>
 <script src="{{ request.static_url('ps_pages:static/js/jqTreeContextMenu.js') }}"></script>
-
-
