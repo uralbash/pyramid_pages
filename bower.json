@@ -1,7 +1,7 @@
 {
-  "name": "pyramid_sacrud_pages",
+  "name": "ps_pages",
   "version": "0.0.4",
-  "homepage": "https://github.com/ITCase/pyramid_sacrud_pages",
+  "homepage": "https://github.com/ITCase/ps_pages",
   "authors": [
     "ITCase <info@itcase.pro>"
   ],

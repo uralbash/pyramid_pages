@@ -50,6 +50,4 @@ def includeme(config):
                      '/sacrud_pages/get_tree/')
     config.add_route('sacrud_pages_visible',
                      '/sacrud_pages/visible/{node}/')
-    config.add_route('sacrud_pages_view',
-                     '/*traverse',
-                     factory='pyramid_sacrud_pages.routes.root_factory')
+    config.add_route('sacrud_pages_view', '/*traverse', factory=root_factory)

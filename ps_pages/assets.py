@@ -15,4 +15,4 @@ def includeme(config):
     config.include('pyramid_jinja2')
     config.add_jinja2_extension('jinja2.ext.with_')
     config.add_jinja2_search_path("templates")
-    config.add_static_view('/static_sacrud_pages', 'pyramid_sacrud_pages:static')
+    config.add_static_view('/static_sacrud_pages', 'ps_pages:static')

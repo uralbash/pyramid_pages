@@ -98,7 +98,7 @@ class BasePages(BaseNestedSets):
     # SACRUD
     items_per_page = 20
     verbose_name = u'MPTT pages'
-    sacrud_list_template = "pyramid_sacrud_pages/tree.jinja2"
+    sacrud_list_template = "ps_pages/tree.jinja2"
 
     @TableProperty
     def sacrud_css_class(cls):

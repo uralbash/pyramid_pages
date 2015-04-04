@@ -20,9 +20,9 @@ from sqlalchemy import Column, create_engine, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from pyramid_sacrud_pages.models import BasePages
-from pyramid_sacrud_pages.routes import get_root_factory
-from pyramid_sacrud_pages.views import page_view
+from ps_pages.models import BasePages
+from ps_pages.routes import get_root_factory
+from ps_pages.views import page_view
 
 Base = declarative_base()
 
@@ -117,9 +117,9 @@ def get_app(DBSession):
     settings['pyramid_sacrud.models'] = {'Pages': [MPTTPages], }
 
     # sacrud_pages - put it after all routes
-    settings['pyramid_sacrud_pages.model_locations'] =\
-        'pyramid_sacrud_pages.tests.test_views:MPTTPages'
-    config.include("pyramid_sacrud_pages")
+    settings['ps_pages.model_locations'] =\
+        'ps_pages.tests.test_views:MPTTPages'
+    config.include("ps_pages")
 
     config.scan()
     return config.make_wsgi_app()
@@ -149,7 +149,7 @@ class BaseTest(unittest.TestCase):
         request.registry = Settings()
         request.registry.settings = {}
         settings = request.registry.settings
-        settings['pyramid_sacrud_pages.model_locations'] = 'pyramid_sacrud_pages.tests.test_views:MPTTPages'
+        settings['ps_pages.model_locations'] = 'ps_pages.tests.test_views:MPTTPages'
         return request
 
     def setUp(self):
@@ -167,7 +167,7 @@ class BaseTest(unittest.TestCase):
 class RootFactoryTest(BaseTest):
 
     def _callFUT(self, request):
-        from pyramid_sacrud_pages.routes import root_factory
+        from ps_pages.routes import root_factory
         return root_factory(request)
 
     def test_it(self):
@@ -286,7 +286,7 @@ class ViewPageTest(BaseTest):
 class PageVisibleTest(BaseTest):
 
     def _callFUT(self, request):
-        from pyramid_sacrud_pages.views import page_visible
+        from ps_pages.views import page_visible
         return page_visible(request)
 
     def test_it(self):
@@ -316,7 +316,7 @@ class GetTreeTest(BaseTest):
 class PageMoveTest(BaseTest):
 
     def _callFUT(self, request):
-        from pyramid_sacrud_pages.views import page_move
+        from ps_pages.views import page_move
         return page_move(request)
 
     def test_inside_method(self):

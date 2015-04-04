@@ -10,9 +10,9 @@ def read(name):
         return f.read()
 
 setup(
-    name='pyramid_sacrud_pages',
+    name='ps_pages',
     version='0.0.4',
-    url='http://github.com/ITCase/pyramid_sacrud_pages/',
+    url='http://github.com/ITCase/ps_pages/',
     author='Svintsov Dmitry',
     author_email='sacrud@uralbash.ru',
     packages=find_packages(),

@@ -70,7 +70,7 @@ $(function() {
 },{"jquery":3,"jquery-ui":2}],2:[function(require,module,exports){
 (function (global){
 
-; require("f:\\ITCase\\sacrud\\pyramid_sacrud_pages\\bower_components\\jquery\\dist\\jquery.min.js");
+; require("/home/uralbash/Projects/sacrud_band/ps_pages/bower_components/jquery/dist/jquery.min.js");
 ;__browserify_shim_require__=require;(function browserifyShim(module, define, require) {
 /*! jQuery UI - v1.10.4 - 2014-04-02
 * http://jqueryui.com
@@ -82,7 +82,7 @@ return isNaN(t)?d:t},g=p(l[0]),m=Math.max(g,p(l[1]||"")),g=a?Math.max(g,a.getFul
 }).call(global, module, undefined, undefined);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"f:\\ITCase\\sacrud\\pyramid_sacrud_pages\\bower_components\\jquery\\dist\\jquery.min.js":3}],3:[function(require,module,exports){
+},{"/home/uralbash/Projects/sacrud_band/ps_pages/bower_components/jquery/dist/jquery.min.js":3}],3:[function(require,module,exports){
 (function (global){
 ;__browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*! jQuery v2.1.3 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
@@ -97,4 +97,4 @@ return isNaN(t)?d:t},g=p(l[0]),m=Math.max(g,p(l[1]||"")),g=a?Math.max(g,a.getFul
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);
 
-//# sourceMappingURL=__pyramid_sacrud_pages.js.map
+//# sourceMappingURL=__ps_pages.js.map

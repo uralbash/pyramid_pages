@@ -17,7 +17,7 @@ from sqlalchemy import Column, create_engine, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from pyramid_sacrud_pages.models import BasePages
+from ps_pages.models import BasePages
 
 Base = declarative_base()
 

@@ -21,7 +21,7 @@ def sort_by_left(tree):
 
 
 def get_pages_model(settings):
-    model = settings['pyramid_sacrud_pages.model_locations']
+    model = settings['ps_pages.model_locations']
     return import_from_string(model)
 
 

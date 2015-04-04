@@ -20,7 +20,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
 
 from sacrud.common import TableProperty
-from pyramid_sacrud_pages.models import BasePages
+from ps_pages.models import BasePages
 
 Base = declarative_base()
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
@@ -122,8 +122,8 @@ def get_app():
     config.include('pyramid_sacrud', route_prefix='/admin')
 
     # sacrud_pages - put it after all routes
-    settings['pyramid_sacrud_pages.model_locations'] = MPTTPages
-    config.include("pyramid_sacrud_pages")
+    settings['ps_pages.model_locations'] = MPTTPages
+    config.include("ps_pages")
     return config.make_wsgi_app()
 
 if __name__ == '__main__':
