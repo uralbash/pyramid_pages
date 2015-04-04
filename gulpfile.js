@@ -17,7 +17,7 @@ var browserify = require('browserify'),
 
 gulp.task('browser-sync', function() {
     browserSync({
-        proxy: "127.0.0.1:6543",
+        proxy: "127.0.0.1:8080",
         logLevel: "silent",
     });
 });
@@ -52,7 +52,7 @@ gulp.task('browserify', function() {
 gulp.task('css', function() {
     path = ['./pyramid_sacrud_pages/static/css/*.css',
             './pyramid_sacrud_pages/static/css/**/*.css',
-            '!./pyramid_sacrud_pages/static/css/__pyramid_sacrud_pages.css'];
+            '!pyramid_sacrud_pages/static/css/__pyramid_sacrud_pages.css'];
     gulp.src(path)
         .pipe(newer('./pyramid_sacrud_pages/static/css/__pyramid_sacrud_pages.css'))
         .pipe(sourcemaps.init())
@@ -75,13 +75,15 @@ gulp.task('css', function() {
 gulp.task('watch', function() {
     watch(['./pyramid_sacrud_pages/static/css/*.css',
            './pyramid_sacrud_pages/static/css/**/*.css',
-           '!./pyramid_sacrud_pages/static/css/__pyramid_sacrud_pages.css'], { verbose: true }, batch(function () {
+           '!pyramid_sacrud_pages/static/css/__pyramid_sacrud_pages.css'], { verbose: true }, batch(function() {
         gulp.start('css');
+        cb();
     }));
     watch(['./pyramid_sacrud_pages/static/js/*.js',
            './pyramid_sacrud_pages/static/js/**/*.js',
-           '!./pyramid_sacrud_pages/static/js/__pyramid_sacrud_pages.js'], { verbose: true }, batch(function () {
+           '!pyramid_sacrud_pages/static/js/__pyramid_sacrud_pages.js'], { verbose: true }, batch(function(cb) {
         gulp.start('browserify');
+        cb();
     }));
 });
 
