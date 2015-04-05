@@ -1,7 +1,7 @@
 |Build Status| |Coverage Status| |Stories in Ready| |PyPi|
 
 ps_pages
-====================
+========
 
 **ps_pages** provides a collections of pages to your Pyramid application.
 This is very similar to **django.contrib.flatpages** but with a tree structure

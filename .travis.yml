@@ -21,7 +21,7 @@ python:
   - "2.7"
 
 install:
-  - pip install nose coverage coveralls
+  - pip install nose coverage coveralls flake8 rstcheck
   - pip install -r requirements.txt
   - pip install --upgrade --force-reinstall git+http://github.com/ITCase/pyramid_sacrud.git
   - pip install --upgrade --force-reinstall git+git://github.com/ITCase/sacrud_deform.git

@@ -40,6 +40,7 @@ def add_fixture(model, fixtures, session):
     """
     for fixture in fixtures:
         session.add(model(**fixture))
+    session.commit()
 
 
 def add_mptt_pages(session):
@@ -90,7 +91,6 @@ def add_mptt_pages(session):
         {'pk': '22', 'in_menu': True,  'slug': 'foo22', 'name': 'foo22', 'visible': True, 'parent_id': '21', 'tree_id': '12'},
     )
     add_fixture(MPTTPages, pages, session)
-    session.commit()
 
 
 def get_page_by_name(session, name):
