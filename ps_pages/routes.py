@@ -27,7 +27,7 @@ class Resource(object):
 
 def get_root_factory(dbsession, table):
     query = dbsession.query(table)
-    nodes = query.filter(or_(table.parent_id == None,
+    nodes = query.filter(or_(table.parent_id == None,  # noqa
                              table.parent.has(table.slug == '/'))).all()
     tree = {}
     for node in nodes:

@@ -3,8 +3,8 @@
 Simple Web-site with tree pages
 ===============================
 
-This is an example of using `pyramid_sacrud_pages` in just one file (app.py).
-Full code you can see `there <https://github.com/ITCase/pyramid_sacrud_pages/blob/master/example/app.py>`_.
+This is an example of using `ps_pages` in just one file (app.py).
+Full code you can see `there <https://github.com/ITCase/ps_pages/blob/master/example/app.py>`_.
 
 Pyramid application
 -------------------
@@ -42,7 +42,7 @@ Create model for tree pages
 ---------------------------
 
 All pages are stored in the database.
-Create a table of pages inherited from :py:class:`pyramid_sacrud_pages.models.BasePages`
+Create a table of pages inherited from :py:class:`ps_pages.models.BasePages`
 
 .. code-block:: python
     :linenos:
@@ -57,7 +57,7 @@ Create a table of pages inherited from :py:class:`pyramid_sacrud_pages.models.Ba
     from sqlalchemy import Column, Integer
 
     from sacrud.common import TableProperty
-    from pyramid_sacrud_pages.models import BasePages
+    from ps_pages.models import BasePages
 
     Base = declarative_base()
 
@@ -106,7 +106,7 @@ Configure project
 -----------------
 
 Now in our application to add settings for `sqlalchemy`, `pyramid_sacrud`
-and `pyramid_sacrud_pages`.
+and `ps_pages`.
 
 .. code-block:: python
     :linenos:
@@ -136,8 +136,8 @@ and `pyramid_sacrud_pages`.
         config.include('pyramid_sacrud', route_prefix='/admin')
 
         # sacrud_pages - put it after all routes
-        settings['pyramid_sacrud_pages.model_locations'] = 'app:MPTTPages'
-        config.include("pyramid_sacrud_pages")
+        settings['ps_pages.model_locations'] = 'app:MPTTPages'
+        config.include("ps_pages")
 
         return config.make_wsgi_app()
 
@@ -150,7 +150,7 @@ Initialize pages model
 
 Create a table in the database
 
-.. code-block:: python
+.. no-code-block:: python
     :linenos:
     :emphasize-lines: 11-16
 
@@ -234,7 +234,7 @@ Let's create a function table filling
 
 And just run it when initialize project
 
-.. code-block:: python
+.. no-code-block:: python
     :linenos:
     :emphasize-lines: 12
 

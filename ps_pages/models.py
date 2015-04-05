@@ -79,12 +79,11 @@ class BasePages(BaseNestedSets):
                                 """Generate:
                                   &lt;meta name=''keywords''
                                   content=/"Value/" /&gt;"""})
-    seo_description = Column(String, nullable=True,
-                             info={"colanderalchemy": {'title': "META Description"},
-                                   "description":
-                                   """Generate:
-                                      &lt;meta name='description'
-                                      content='Value' /&gt;"""})
+    seo_description = Column(
+        String, nullable=True,
+        info={"colanderalchemy": {'title': "META Description"},
+              "description": """Generate: &lt;meta name='description'
+                                content='Value' /&gt;"""})
     seo_metatags = Column(
         Text, nullable=True,
         info={'colanderalchemy': {'title': 'META Tags',

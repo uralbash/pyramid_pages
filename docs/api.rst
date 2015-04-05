@@ -4,7 +4,7 @@ API
 common
 ------
 
-.. automodule:: pyramid_sacrud_pages.common
+.. automodule:: ps_pages.common
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ common
 models
 ------
 
-.. automodule:: pyramid_sacrud_pages.models
+.. automodule:: ps_pages.models
     :members:
     :exclude-members: relationship
     :undoc-members:
@@ -21,7 +21,7 @@ models
 routes
 ------
 
-.. automodule:: pyramid_sacrud_pages.routes
+.. automodule:: ps_pages.routes
     :members:
     :exclude-members: or_
     :undoc-members:
@@ -30,7 +30,7 @@ routes
 views
 -----
 
-.. automodule:: pyramid_sacrud_pages.views
+.. automodule:: ps_pages.views
     :members:
     :undoc-members:
     :show-inheritance:
@@ -39,7 +39,7 @@ views
 Module contents
 ---------------
 
-.. automodule:: pyramid_sacrud_pages
+.. automodule:: ps_pages
     :members:
     :undoc-members:
     :show-inheritance:

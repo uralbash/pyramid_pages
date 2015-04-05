@@ -6,25 +6,25 @@ github
 
 .. code-block:: bash
 
-    pip install git+http://github.com/ITCase/pyramid_sacrud_pages.git
+    pip install git+http://github.com/ITCase/ps_pages.git
 
 current develop version
 
 .. code-block:: bash
 
-    pip install git+http://github.com/ITCase/pyramid_sacrud_pages.git@develop
+    pip install git+http://github.com/ITCase/ps_pages.git@develop
 
 PyPi
 ----
 
 .. code-block:: bash
 
-    pip install pyramid_sacrud_pages
+    pip install ps_pages
 
 source
 ------
 
 .. code-block:: bash
 
-    git clone git+http://github.com/ITCase/pyramid_sacrud_pages.git
+    git clone git+http://github.com/ITCase/ps_pages.git
     python setup.py install

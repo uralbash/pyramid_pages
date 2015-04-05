@@ -6,9 +6,9 @@ Custom model for tree pages
 
 Create model of tree pages.
 
-.. code-block:: python
+.. no-code-block:: python
 
-    from pyramid_sacrud_pages.models import BasePages
+    from ps_pages.models import BasePages
 
     ...
 
@@ -39,7 +39,7 @@ Configure `pyramid_sacrud`
 
 First, configure `pyramid_sacrud <https://github.com/ITCase/pyramid_sacrud>`_
 
-.. code-block:: python
+.. no-code-block:: python
 
     from youproject.models import MPTTPages
 
@@ -50,27 +50,27 @@ First, configure `pyramid_sacrud <https://github.com/ITCase/pyramid_sacrud>`_
     settings = config.registry.settings
     settings['pyramid_sacrud.models'] = (('Tree pages', [MPTTPages]), )
 
-Configure `pyramid_sacrud_pages`
---------------------------------
+Configure `ps_pages`
+--------------------
 
-Then add settings of `pyramid_sacrud_pages`
+Then add settings of `ps_pages`
 
 As string, support ini config
 
 .. code-block:: python
 
-    settings['pyramid_sacrud_pages.model_locations'] = 'youproject.models:MPTTPages'
-    # pyramid_sacrud_pages - put it after all routes
-    config.include("pyramid_sacrud_pages")
+    settings['ps_pages.model_locations'] = 'youproject.models:MPTTPages'
+    # ps_pages - put it after all routes
+    config.include("ps_pages")
 
 Or just add model
 
-.. code-block:: python
+.. no-code-block:: python
 
     from youproject.models import MPTTPages
 
     ...
 
-    settings['pyramid_sacrud_pages.model_locations'] = MPTTPages
-    # pyramid_sacrud_pages - put it after all routes
-    config.include("pyramid_sacrud_pages")
+    settings['ps_pages.model_locations'] = MPTTPages
+    # ps_pages - put it after all routes
+    config.include("ps_pages")
