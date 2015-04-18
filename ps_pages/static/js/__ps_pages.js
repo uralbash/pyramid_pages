@@ -79,16 +79,11 @@ $(function() {
     }
   });
 
-  $("input[name='name'].form-control").on( "click", function() {
-    console.log( $( this ).text() );
-  });
-
-
 });
 },{"jquery":3,"jquery-ui":2,"speakingurl":4}],2:[function(require,module,exports){
 (function (global){
 
-; require("/home/uralbash/Projects/sacrud_band/ps_pages/bower_components/jquery/dist/jquery.min.js");
+; require("F:\\ITCase\\sacrud\\ps_pages\\bower_components\\jquery\\dist\\jquery.min.js");
 ;__browserify_shim_require__=require;(function browserifyShim(module, define, require) {
 /*! jQuery UI - v1.10.4 - 2014-04-02
 * http://jqueryui.com
@@ -100,7 +95,7 @@ return isNaN(t)?d:t},g=p(l[0]),m=Math.max(g,p(l[1]||"")),g=a?Math.max(g,a.getFul
 }).call(global, module, undefined, undefined);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"/home/uralbash/Projects/sacrud_band/ps_pages/bower_components/jquery/dist/jquery.min.js":3}],3:[function(require,module,exports){
+},{"F:\\ITCase\\sacrud\\ps_pages\\bower_components\\jquery\\dist\\jquery.min.js":3}],3:[function(require,module,exports){
 (function (global){
 ;__browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*! jQuery v2.1.3 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
@@ -118,7 +113,7 @@ return isNaN(t)?d:t},g=p(l[0]),m=Math.max(g,p(l[1]||"")),g=a?Math.max(g,a.getFul
 ;__browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /**
  * speakingurl
- * @version v1.1.1
+ * @version v1.1.0
  * @link http://pid.github.io/speakingurl/
  * @license BSD
  * @author Sascha Droste

@@ -78,9 +78,4 @@ $(function() {
     }
   });
 
-  $("input[name='name'].form-control").on( "click", function() {
-    console.log( $( this ).text() );
-  });
-
-
 });
