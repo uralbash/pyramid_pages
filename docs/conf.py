@@ -21,7 +21,7 @@ from sphinx.directives.code import CodeBlock
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
-if on_rtd:
+if on_rtd and os.path.exists('_themes'):
     shutil.rmtree('_themes')
 
 if 'sphinx-build' in ' '.join(sys.argv):  # protect against dumb importers
