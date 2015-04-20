@@ -11,7 +11,6 @@ Test for views
 """
 import unittest
 
-import transaction
 from pyramid import testing
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPNotFound
@@ -69,31 +68,34 @@ def add_mptt_pages(session):
 
     """
     pages = (
-        {'id': '1',  'slug': 'about-company',   'name': 'About company',    'visible': True, 'parent_id': None},
-        {'id': '2',  'slug': 'we-love-gevent',  'name': u'We ♥  gevent',    'visible': True, 'parent_id': '1'},
-        {'id': '3',  'slug': 'and-pyramid',     'name': 'And Pyramid',      'visible': True, 'parent_id': '2'},
-        {'id': '4',  'slug': 'our-history',     'name': 'Our history',      'visible': False, 'parent_id': '1'},
-        {'id': '5',  'slug': 'foo',             'name': 'foo',              'visible': True, 'parent_id': '4'},
-        {'id': '6',  'slug': 'kompania-itcase', 'name': u'компания ITCase', 'visible': False, 'parent_id': '4'},
-        {'id': '7',  'slug': 'our-strategy',    'name': 'Our strategy',     'visible': True, 'parent_id': '1'},
-        {'id': '8',  'slug': 'wordwide',        'name': 'Wordwide',         'visible': True, 'parent_id': '7'},
-        {'id': '9',  'slug': 'technology',      'name': 'Technology',       'visible': False, 'parent_id': '8'},
-        {'id': '10', 'slug': 'what-we-do',      'name': 'What we do',       'visible': True,  'parent_id': '7'},
-        {'id': '11', 'slug': 'at-a-glance',     'name': 'at a glance',      'visible': True,  'parent_id': '10'},
+        {'id': '1',  'in_menu': True, 'slug': 'about-company',   'name': 'About company',    'visible': True, 'parent_id': None},
+        {'id': '2',  'in_menu': True, 'slug': 'we-love-gevent',  'name': u'We ♥  gevent',    'visible': True, 'parent_id': '1'},
+        {'id': '3',  'in_menu': True, 'slug': 'and-pyramid',     'name': 'And Pyramid',      'visible': True, 'parent_id': '2'},
+        {'id': '4',  'in_menu': True, 'slug': 'our-history',     'name': 'Our history',      'visible': False, 'parent_id': '1'},
+        {'id': '5',  'in_menu': True, 'slug': 'foo',             'name': 'foo',              'visible': True, 'parent_id': '4'},
+        {'id': '6',  'in_menu': True, 'slug': 'kompania-itcase', 'name': u'компания ITCase', 'visible': False, 'parent_id': '4'},
+        {'id': '7',  'in_menu': False, 'slug': 'our-strategy',    'name': 'Our strategy',     'visible': True, 'parent_id': '1'},
+        {'id': '8',  'in_menu': False, 'slug': 'wordwide',        'name': 'Wordwide',         'visible': True, 'parent_id': '7'},
+        {'id': '9',  'in_menu': True, 'slug': 'technology',      'name': 'Technology',       'visible': False, 'parent_id': '8'},
+        {'id': '10', 'in_menu': False, 'slug': 'what-we-do',      'name': 'What we do',       'visible': True,  'parent_id': '7'},
+        {'id': '11', 'in_menu': True, 'slug': 'at-a-glance',     'name': 'at a glance',      'visible': True,  'parent_id': '10'},
 
-        {'id': '12', 'slug': 'foo12', 'name': 'foo12', 'visible': True, 'parent_id': None, 'tree_id': '12'},
-        {'id': '13', 'slug': 'foo13', 'name': 'foo13', 'visible': False, 'parent_id': '12', 'tree_id': '12'},
-        {'id': '14', 'slug': 'foo14', 'name': 'foo14', 'visible': False, 'parent_id': '13', 'tree_id': '12'},
-        {'id': '15', 'slug': 'foo15', 'name': 'foo15', 'visible': True, 'parent_id': '12', 'tree_id': '12'},
-        {'id': '16', 'slug': 'foo16', 'name': 'foo16', 'visible': True, 'parent_id': '15', 'tree_id': '12'},
-        {'id': '17', 'slug': 'foo17', 'name': 'foo17', 'visible': True, 'parent_id': '15', 'tree_id': '12'},
-        {'id': '18', 'slug': 'foo18', 'name': 'foo18', 'visible': True, 'parent_id': '12', 'tree_id': '12'},
-        {'id': '19', 'slug': 'foo19', 'name': 'foo19', 'visible': True, 'parent_id': '18', 'tree_id': '12'},
-        {'id': '20', 'slug': 'foo20', 'name': 'foo20', 'visible': True, 'parent_id': '19', 'tree_id': '12'},
-        {'id': '21', 'slug': 'foo21', 'name': 'foo21', 'visible': True, 'parent_id': '18', 'tree_id': '12'},
-        {'id': '22', 'slug': 'foo22', 'name': 'foo22', 'visible': True, 'parent_id': '21', 'tree_id': '12'},
+        {'id': '12', 'in_menu': True, 'slug': 'foo12', 'name': 'foo12', 'visible': True, 'parent_id': None, 'tree_id': '12'},
+        {'id': '13', 'in_menu': False, 'slug': 'foo13', 'name': 'foo13', 'visible': False, 'parent_id': '12', 'tree_id': '12'},
+        {'id': '14', 'in_menu': False, 'slug': 'foo14', 'name': 'foo14', 'visible': False, 'parent_id': '13', 'tree_id': '12'},
+        {'id': '15', 'in_menu': True, 'slug': 'foo15', 'name': 'foo15', 'visible': True, 'parent_id': '12', 'tree_id': '12'},
+        {'id': '16', 'in_menu': True, 'slug': 'foo16', 'name': 'foo16', 'visible': True, 'parent_id': '15', 'tree_id': '12'},
+        {'id': '17', 'in_menu': False, 'slug': 'foo17', 'name': 'foo17', 'visible': True, 'parent_id': '15', 'tree_id': '12'},
+        {'id': '18', 'in_menu': True, 'slug': 'foo18', 'name': 'foo18', 'visible': True, 'parent_id': '12', 'tree_id': '12'},
+        {'id': '19', 'in_menu': False, 'slug': 'foo19', 'name': 'foo19', 'visible': True, 'parent_id': '18', 'tree_id': '12'},
+        {'id': '20', 'in_menu': True, 'slug': 'foo20', 'name': 'foo20', 'visible': True, 'parent_id': '19', 'tree_id': '12'},
+        {'id': '21', 'in_menu': True, 'slug': 'foo21', 'name': 'foo21', 'visible': True, 'parent_id': '18', 'tree_id': '12'},
+        {'id': '22', 'in_menu': True, 'slug': 'foo22', 'name': 'foo22', 'visible': True, 'parent_id': '21', 'tree_id': '12'},
     )
-    add_fixture(MPTTPages, pages, session)
+    # add_fixture(MPTTPages, pages, session)
+    for fixture in pages:
+        session.add(MPTTPages(**fixture))
+        session.flush()
     session.commit()
 
 
@@ -105,12 +107,9 @@ def get_app(DBSession):
     # Database
     MPTTPages.__table__.drop(DBSession.bind.engine, checkfirst=True)
     MPTTPages.__table__.create(DBSession.bind.engine, checkfirst=True)
-    transaction.commit()
-
-    add_mptt_pages(DBSession)
+    DBSession.commit()
 
     config.include('pyramid_jinja2')
-    config.commit()
 
     # SACRUD
     config.include('pyramid_sacrud', route_prefix='/admin')
@@ -155,6 +154,7 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         DBSession = mock_dbsession()
         app = get_app(DBSession)
+        add_mptt_pages(DBSession)
 
         from webtest import TestApp
         self.testapp = TestApp(app)
