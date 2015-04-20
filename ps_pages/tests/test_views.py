@@ -95,7 +95,7 @@ def add_mptt_pages(session):
     # add_fixture(MPTTPages, pages, session)
     for fixture in pages:
         session.add(MPTTPages(**fixture))
-        session.flush()
+        session.flush()  # for SQLAlchemy v1.0.0
     session.commit()
 
 

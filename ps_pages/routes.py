@@ -26,9 +26,10 @@ class Resource(object):
 
 
 def get_root_factory(dbsession, table):
-    query = dbsession.query(table)
-    nodes = query.filter(or_(table.parent_id == None,  # noqa
-                             table.parent.has(table.slug == '/'))).all()
+    nodes = dbsession.query(table)\
+        .filter(or_(table.parent_id.is_(""),
+                    table.parent_id.is_(None),
+                    table.parent.has(table.slug == '/'))).all()
     tree = {}
     for node in nodes:
         if node.slug:
@@ -46,8 +47,6 @@ def root_factory(request):
 def includeme(config):
     config.add_route('sacrud_pages_move',
                      '/sacrud_pages/move/{node}/{method}/{leftsibling}/')
-    config.add_route('sacrud_pages_get_tree',
-                     '/sacrud_pages/get_tree/')
-    config.add_route('sacrud_pages_visible',
-                     '/sacrud_pages/visible/{node}/')
+    config.add_route('sacrud_pages_get_tree', '/sacrud_pages/get_tree/')
+    config.add_route('sacrud_pages_visible', '/sacrud_pages/visible/{node}/')
     config.add_route('sacrud_pages_view', '/*traverse', factory=root_factory)
