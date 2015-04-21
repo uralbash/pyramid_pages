@@ -14,7 +14,7 @@
     "jquery": "~2.1.1",
     "jquery-ui": "~1.10.4",
     "normalize.css": "~3.0.2",
-    "jqtree": "~1.0.0",
+    "jqtree": "~1.1.0",
     "speakingurl": "~1.1.0"
   },
   "overrides": {

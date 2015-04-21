@@ -52,7 +52,7 @@ gulp.task('browserify', function() {
 gulp.task('css', function() {
     path = ['./ps_pages/static/css/*.css',
             './ps_pages/static/css/**/*.css',
-            '!./ps_pages/static/css/__ps_pages.css'];
+            '!./ps_pages/static/css/__*.css'];
     gulp.src(path)
         .pipe(newer('./ps_pages/static/css/__ps_pages.css'))
         .pipe(sourcemaps.init())
@@ -75,13 +75,13 @@ gulp.task('css', function() {
 gulp.task('watch', function() {
     watch(['./ps_pages/static/css/*.css',
            './ps_pages/static/css/**/*.css',
-           '!./ps_pages/static/css/__ps_pages.css'], { verbose: true }, batch(function () {
+           '!./ps_pages/static/css/__*.css'], { verbose: true }, batch(function () {
         gulp.start('css');
         cb();
     }));
     watch(['./ps_pages/static/js/*.js',
            './ps_pages/static/js/**/*.js',
-           '!./ps_pages/static/js/__ps_pages.js'], { verbose: true }, batch(function (cb) {
+           '!./ps_pages/static/js/__*.js'], { verbose: true }, batch(function (cb) {
         gulp.start('browserify');
         cb();
     }));

@@ -1,4 +1,6 @@
-require('jquery');
+if (typeof $ == 'undefined') {
+    require('jquery');
+}
 require('jquery-ui');
 require('speakingurl');
 
@@ -19,63 +21,45 @@ $(function() {
             }
             if(node.redirect_code && node.redirect_code != '200'  ) {
                 dom_node.after(
-                  '<span class="jqtree-label jqtree-redirect ' + node.CSSredirect + '">'
-                  + node.redirect_code + ' — ' + node.redirect + '</span>');
-          }
-      }
+                    '<span class="jqtree-label jqtree-redirect ' + node.CSSredirect + '">' +
+                    node.redirect_code + ' — ' + node.redirect + '</span>'
+                );
+            }
+        }
     });
 
-  $tree.bind(
-      'tree.click',
-      function(event) {
-          window.location = event.node.url_update;
-      });
+    $tree.bind('tree.click', function(event) {
+        window.location = event.node.url_update;
+    });
 
-  $tree.bind(
-      'tree.move',
-      function(event) {
-          event.preventDefault();
-          var url = "/sacrud_pages/move/" + event.move_info.moved_node.id + "/" +
-                    event.move_info.position + "/" +
-                    event.move_info.target_node.id + "/";
-          var status = $.ajax({"url": url, "async": false}).status;
-          if (status==200) {
-              event.move_info.do_move();
-          }
-      });
+    $tree.bind('tree.move', function(event) {
+        event.preventDefault();
+        var url = "/sacrud_pages/move/" + event.move_info.moved_node.id + "/" +
+                  event.move_info.position + "/" +
+                  event.move_info.target_node.id + "/";
+        var status = $.ajax({"url": url, "async": false}).status;
+        if (status==200) event.move_info.do_move();
+    });
 
-  // $tree.bind(
-  //     'tree.contextmenu',
-  //       function(event) {
-  //           // The clicked node is 'event.node'
-  //           var node = event.node;
-  //           alert(node.name);
-  //       }
-  //   );
+    // $tree.bind('tree.contextmenu', function(event) {
+    //     // The clicked node is 'event.node'
+    //     alert(event.node.name);
+    // });
 
-
-  $tree.jqTreeContextMenu($('#sacrud-tree-menu'), {
-    "delete": function (node) {
-        var url = node.url_delete;
-        var status = $.ajax({'url': url, "async": false}).status;
-        if (status==200) {
-          $tree.tree('removeNode', node);
+    $tree.jqTreeContextMenu($('#sacrud-tree-menu'), {
+        "delete": function (node) {
+            var status = $.ajax({'url': node.url_delete, "async": false}).status;
+            if (status==200) $tree.tree('removeNode', node);
+        },
+        "edit": function (node) {
+            window.location = node.url_update;
+        },
+        "visible": function (node) {
+            var visible = $.ajax({'url': node.url_visible, "async": false}).responseJSON.visible;
+            var element = $(node.element).find('.jqtree-title').first();
+            if (visible) element.removeClass('jqtree-hidden');
+            else element.addClass('jqtree-hidden');
+            element.parents('.jqtree-selected').removeClass('jqtree-selected');
         }
-    },
-    "edit": function (node) {
-      window.location = node.url_update;
-    },
-    "visible": function (node) {
-        var url = node.url_visible;
-        var visible = $.ajax({'url': url, "async": false}).responseJSON.visible;
-        var element = $(node.element).find('.jqtree-title').first();
-        if(visible){
-            element.removeClass('jqtree-hidden');
-        } else {
-            element.addClass('jqtree-hidden');
-        }
-        element.parents('.jqtree-selected').removeClass('jqtree-selected');
-    }
-  });
-
+    });
 });
