@@ -10,8 +10,6 @@ ps_pages
 This is very similar to **django.contrib.flatpages** but with a tree structure
 and traversal algorithm in URL dispath.
 
-Online example can be found here `ps_example <http://pyramid-sacrud-example.readthedocs.org/en/latest/demo.html#online-on-runnable-com>`_
-
 .. image:: _static/img/index.png
     :alt: SACRUD pages tree
     :align: right
@@ -31,8 +29,16 @@ Tutorials and Cookbook Recipes
 
    tutorial
 
-.. include:: contribute.rst
+Support and Development
+=======================
 
+To report bugs, use the `issue tracker <https://github.com/ITCase/ps_pages/issues>`_
+or `waffle board <https://waffle.io/ITCase/ps_pages>`_.
+
+We welcome any contribution: suggestions, ideas, commits with new futures, bug
+fixes, refactoring, docs, tests, translations etc
+
+If you have question, contact me sacrud@uralbash.ru or IRC channel #sacrud
 
 Indices and tables
 ==================

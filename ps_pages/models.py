@@ -11,7 +11,7 @@ Model of Pages
 """
 import deform
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
-from sqlalchemy.ext.declarative import declarative_base, declared_attr
+from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import foreign, relationship
 from sqlalchemy.orm.session import Session
 
@@ -20,8 +20,6 @@ from sacrud.exttype import ChoiceType, SlugType
 from sqlalchemy_mptt import BaseNestedSets
 
 from .common import get_pages_menu
-
-Base = declarative_base()
 
 REDIRECT_CHOICES = (
     ('200', 'OK (200)'),

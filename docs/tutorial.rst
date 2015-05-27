@@ -4,7 +4,7 @@ Simple Web-site with tree pages
 ===============================
 
 This is an example of using `ps_pages` in just one file (app.py).
-Full code you can see `there <https://github.com/ITCase/ps_pages/blob/master/example/app.py>`_.
+Full code you can see `there <https://github.com/ITCase/ps_pages/blob/master/example/>`_.
 
 Pyramid application
 -------------------

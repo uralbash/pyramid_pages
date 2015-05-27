@@ -14,7 +14,6 @@ models
 
 .. automodule:: ps_pages.models
     :members:
-    :exclude-members: relationship
     :undoc-members:
     :show-inheritance:
 

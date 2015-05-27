@@ -27,4 +27,4 @@ source
 .. code-block:: bash
 
     git clone git+http://github.com/ITCase/ps_pages.git
-    python setup.py install
+    python setup.py develop

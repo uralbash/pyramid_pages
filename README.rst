@@ -7,8 +7,7 @@ ps_pages
 This is very similar to **django.contrib.flatpages** but with a tree structure
 and traversal algorithm in URL dispath.
 
-| See documentation http://pyramid-sacrud-pages.readthedocs.org/en/master/
-| Online example can be found here `ps_example <http://pyramid-sacrud-example.readthedocs.org/en/master/demo.html#online-on-runnable-com>`_
+See documentation http://pyramid-sacrud-pages.readthedocs.org/en/master/
 
 .. image:: https://raw.githubusercontent.com/ITCase/ps_pages/master/docs/_static/img/index.png
     :alt: SACRUD pages tree
