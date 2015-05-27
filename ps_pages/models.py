@@ -52,9 +52,11 @@ class BasePages(BaseNestedSets):
 
     @declared_attr
     def redirect_page(cls):
-        return Column(Integer, ForeignKey('%s.%s' % (cls.__tablename__,
-                                                     cls.get_db_pk()),
-                                          ondelete='CASCADE'))
+        return Column(
+            Integer,
+            ForeignKey('{}.{}'.format(cls.__tablename__, cls.get_db_pk()),
+                       ondelete='CASCADE')
+        )
 
     @declared_attr
     def redirect(cls):
@@ -92,8 +94,8 @@ class BasePages(BaseNestedSets):
               <br />&lt;meta property='og:image'
               content='http://mysite.com/logo.png'
               /&gt;"""})
-    # SACRUD
-    items_per_page = 20
+
+    # sacrud
     verbose_name = u'MPTT pages'
     sacrud_list_template = "ps_pages/tree.jinja2"
 
