@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Index</title>
+  </head>
+  <body>
+    {% with menu=page_menu(from_lvl=1) %}
+      {% include 'ps_pages/menu.jinja2' with context %}
+    {% endwith %}
+  </body>
+</html>

@@ -12,7 +12,6 @@ Main for example
 import transaction
 from pyramid.config import Configurator
 from pyramid.session import SignedCookieSessionFactory
-from pyramid.response import Response
 from sqlalchemy import Column, engine_from_config, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -20,6 +19,7 @@ from zope.sqlalchemy import ZopeTransactionExtension
 
 from sacrud.common import TableProperty
 from ps_pages.models import BasePages
+from ps_pages.common import get_pages_menu
 
 Base = declarative_base()
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
@@ -66,17 +66,27 @@ def add_mptt_tree(session):
     tree1 = (
         {'id': '1', 'slug': 'about-company', 'name': 'About company',
          'visible': True,
+         'in_menu': True,
          'parent_id': None},
         {'id': '2', 'slug': 'we-love-gevent', 'name': u'We ♥ gevent',
-         'visible': True, 'parent_id': '1'},
+         'visible': True,
+         'in_menu': True,
+         'parent_id': '1'},
         {'id': '3', 'slug': 'and-pyramid', 'name': 'And Pyramid',
-         'visible': True, 'parent_id': '2'},
+         'visible': True,
+         'in_menu': True,
+         'parent_id': '2'},
         {'id': '4', 'slug': 'our-history', 'name': 'Our history',
-         'visible': False, 'parent_id': '1'},
+         'visible': False,
+         'in_menu': True,
+         'parent_id': '1'},
         {'id': '5', 'slug': 'foo', 'name': 'foo', 'visible': True,
+         'in_menu': True,
          'parent_id': '4'},
         {'id': '6', 'slug': 'kompania-itcase', 'name': u'компания ITCase',
-         'visible': False, 'parent_id': '4'},
+         'visible': False,
+         'in_menu': True,
+         'parent_id': '4'},
         {'id': '7', 'slug': 'our-strategy', 'name': 'Our strategy',
          'visible': True, 'parent_id': '1'},
         {'id': '8', 'slug': 'wordwide', 'name': 'Wordwide', 'visible': True,
@@ -91,18 +101,24 @@ def add_mptt_tree(session):
 
     tree2 = (
         {'id': '12', 'slug': 'foo12', 'name': 'foo12', 'visible': True,
+         'in_menu': True,
          'parent_id': None, 'tree_id': '2'},
         {'id': '13', 'slug': 'foo13', 'name': 'foo13', 'visible': False,
+         'in_menu': True,
          'parent_id': '12', 'tree_id': '2'},
         {'id': '14', 'slug': 'foo14', 'name': 'foo14', 'visible': False,
+         'in_menu': True,
          'parent_id': '13', 'tree_id': '2'},
         {'id': '15', 'slug': 'foo15', 'name': 'foo15', 'visible': True,
+         'in_menu': True,
          'parent_id': '12', 'tree_id': '2'},
         {'id': '16', 'slug': 'foo16', 'name': 'foo16', 'visible': True,
+         'in_menu': True,
          'parent_id': '15', 'tree_id': '2'},
         {'id': '17', 'slug': 'foo17', 'name': 'foo17', 'visible': True,
          'parent_id': '15', 'tree_id': '2'},
         {'id': '18', 'slug': 'foo18', 'name': 'foo18', 'visible': True,
+         'in_menu': True,
          'parent_id': '12', 'tree_id': '2'},
         {'id': '19', 'slug': 'foo19', 'name': 'foo19', 'visible': True,
          'parent_id': '18', 'tree_id': '2'},
@@ -117,26 +133,30 @@ def add_mptt_tree(session):
     add_fixture(MPTTPages, tree2, session)
 
 
-def hello_world(request):
-    return Response('<a href="/admin/">Admin</a><br />' +
-                    '<br /><a href="about-company">About company page</a>')
+def index_view(request):
+    def page_menu(**kwargs):
+        return get_pages_menu(DBSession, MPTTPages, **kwargs)
+    return {'page_menu': page_menu}
 
 
 def main(global_settings, **settings):
-    my_session_factory = SignedCookieSessionFactory('itsaseekreet')
     config = Configurator(
         settings=settings,
-        session_factory=my_session_factory,
+        session_factory=SignedCookieSessionFactory('itsaseekreet')
     )
+
+    config.add_route('index', '/')
+    config.add_view(index_view,
+                    route_name='index',
+                    renderer='index.jinja2')
+
+    # Database
     settings = config.registry.settings
     settings['sqlalchemy.url'] = "sqlite:///example.sqlite"
-
-    config.add_route('hello', '/')
-    config.add_view(hello_world, route_name='hello')
-    # Database
     engine = engine_from_config(settings)
     DBSession.configure(bind=engine)
     try:
+        MPTTPages.__table__.drop(engine, checkfirst=False)
         MPTTPages.__table__.create(engine)
         add_mptt_tree(DBSession)
         transaction.commit()
