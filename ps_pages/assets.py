@@ -14,5 +14,5 @@ Assets
 def includeme(config):
     config.include('pyramid_jinja2')
     config.add_jinja2_extension('jinja2.ext.with_')
-    config.add_jinja2_search_path("templates")
+    config.add_jinja2_search_path("ps_pages:templates")
     config.add_static_view('/ps_pages_static', 'ps_pages:static')

@@ -32,17 +32,16 @@ var CSS_FILES = ['./ps_pages/static/css/*.css',
                 '!ps_pages/static/js/' + TARGET_JS_FILE,
                 '!ps_pages/static/js/vendor/*.js'
                ],
-    TEMPLATES_FILES = ['*.html'];
+    TEMPLATES_FILES = ['./ps_pages/**/*.jinja2','./example/**/*.jinja2'];
 
 
 gulp.task('browser-sync', function() {
   browserSync({
-    proxy: '127.0.0.1:8080',
+    proxy: '127.0.0.1:6543',
     logLevel: 'silent'
   });
 });
 
-<<<<<<< HEAD
 
 gulp.task('bower-js', function() {
   return gulp.src(mainBowerFiles({ filter: (/.*\.(js|map)$/i) }),
@@ -83,21 +82,6 @@ gulp.task('bower-img', function() {
     $.util.log('Bower Images ' +
     $.util.colors.green(filename));
   }));
-=======
-gulp.task('bower', function() {
-    gulp.src(mainBowerFiles({filter: (/.*\.png$/i)}), { base: 'bower_components' })
-        .pipe(gulp.dest('./ps_pages/static/css/__bower_components/'))
-        .pipe(map(function(code, filename) { gutil.log('Bower Images ' + gutil.colors.green(filename));
-    }));
-    gulp.src(mainBowerFiles({filter: (/.*\.css$/i)}), { base: 'bower_components' })
-        .pipe(gulp.dest('./ps_pages/static/css/__bower_components/'))
-        .pipe(map(function(code, filename) { gutil.log('Bower CSS ' + gutil.colors.green(filename));
-    }));
-    gulp.src(mainBowerFiles({filter: (/.*\.js$/i)}), { base: 'bower_components' })
-        .pipe(gulp.dest('./ps_pages/static/js/__bower_components/'))
-        .pipe(map(function(code, filename) { gutil.log('Bower JS ' + gutil.colors.green(filename));
-    }));
->>>>>>> ae1835a8750441d73ceb7c7a5bfecd3864b16b00
 });
 
 

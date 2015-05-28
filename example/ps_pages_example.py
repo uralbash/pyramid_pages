@@ -57,9 +57,10 @@ def add_mptt_tree(session):
     session.query(MPTTNews).delete()
     transaction.commit()
     tree1 = (
-        {'id': '1', 'slug': 'about-company', 'name': 'About company',
+        {'id': '1', 'slug': 'about-company', 'name': 'Hello Traversal World!',
          'visible': True,
          'in_menu': True,
+         'description': '''Hello Traversal World! Hello Traversal World! Hello Traversal World!''',
          'parent_id': None},
         {'id': '2', 'slug': 'we-love-gevent', 'name': u'We ♥ gevent',
          'visible': True,

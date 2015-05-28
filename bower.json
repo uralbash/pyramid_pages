@@ -11,30 +11,12 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "normalize.css": "~3.0.2"
+    "normalize.css": "~3.0.2",
+    "html5-boilerplate": "~5.2.0"
   },
   "overrides": {
-<<<<<<< HEAD
-    "jquery": {
-      "main": [
-        "dist/jquery.min.js",
-        "dist/jquery.min.map"
-      ]
-    },
-    "jquery-ui": {
-      "main": "ui/jquery-ui.min.js"
-    },
-    "jqtree": {
-      "main": [
-        "tree.jquery.js",
-        "jqtree-circle.png",
-        "jqtree.css"
-      ]
-    },
-    "speakingurl": {
-      "main": "speakingurl.min.js"
+    "html5-boilerplate": {
+      "main": "dist/css/main.css"
     }
-=======
->>>>>>> ae1835a8750441d73ceb7c7a5bfecd3864b16b00
   }
 }
