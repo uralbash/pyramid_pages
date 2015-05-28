@@ -11,13 +11,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "jquery": "~2.1.1",
-    "jquery-ui": "~1.10.4",
-    "normalize.css": "~3.0.2",
-    "jqtree": "~1.1.0",
-    "speakingurl": "~1.1.0"
+    "normalize.css": "~3.0.2"
   },
   "overrides": {
+<<<<<<< HEAD
     "jquery": {
       "main": [
         "dist/jquery.min.js",
@@ -37,5 +34,7 @@
     "speakingurl": {
       "main": "speakingurl.min.js"
     }
+=======
+>>>>>>> ae1835a8750441d73ceb7c7a5bfecd3864b16b00
   }
 }

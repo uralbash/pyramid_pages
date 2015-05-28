@@ -53,19 +53,7 @@
     ]
   },
   "browser": {
-    "jquery": "./bower_components/jquery/dist/jquery.min.js",
-    "jquery-ui": "./bower_components/jquery-ui/ui/minified/jquery-ui.min.js",
-    "jqtree": "./bower_components/jqtree/tree.jquery.js",
-    "speakingurl": "./bower_components/speakingurl/speakingurl.min.js"
   },
   "browserify-shim": {
-    "jquery": "$",
-    "jquery-ui": {
-      "depends": "jquery"
-    },
-    "jqtree": {
-      "depends": "jquery"
-    },
-    "speakingurl": "speakingurl"
   }
 }

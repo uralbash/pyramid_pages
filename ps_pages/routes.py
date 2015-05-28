@@ -11,6 +11,7 @@ Routes for sacrud_pages
 """
 import re
 
+from pyramid.httpexceptions import HTTPNotFound
 from sqlalchemy import or_
 
 from .views import page_view
@@ -41,6 +42,7 @@ class PageResource(object):
 
     def __resource_url__(self, request, info):
         separator = '/' if self.prefix else ''
+        # XXX: I feel a dissonance here
         info['virtual_path'] = re.sub('/+', '/', info['virtual_path'])
         url = info['app_url'] + separator + info['virtual_path']
         return url
@@ -53,6 +55,8 @@ def page_factory(request):
     settings = request.registry.settings
     models = settings['ps_pages.models']
     prefix = request.matchdict['prefix']
+    dbsession = settings['ps_pages.dbsession']
+
     if prefix not in models:
         # prepend {prefix} to *traverse
         request.matchdict['traverse'] =\
@@ -61,7 +65,6 @@ def page_factory(request):
         table = models['']
     else:
         table = models[prefix]
-    dbsession = settings['ps_pages.dbsession']
     nodes = dbsession.query(table)\
         .filter(or_(table.parent_id.is_(''),
                     table.parent_id.is_(None),
@@ -75,12 +78,14 @@ def home_page_factory(request):
     models = settings['ps_pages.models']
     table = models[''] or models['/']
     dbsession = settings['ps_pages.dbsession']
-    node = dbsession.query(table).filter(table.slug.is_('/')).one()
+    node = dbsession.query(table).filter(table.slug.is_('/')).first()
+    if not node:
+        raise HTTPNotFound
     return PageResource(node)
 
 
 def includeme(config):
-    name = 'pyramid_pages_prefix_view'
+    name = 'pyramid_pages_prefix_page_view'
     config.add_route(name, '/{prefix}*traverse', factory=page_factory)
     config.add_view(page_view,
                     route_name=name,
@@ -88,7 +93,7 @@ def includeme(config):
                     context=PageResource,
                     permission=name)
 
-    name = 'pyramid_pages_root_view'
+    name = 'pyramid_pages_home_page_view'
     config.add_route(name, '/', factory=home_page_factory)
     config.add_view(page_view,
                     route_name=name,

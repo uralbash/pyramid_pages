@@ -7,6 +7,10 @@
   <body>
     Hello Traversal World!
     <br/>
+    {{ context.node.name }}
+    <br/>
+    {{ context.node.description }}
+    <br/>
     <br/>
 
     {% with menu=page_menu(from_lvl=1) %}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use strict';
 
 if (typeof $ === 'undefined') {
@@ -68,3 +69,5 @@ $(function() {
     }
   });
 });
+=======
+>>>>>>> ae1835a8750441d73ceb7c7a5bfecd3864b16b00

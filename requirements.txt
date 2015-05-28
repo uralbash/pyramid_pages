@@ -1,2 +1,2 @@
-pyramid_sacrud>=0.0.6
+sacrud>=0.2.5
 sqlalchemy_mptt>=0.1.0
