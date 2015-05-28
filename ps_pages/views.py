@@ -34,8 +34,10 @@ def page_view(context, request):
             if redirect_type == '200':
                 page = page.redirect
             else:
+                redirect_resource_url = request.resource_url(
+                    context.__class__(page.redirect, context.prefix))
                 return Response(status_code=int(redirect_type),
-                                location='/' + page.redirect.get_url())
+                                location=redirect_resource_url)
         if page.redirect_url:
             return Response(status_code=int(redirect_type),
                             location=page.redirect_url)

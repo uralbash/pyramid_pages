@@ -56,7 +56,7 @@ def add_mptt_tree(session):
     session.query(MPTTNews).delete()
     transaction.commit()
     tree1 = (
-        {'id': '1', 'slug': 'about-company', 'name': 'About company',
+        {'id': '1', 'slug': '/', 'name': 'About company',
          'visible': True,
          'in_menu': True,
          'parent_id': None},
@@ -68,15 +68,23 @@ def add_mptt_tree(session):
          'visible': True,
          'in_menu': True,
          'parent_id': '2'},
-        {'id': '4', 'slug': 'our-history', 'name': 'Our history',
-         'visible': False,
+        {'id': '4', 'slug': 'redirect-301',
+         'name': 'Redirect 301 to we-love-gevent',
+         'redirect_type': '301',
+         'redirect_page': 2,
+         'visible': True,
          'in_menu': True,
          'parent_id': '1'},
-        {'id': '5', 'slug': 'foo', 'name': 'foo', 'visible': True,
-         'in_menu': True,
+        {'id': '5', 'slug': 'redirect-200',
+         'name': 'Redirect 200 to about-company',
+         'redirect_type': '200',
+         'redirect_page': 1,
+         'visible': True, 'in_menu': True,
          'parent_id': '4'},
         {'id': '6', 'slug': 'kompania-itcase', 'name': u'компания ITCase',
-         'visible': False,
+         'redirect_type': '302',
+         'redirect_url': 'http://itcase.pro/',
+         'visible': True,
          'in_menu': True,
          'parent_id': '4'},
         {'id': '7', 'slug': 'our-strategy', 'name': 'Our strategy',
@@ -138,11 +146,6 @@ def main(global_settings, **settings):
         session_factory=SignedCookieSessionFactory('itsaseekreet')
     )
 
-    config.add_route('index', '/')
-    config.add_view(index_view,
-                    route_name='index',
-                    renderer='index.jinja2')
-
     # Database
     settings = config.registry.settings
     settings['sqlalchemy.url'] = "sqlite:///example.sqlite"
@@ -155,6 +158,12 @@ def main(global_settings, **settings):
         transaction.commit()
     except Exception as e:
         print(e)
+
+    from ps_pages.routes import home_page_factory
+    config.add_route('index', '/', factory=home_page_factory)
+    config.add_view(index_view,
+                    route_name='index',
+                    renderer='index.jinja2')
 
     # sacrud_pages
     config.include("ps_pages")
