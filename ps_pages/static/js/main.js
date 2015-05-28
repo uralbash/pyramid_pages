@@ -1,4 +1,6 @@
-if (typeof $ == 'undefined') {
+'use strict';
+
+if (typeof $ === 'undefined') {
   require('jquery');
 }
 require('jquery-ui');
@@ -6,7 +8,7 @@ require('speakingurl');
 
 
 $(function() {
-  var data = $.ajax({"url": data_url, "async": false});
+  var data = $.ajax({'url': data_url, 'async': false});
   var $tree = $('#sacrud-tree');
   $tree.tree({
     data: data.responseJSON,
@@ -15,7 +17,7 @@ $(function() {
     autoOpen: true,
 
     onCreateLi: function(node, $li) {
-      dom_node = $li.find('.jqtree-title');
+      var dom_node = $li.find('.jqtree-title');
       if(!node.visible) {
         dom_node.addClass('jqtree-hidden');
       }
@@ -34,26 +36,34 @@ $(function() {
 
   $tree.bind('tree.move', function(event) {
     event.preventDefault();
-    var url = "/sacrud_pages/move/" + event.move_info.moved_node.id + "/" +
-      event.move_info.position + "/" +
-      event.move_info.target_node.id + "/";
-    var status = $.ajax({"url": url, "async": false}).status;
-    if (status==200) event.move_info.do_move();
+    var url = '/sacrud_pages/move/' + event.move_info.moved_node.id + '/' +
+      event.move_info.position + '/' +
+      event.move_info.target_node.id + '/';
+    var status = $.ajax({'url': url, 'async': false}).status;
+    if (status === 200) {
+      event.move_info.do_move();
+    }
   });
 
   $tree.jqTreeContextMenu($('#sacrud-tree-menu'), {
-    "delete": function (node) {
-      var status = $.ajax({'url': node.url_delete, "async": false}).status;
-      if (status==200) $tree.tree('removeNode', node);
+    'delete': function (node) {
+      var status = $.ajax({ 'url': node.url_delete, 'async': false }).status;
+      if (status === 200) {
+        $tree.tree('removeNode', node);
+      }
     },
-    "edit": function (node) {
+    'edit': function (node) {
       window.location = node.url_update;
     },
-    "visible": function (node) {
-      var visible = $.ajax({'url': node.url_visible, "async": false}).responseJSON.visible;
+    'visible': function (node) {
+      var visible = $.ajax({ 'url': node.url_visible, 'async': false })
+        .responseJSON.visible;
       var element = $(node.element).find('.jqtree-title').first();
-      if (visible) element.removeClass('jqtree-hidden');
-      else element.addClass('jqtree-hidden');
+      if (visible) {
+        element.removeClass('jqtree-hidden');
+      } else {
+        element.addClass('jqtree-hidden');
+      }
       element.parents('.jqtree-selected').removeClass('jqtree-selected');
     }
   });

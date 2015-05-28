@@ -19,10 +19,13 @@
   },
   "overrides": {
     "jquery": {
-      "main": []
+      "main": [
+        "dist/jquery.min.js",
+        "dist/jquery.min.map"
+      ]
     },
     "jquery-ui": {
-      "main": []
+      "main": "ui/jquery-ui.min.js"
     },
     "jqtree": {
       "main": [
@@ -32,7 +35,7 @@
       ]
     },
     "speakingurl": {
-      "main": []
+      "main": "speakingurl.min.js"
     }
   }
 }
