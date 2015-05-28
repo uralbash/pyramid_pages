@@ -179,6 +179,9 @@ def main(global_settings, **settings):
         session_factory=SignedCookieSessionFactory('itsaseekreet')
     )
 
+    config.include('pyramid_jinja2')
+    config.add_jinja2_search_path('ps_pages_example:templates')
+
     config.add_route('index', '/', factory=index_page_factory)
     config.add_view(index_view,
                     route_name='index',
