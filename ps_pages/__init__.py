@@ -10,4 +10,3 @@
 def includeme(config):
     config.include('.assets')
     config.include('.routes')
-    config.scan('.views')

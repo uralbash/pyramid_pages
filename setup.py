@@ -11,7 +11,7 @@ def read(name):
 
 setup(
     name='ps_pages',
-    version='0.0.4',
+    version='0.0.1',
     url='http://github.com/ITCase/ps_pages/',
     author='Svintsov Dmitry',
     author_email='sacrud@uralbash.ru',
@@ -25,12 +25,10 @@ setup(
     install_requires=read('requirements.txt'),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
-        'Environment :: Console',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
-        'Natural Language :: Russian',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         "Programming Language :: Python :: 2.6",

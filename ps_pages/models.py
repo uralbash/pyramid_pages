@@ -7,7 +7,7 @@
 # Distributed under terms of the MIT license.
 
 """
-Model of Pages
+Models for page.
 """
 import deform
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
@@ -28,47 +28,29 @@ REDIRECT_CHOICES = (
 )
 
 
-class BasePages(BaseNestedSets):
+class PageMixin(object):
 
     name = Column(String, nullable=False)
-    slug = Column(SlugType('name', False), unique=True, nullable=False,
-                  info={"colanderalchemy": {'title': "URL (slug)"},
-                        "description":
-                        """Example: <br />
-                           contacts => http://mysite.com/about/contacts"""})
-    description = Column(
-        Text,
-        info={'colanderalchemy': {
-            'title': 'Description',
-            'widget': deform.widget.TextAreaWidget(css_class='tinymce')}}
-    )
-
     visible = Column(Boolean)
     in_menu = Column(Boolean)
+    slug = Column(
+        SlugType('name', False), unique=True, nullable=False,
+        info={"colanderalchemy": {'title': "URL (slug)"},
+              "description":
+              """Example: <br />
+              contacts => http://mysite.com/about/contacts"""})
 
-    # Redirection
-    redirect_url = Column(String)
-    redirect_type = Column(ChoiceType(choices=REDIRECT_CHOICES))
+    def __repr__(self):
+        return self.name
 
-    @declared_attr
-    def redirect_page(cls):
-        return Column(
-            Integer,
-            ForeignKey('{}.{}'.format(cls.__tablename__, cls.get_db_pk()),
-                       ondelete='CASCADE')
-        )
+    def get_menu(self, **kwargs):
+        table = self.__class__
+        session = Session.object_session(self)
+        return get_pages_menu(session, table, **kwargs)
 
-    @declared_attr
-    def redirect(cls):
-        pk = getattr(cls, cls.get_pk())
-        return relationship(
-            cls, foreign_keys=[cls.redirect_page],
-            info={"colanderalchemy": {'title': "Redirect page"}},
-            remote_side=cls.get_class_pk(),  # for show in sacrud relation
-            primaryjoin=lambda: foreign(cls.redirect_page) == pk,
-        )
 
-    # SEO
+class SeoMixin(object):
+
     seo_title = Column(String, nullable=True,
                        info={"colanderalchemy": {'title': "Title"},
                              "description":
@@ -95,9 +77,42 @@ class BasePages(BaseNestedSets):
               content='http://mysite.com/logo.png'
               /&gt;"""})
 
+
+class RedirectMixin(object):
+
+    redirect_url = Column(String)
+    redirect_type = Column(ChoiceType(choices=REDIRECT_CHOICES))
+
+    @declared_attr
+    def redirect_page(cls):
+        return Column(
+            Integer,
+            ForeignKey('{}.{}'.format(cls.__tablename__, cls.get_db_pk()),
+                       ondelete='CASCADE')
+        )
+
+    @declared_attr
+    def redirect(cls):
+        pk = getattr(cls, cls.get_pk())
+        return relationship(
+            cls, foreign_keys=[cls.redirect_page],
+            info={"colanderalchemy": {'title': "Redirect page"}},
+            remote_side=cls.get_class_pk(),  # for show in sacrud relation
+            primaryjoin=lambda: foreign(cls.redirect_page) == pk,
+        )
+
+
+class BasePages(BaseNestedSets, PageMixin, SeoMixin, RedirectMixin):
+
+    description = Column(
+        Text,
+        info={'colanderalchemy': {
+            'title': 'Description',
+            'widget': deform.widget.TextAreaWidget(css_class='tinymce')}}
+    )
+
     # sacrud
-    verbose_name = u'MPTT pages'
-    sacrud_list_template = "ps_pages/tree.jinja2"
+    verbose_name = 'MPTT pages'
 
     @TableProperty
     def sacrud_css_class(cls):
@@ -105,21 +120,3 @@ class BasePages(BaseNestedSets):
         return {'tinymce': [col.description],
                 'content': [col.description],
                 'name': [col.name]}
-
-    def __repr__(self):
-        return self.name
-
-    def get_url(self):
-        t = self.__class__
-        session = Session.object_session(self)
-        branch = session.query(t.slug).filter(t.left <= self.left)\
-            .filter(t.right >= self.right)\
-            .filter(t.tree_id == self.tree_id).order_by(t.left)
-        branch = map(lambda x: x[0], branch)
-        branch = filter(lambda x: x != '/', branch)
-        return '/'.join(branch)
-
-    def get_menu(self, **kwargs):
-        t = self.__class__
-        session = Session.object_session(self)
-        return get_pages_menu(session, t, **kwargs)

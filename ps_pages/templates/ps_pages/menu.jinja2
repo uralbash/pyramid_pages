@@ -1,12 +1,15 @@
 <div class="main-menu">
-    <div class="main-menu__wrapper">
-        {% for node, children in menu.iteritems() recursive %}
-            <div class="main-menu__item">
-                <a href="{{ request.host_url + '/' + node.get_url() }}" class="main-menu__item-link">{{ node.name }}</a>
-                <div class="main-menu__item-popup">
-                    {{ loop(children.items()) }}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+  <div class="main-menu__wrapper">
+    {% for node, children in menu.items() recursive %}
+      <div class="main-menu__item">
+        <a href="{{ request.resource_url(context.__class__(node, context.prefix)) }}"
+          class="main-menu__item-link">
+          {{ node.name }}
+        </a>
+        <div class="main-menu__item-popup">
+          {{ loop(children.items()) }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 </div>

@@ -17,9 +17,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
 
-from sacrud.common import TableProperty
-from ps_pages.models import BasePages
+from ps_pages.models import BasePages, PageMixin
 from ps_pages.common import get_pages_menu
+
+from sqlalchemy_mptt import BaseNestedSets
 
 Base = declarative_base()
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
@@ -30,21 +31,11 @@ class MPTTPages(BasePages, Base):
 
     id = Column('id', Integer, primary_key=True)
 
-    @TableProperty
-    def sacrud_list_col(cls):
-        col = cls.columns
-        return [col.name, col.level, col.tree_id,
-                col.parent_id, col.left, col.right]
 
-    @TableProperty
-    def sacrud_detail_col(cls):
-        col = cls.columns
-        return [('', [col.name, col.slug, col.description, col.visible]),
-                ('Redirection', [col.redirect_url, col.redirect_page,
-                                 col.redirect_type]),
-                ('SEO', [col.seo_title, col.seo_keywords, col.seo_description,
-                         col.seo_metatags])
-                ]
+class MPTTNews(BaseNestedSets, PageMixin, Base):
+    __tablename__ = "mptt_news"
+
+    id = Column('id', Integer, primary_key=True)
 
 
 def add_fixture(model, fixtures, session):
@@ -62,6 +53,7 @@ def add_fixture(model, fixtures, session):
 
 def add_mptt_tree(session):
     session.query(MPTTPages).delete()
+    session.query(MPTTNews).delete()
     transaction.commit()
     tree1 = (
         {'id': '1', 'slug': 'about-company', 'name': 'About company',
@@ -131,6 +123,7 @@ def add_mptt_tree(session):
     )
     add_fixture(MPTTPages, tree1, session)
     add_fixture(MPTTPages, tree2, session)
+    add_fixture(MPTTNews, tree2, session)
 
 
 def index_view(request):
@@ -156,20 +149,22 @@ def main(global_settings, **settings):
     engine = engine_from_config(settings)
     DBSession.configure(bind=engine)
     try:
-        MPTTPages.__table__.drop(engine, checkfirst=False)
-        MPTTPages.__table__.create(engine)
+        Base.metadata.drop_all(engine)
+        Base.metadata.create_all(engine)
         add_mptt_tree(DBSession)
         transaction.commit()
     except Exception as e:
         print(e)
 
-    # SACRUD
-    settings['pyramid_sacrud.models'] = (('Pages', [MPTTPages]),)
-    config.include('pyramid_sacrud', route_prefix='/admin')
-
-    # sacrud_pages - put it after all routes
-    settings['ps_pages.model_locations'] = MPTTPages
+    # sacrud_pages
     config.include("ps_pages")
+    settings['ps_pages.dbsession'] = DBSession
+    settings['ps_pages.models'] = {
+        '': MPTTPages,
+        'pages': MPTTPages,
+        'news': MPTTNews
+    }
+
     return config.make_wsgi_app()
 
 if __name__ == '__main__':
