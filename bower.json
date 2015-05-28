@@ -11,28 +11,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "jquery": "~2.1.1",
-    "jquery-ui": "~1.10.4",
-    "normalize.css": "~3.0.2",
-    "jqtree": "~1.1.0",
-    "speakingurl": "~1.1.0"
+    "normalize.css": "~3.0.2"
   },
   "overrides": {
-    "jquery": {
-      "main": []
-    },
-    "jquery-ui": {
-      "main": []
-    },
-    "jqtree": {
-      "main": [
-        "tree.jquery.js",
-        "jqtree-circle.png",
-        "jqtree.css"
-      ]
-    },
-    "speakingurl": {
-      "main": []
-    }
   }
 }
