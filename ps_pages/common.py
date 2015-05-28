@@ -10,19 +10,12 @@ Menu generator
 """
 from collections import OrderedDict
 
-from pyramid_sacrud.common import import_from_string
-
 
 def sort_by_left(tree):
     """ Sort dict by left and tree_id field
     """
     return OrderedDict(sorted(tree.items(),
                               key=lambda x: (x[0].left, x[0].tree_id)))
-
-
-def get_pages_model(settings):
-    model = settings['ps_pages.model_locations']
-    return import_from_string(model)
 
 
 def recursive_node_to_dict(node, menu, json=None, json_fields=None):

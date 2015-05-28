@@ -41,6 +41,7 @@ class PageResource(object):
 
     def __resource_url__(self, request, info):
         separator = '/' if self.prefix else ''
+        # XXX: I feel a dissonance here
         info['virtual_path'] = re.sub('/+', '/', info['virtual_path'])
         url = info['app_url'] + separator + info['virtual_path']
         return url
@@ -80,7 +81,7 @@ def home_page_factory(request):
 
 
 def includeme(config):
-    name = 'pyramid_pages_prefix_view'
+    name = 'pyramid_pages_prefix_page_view'
     config.add_route(name, '/{prefix}*traverse', factory=page_factory)
     config.add_view(page_view,
                     route_name=name,
@@ -88,7 +89,7 @@ def includeme(config):
                     context=PageResource,
                     permission=name)
 
-    name = 'pyramid_pages_root_view'
+    name = 'pyramid_pages_home_page_view'
     config.add_route(name, '/', factory=home_page_factory)
     config.add_view(page_view,
                     route_name=name,

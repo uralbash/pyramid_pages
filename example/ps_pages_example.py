@@ -146,6 +146,12 @@ def main(global_settings, **settings):
         session_factory=SignedCookieSessionFactory('itsaseekreet')
     )
 
+    from ps_pages.routes import home_page_factory
+    config.add_route('index', '/', factory=home_page_factory)
+    config.add_view(index_view,
+                    route_name='index',
+                    renderer='index.jinja2')
+
     # Database
     settings = config.registry.settings
     settings['sqlalchemy.url'] = "sqlite:///example.sqlite"
@@ -158,12 +164,6 @@ def main(global_settings, **settings):
         transaction.commit()
     except Exception as e:
         print(e)
-
-    from ps_pages.routes import home_page_factory
-    config.add_route('index', '/', factory=home_page_factory)
-    config.add_view(index_view,
-                    route_name='index',
-                    renderer='index.jinja2')
 
     # sacrud_pages
     config.include("ps_pages")
