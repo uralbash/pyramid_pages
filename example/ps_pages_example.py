@@ -11,15 +11,16 @@ Main for example
 """
 import transaction
 from pyramid.config import Configurator
+from pyramid.httpexceptions import HTTPNotFound
 from pyramid.session import SignedCookieSessionFactory
-from sqlalchemy import Column, engine_from_config, Integer
+from sqlalchemy import Column, Integer, engine_from_config
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
 
-from ps_pages.models import BasePages, PageMixin
 from ps_pages.common import get_pages_menu
-
+from ps_pages.models import BasePages, PageMixin
+from ps_pages.routes import PageResource
 from sqlalchemy_mptt import BaseNestedSets
 
 Base = declarative_base()
@@ -56,7 +57,7 @@ def add_mptt_tree(session):
     session.query(MPTTNews).delete()
     transaction.commit()
     tree1 = (
-        {'id': '1', 'slug': '/', 'name': 'About company',
+        {'id': '1', 'slug': 'about-company', 'name': 'About company',
          'visible': True,
          'in_menu': True,
          'parent_id': None},
@@ -129,9 +130,29 @@ def add_mptt_tree(session):
         {'id': '22', 'slug': 'foo22', 'name': 'foo22', 'visible': True,
          'parent_id': '21', 'tree_id': '2'},
     )
+    news = (
+        {'id': '1', 'slug': 'sed-ut-perspiciatis',
+         'name': 'Sed ut perspiciatis',
+         'visible': True,
+         'in_menu': True,
+         'parent_id': None, 'tree_id': '1'},
+        {'id': '2', 'slug': 'dolor-sit-amet-consectetur-adipisc',
+         'name': 'Dolor sit, amet, consectetur, adipisc',
+         'visible': True,
+         'in_menu': True,
+         'parent_id': '1', 'tree_id': '1'},
+        {'id': '3', 'slug': 'foo14', 'name': 'foo14',
+         'visible': True,
+         'in_menu': True,
+         'parent_id': '2', 'tree_id': '1'},
+        {'id': '4', 'slug': 'foo15', 'name': 'foo15',
+         'visible': True,
+         'in_menu': True,
+         'parent_id': '3', 'tree_id': '1'}
+    )
     add_fixture(MPTTPages, tree1, session)
     add_fixture(MPTTPages, tree2, session)
-    add_fixture(MPTTNews, tree2, session)
+    add_fixture(MPTTNews, news, session)
 
 
 def index_view(request):
@@ -140,16 +161,28 @@ def index_view(request):
     return {'page_menu': page_menu}
 
 
+def index_page_factory(request):
+    settings = request.registry.settings
+    models = settings['ps_pages.models']
+    table = models[''] or models['/']
+    dbsession = settings['ps_pages.dbsession']
+    node = dbsession.query(table)\
+        .filter(table.slug.is_('about-company')).first()
+    if not node:
+        raise HTTPNotFound
+    return PageResource(node)
+
+
 def main(global_settings, **settings):
     config = Configurator(
         settings=settings,
         session_factory=SignedCookieSessionFactory('itsaseekreet')
     )
 
-    from ps_pages.routes import home_page_factory
-    config.add_route('index', '/', factory=home_page_factory)
+    config.add_route('index', '/', factory=index_page_factory)
     config.add_view(index_view,
                     route_name='index',
+                    context=PageResource,
                     renderer='index.jinja2')
 
     # Database
@@ -165,7 +198,7 @@ def main(global_settings, **settings):
     except Exception as e:
         print(e)
 
-    # sacrud_pages
+    # ps_pages
     config.include("ps_pages")
     settings['ps_pages.dbsession'] = DBSession
     settings['ps_pages.models'] = {
@@ -181,5 +214,5 @@ if __name__ == '__main__':
     app = main({}, **settings)
 
     from wsgiref.simple_server import make_server
-    server = make_server('0.0.0.0', 5000, app)
+    server = make_server('0.0.0.0', 6543, app)
     server.serve_forever()

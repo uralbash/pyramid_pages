@@ -11,6 +11,7 @@ Routes for sacrud_pages
 """
 import re
 
+from pyramid.httpexceptions import HTTPNotFound
 from sqlalchemy import or_
 
 from .views import page_view
@@ -54,6 +55,8 @@ def page_factory(request):
     settings = request.registry.settings
     models = settings['ps_pages.models']
     prefix = request.matchdict['prefix']
+    dbsession = settings['ps_pages.dbsession']
+
     if prefix not in models:
         # prepend {prefix} to *traverse
         request.matchdict['traverse'] =\
@@ -62,7 +65,6 @@ def page_factory(request):
         table = models['']
     else:
         table = models[prefix]
-    dbsession = settings['ps_pages.dbsession']
     nodes = dbsession.query(table)\
         .filter(or_(table.parent_id.is_(''),
                     table.parent_id.is_(None),
@@ -76,7 +78,9 @@ def home_page_factory(request):
     models = settings['ps_pages.models']
     table = models[''] or models['/']
     dbsession = settings['ps_pages.dbsession']
-    node = dbsession.query(table).filter(table.slug.is_('/')).one()
+    node = dbsession.query(table).filter(table.slug.is_('/')).first()
+    if not node:
+        raise HTTPNotFound
     return PageResource(node)
 
 
