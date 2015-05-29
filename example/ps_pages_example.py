@@ -158,7 +158,11 @@ def add_mptt_tree(session):
 def index_view(request):
     def page_menu(**kwargs):
         return get_pages_menu(DBSession, MPTTPages, **kwargs)
-    return {'page_menu': page_menu}
+
+    def news_menu(**kwargs):
+        return get_pages_menu(DBSession, MPTTNews, **kwargs)
+    return {'page_menu': page_menu,
+            'news_menu': news_menu}
 
 
 def index_page_factory(request):

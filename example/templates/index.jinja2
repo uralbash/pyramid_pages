@@ -13,7 +13,7 @@
     <br/>
     <br/>
 
-    {% with menu=page_menu(from_lvl=1) %}
+    {% with menu=page_menu(from_lvl=1).items() + news_menu(from_lvl=1).items() %}
       {% include 'ps_pages/menu.jinja2' with context %}
     {% endwith %}
   </body>
