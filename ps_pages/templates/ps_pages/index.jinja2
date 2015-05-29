@@ -11,21 +11,18 @@
   <div class="wrapper">
     <div class="wrapper__inner">
       <div class="page clearfix">
-        <div class="page__left">
+        {% with menu=page_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
+          {% include 'ps_pages/menu.jinja2' with context %}
+        {% endwith %}
+        <div class="page__left" style="display: none;">
           <h2>News</h2>
           {% with menu=news_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
             {% include 'ps_pages/menu.jinja2' with context %}
           {% endwith %}
-
-          <h2>Pages</h2>
-          {% with menu=page_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
-            {% include 'ps_pages/menu.jinja2' with context %}
-          {% endwith %}
         </div>
         <div class="page__right">
-          <div class="page-note"><strong>Important:</strong> Redefine me in "<your static>/ps_pages/index.jinja2"</your></div>
-          <div class="page-title">{{ page.name }}</div>
-          <div class="content">{{ page.description|safe }}</div>
+          <div class="page-title">{{ context.node.name }}</div>
+          <div class="content">{{ context.node.description }}</div>
         </div>
       </div>
     </div>

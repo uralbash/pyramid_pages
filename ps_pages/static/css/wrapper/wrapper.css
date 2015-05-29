@@ -1,14 +1,13 @@
 .wrapper
 {
-	min-width: 985px;
-	max-width: 1100px;
-	margin: 0 auto;
-	position: relative;
-	padding: 0 10px;
-	overflow: hidden;
+  min-width: 985px;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0 10px;
 }
-	.wrapper__inner
-	{
-		padding: 20px 10px 50px 10px;
-		position: relative;
-	}
+  .wrapper__inner
+  {
+    padding: 20px 10px 50px 10px;
+    position: relative;
+  }
