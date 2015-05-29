@@ -11,19 +11,26 @@
   <div class="wrapper">
     <div class="wrapper__inner">
       <div class="page clearfix">
-        {% with menu=page_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
-          {% include 'pyramid_pages/menu.jinja2' with context %}
-        {% endwith %}
-        <div class="page__left" style="display: none;">
-          <h2>News</h2>
-          {% with menu=news_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
-            {% include 'pyramid_pages/menu.jinja2' with context %}
-          {% endwith %}
+        <div class="main-menu clearfix">
+          <div class="main-menu-title">Pyramid Pages</div>
+            {% with menu=page_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
+              {% include 'pyramid_pages/menu.jinja2' with context %}
+            {% endwith %}
         </div>
-        <div class="page__right">
-          <div class="page-note"><strong>Important:</strong> Redefine me in "<your static>/pyramid_pages/index.jinja2"</your></div>
-          <div class="page-title">{{ page.name }}</div>
-          <div class="content">{{ page.description|safe }}</div>
+        <div class="page-inner">
+          <div class="page__left">
+            <div class="main-menu main-menu_type_vertical clearfix">
+              <div class="main-menu-title">News</div>
+                {% with menu=news_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
+                  {% include 'pyramid_pages/menu.jinja2' with context %}
+                {% endwith %}
+            </div>
+          </div>
+          <div class="page__right">
+            <div class="page-note"><strong>Important:</strong> Redefine me in "<your static>/pyramid_pages/index.jinja2"</your></div>
+            <div class="page-title">{{ context.node.name }}</div>
+            <div class="content">{{ context.node.description }}</div>
+          </div>
         </div>
       </div>
     </div>

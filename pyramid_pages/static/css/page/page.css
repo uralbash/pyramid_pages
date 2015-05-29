@@ -3,18 +3,22 @@
     border: solid 1px #bbb;
     position: relative;
     z-index: 90;
-    margin: 5em 0 0 0;
     box-shadow: 0 0 1.5em #ccc;
 }
-    .page__left
+    .page-inner
     {
-        width: 10%;
-        float: left;
+        width: 100%;
+        display: table;
     }
-    .page__right
-    {
-        width: 95%;
-        float: left;
-        padding: 2em 0;
-        margin: 0 0 0 5%;
-    }
+        .page__left
+        {
+            width: 25%;
+            display: table-cell;
+            background: #eee;
+        }
+        .page__right
+        {
+            width: 70%;
+            display: table-cell;
+            padding: 2em 0 2em 5%;
+        }
