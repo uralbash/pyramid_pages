@@ -41,7 +41,7 @@ class PageMixin(object):
               contacts => http://mysite.com/about/contacts"""})
 
     def __repr__(self):
-        return self.name
+        return self.name or '<{}>'.format(self)
 
     def get_menu(self, **kwargs):
         table = self.__class__
