@@ -50,6 +50,15 @@ class PageResource(object):
     def __repr__(self):
         return "<{}>".format(self.node.name.encode('utf-8'))
 
+    def get_prefix(self, request, node=None):
+        if not node:
+            node = self.node
+        node = node.__class__
+        settings = request.registry.settings
+        models = settings['ps_pages.models']
+        reversed_models = dict(zip(models.values(), models.keys()))
+        return reversed_models.get(node, None)
+
 
 def page_factory(request):
     settings = request.registry.settings

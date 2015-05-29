@@ -11,6 +11,7 @@ Main for example
 """
 import transaction
 from pyramid.config import Configurator
+from pyramid.events import BeforeRender
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.session import SignedCookieSessionFactory
 from sqlalchemy import Column, Integer, engine_from_config
@@ -60,7 +61,8 @@ def add_mptt_tree(session):
         {'id': '1', 'slug': 'about-company', 'name': 'Hello Traversal World!',
          'visible': True,
          'in_menu': True,
-         'description': '''Hello Traversal World! Hello Traversal World! Hello Traversal World!''',
+         'description': '''Hello Traversal World! Hello Traversal World!
+         Hello Traversal World!''',
          'parent_id': None},
         {'id': '2', 'slug': 'we-love-gevent', 'name': u'We ♥ gevent',
          'visible': True,
@@ -259,13 +261,17 @@ def add_mptt_tree(session):
 
 
 def index_view(request):
+    return {}
+
+
+def add_global_menu(event):
     def page_menu(**kwargs):
         return get_pages_menu(DBSession, MPTTPages, **kwargs)
 
     def news_menu(**kwargs):
         return get_pages_menu(DBSession, MPTTNews, **kwargs)
-    return {'page_menu': page_menu,
-            'news_menu': news_menu}
+    event['page_menu'] = page_menu
+    event['news_menu'] = news_menu
 
 
 def index_page_factory(request):
@@ -316,7 +322,7 @@ def main(global_settings, **settings):
         'pages': MPTTPages,
         'news': MPTTNews
     }
-
+    config.add_subscriber(add_global_menu, BeforeRender)
     return config.make_wsgi_app()
 
 if __name__ == '__main__':
