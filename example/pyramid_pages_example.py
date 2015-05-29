@@ -68,7 +68,7 @@ def add_mptt_tree(session):
          'description': '''Hello Traversal World! Hello Traversal World!
          Hello Traversal World!''',
          'parent_id': None},
-        {'id': '2', 'slug': 'we-love-gevent', 'name': u'We ♥ gevent',
+        {'id': '2', 'slug': 'we-love-gevent', 'name': u'We ♥  gevent',
          'visible': True,
          'in_menu': True,
          'parent_id': '1'},
