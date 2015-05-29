@@ -16,13 +16,12 @@ bower_components
 build
 cover
 dist
-example.sqlite
 node_modules
 nohup.out
 phantomjsdriver.log
-pyramid_sacrud_pages/.coverage
-pyramid_sacrud_pages/cover
-pyramid_sacrud_pages/TODO
-test.sqlite
+pyramid_pages/.coverage
+pyramid_pages/cover
+pyramid_pages/TODO
+*.sqlite
 TODO
 TODO.txt
