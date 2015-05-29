@@ -19,9 +19,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
 
-from ps_pages.common import get_pages_menu
-from ps_pages.models import BasePages, PageMixin
-from ps_pages.routes import PageResource
+from pyramid_pages.common import get_pages_menu
+from pyramid_pages.models import BasePages, PageMixin
+from pyramid_pages.routes import PageResource
 from sqlalchemy_mptt import BaseNestedSets
 
 Base = declarative_base()
@@ -276,9 +276,9 @@ def add_global_menu(event):
 
 def index_page_factory(request):
     settings = request.registry.settings
-    models = settings['ps_pages.models']
+    models = settings['pyramid_pages.models']
     table = models[''] or models['/']
-    dbsession = settings['ps_pages.dbsession']
+    dbsession = settings['pyramid_pages.dbsession']
     node = dbsession.query(table)\
         .filter(table.slug.is_('about-company')).first()
     if not node:
@@ -293,7 +293,7 @@ def main(global_settings, **settings):
     )
 
     config.include('pyramid_jinja2')
-    config.add_jinja2_search_path('ps_pages_example:templates')
+    config.add_jinja2_search_path('pyramid_pages_example:templates')
 
     config.add_route('index', '/', factory=index_page_factory)
     config.add_view(index_view,
@@ -314,10 +314,10 @@ def main(global_settings, **settings):
     except Exception as e:
         print(e)
 
-    # ps_pages
-    config.include("ps_pages")
-    settings['ps_pages.dbsession'] = DBSession
-    settings['ps_pages.models'] = {
+    # pyramid_pages
+    config.include("pyramid_pages")
+    settings['pyramid_pages.dbsession'] = DBSession
+    settings['pyramid_pages.models'] = {
         '': MPTTPages,
         'pages': MPTTPages,
         'news': MPTTNews

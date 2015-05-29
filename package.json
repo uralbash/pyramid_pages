@@ -1,18 +1,18 @@
 {
-  "name": "ps_pages",
-  "title": "Pyramid SACRUD Pages",
-  "description": "ps_pages provides a collections of pages to your Pyramid application. This is very similar to django.contrib.flatpages but with a tree structure and traversal algorithm in URL dispath.",
+  "name": "pyramid_pages",
+  "title": "Pyramid Pages",
+  "description": "pyramid_pages provides a collections of pages to your Pyramid application. This is very similar to django.contrib.flatpages but with a tree structure and traversal algorithm in URL dispath.",
   "version": "0.0.4",
-  "homepage": "https://github.com/ITCase/ps_pages",
+  "homepage": "https://github.com/ITCase/pyramid_pages",
   "author": {
     "name": "ITCase",
     "email": "info@itcase.pro"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:ITCase/ps_pages.git"
+    "url": "git@github.com:ITCase/pyramid_pages.git"
   },
-  "bugs": "https://github.com/ITCase/ps_pages/issues",
+  "bugs": "https://github.com/ITCase/pyramid_pages/issues",
   "licenses": [
     {
       "type": "MIT",
