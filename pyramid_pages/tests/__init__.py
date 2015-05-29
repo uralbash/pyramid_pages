@@ -17,6 +17,9 @@ from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
 from webtest import TestApp
 
+import imp
+imp.load_source('pyramid_pages_example', 'example/pyramid_pages_example.py')
+
 from pyramid_pages_example import MPTTNews, MPTTPages, Base, main  # noqa
 
 settings = {'sqlalchemy.url': 'sqlite:///test.sqlite'}

@@ -25,7 +25,6 @@ install:
   - pip install git+git://github.com/myint/rstcheck.git
   - pip install -r requirements.txt
   - pip install --upgrade --force-reinstall git+git://github.com/ITCase/sacrud.git
-  - cd example && python setup.py install
 
 script:
   - nosetests --with-coverage --cover-package pyramid_pages --cover-erase --with-doctest
