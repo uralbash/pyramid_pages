@@ -44,11 +44,6 @@
       {
         color: #fff;
       }
-
-      .main-menu-list__item-link:visited:hover
-      {
-        background: #811621;
-      }
     .main-menu-list__item:hover > .main-menu-list
     {
       visibility: visible;

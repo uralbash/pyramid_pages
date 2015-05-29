@@ -15,10 +15,12 @@
             width: 25%;
             display: table-cell;
             background: #eee;
+            vertical-align: top;
         }
         .page__right
         {
             width: 70%;
             display: table-cell;
             padding: 2em 0 2em 5%;
+            vertical-align: top;
         }

@@ -62,3 +62,8 @@
     border-width: 5px 0 5px 5px;
     border-color: transparent transparent transparent #000;
   }
+
+  .main-menu_type_vertical .main-menu-list__item_state_current
+  {
+    background: #ccc;
+  }
