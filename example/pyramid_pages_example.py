@@ -114,12 +114,15 @@ def add_mptt_tree(session):
         {'id': '12', 'slug': 'and-aiohttp', 'name': 'and aiohttp!',
          'in_menu': True,
          'visible': True, 'parent_id': '3'},
-        {'id': '13', 'slug': 'and-beer', 'name': 'and beer!',
+        {'id': '13', 'slug': 'and-asyncio', 'name': 'and asyncio!',
+         'in_menu': True,
+         'visible': True, 'parent_id': '3'},
+        {'id': '14', 'slug': 'and-beer', 'name': 'and beer!',
          'in_menu': True,
          'visible': True, 'parent_id': '12'},
-        {'id': '14', 'slug': 'and-bear-to', 'name': 'and beer to!',
+        {'id': '15', 'slug': 'and-bear-to', 'name': 'and beer to!',
          'in_menu': True,
-         'visible': True, 'parent_id': '13'},
+         'visible': True, 'parent_id': '14'},
     )
 
     tree2 = (
@@ -351,7 +354,7 @@ def main(global_settings, **settings):
     return config.make_wsgi_app()
 
 if __name__ == '__main__':
-    settings = {}
+    settings = {'index_view': True}
     app = main({}, **settings)
 
     from wsgiref.simple_server import make_server
