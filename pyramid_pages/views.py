@@ -23,6 +23,7 @@ def page_view(context, request):
 
     if all([hasattr(page, attr)
             for attr in ('redirect', 'redirect_url', 'redirect_page')]):
+        # check redirect type
         if not page.redirect_type and page.redirect_url:
             redirect_type = '302'
         elif not page.redirect_type and page.redirect_page:
@@ -30,9 +31,11 @@ def page_view(context, request):
         else:
             redirect_type = str(page.redirect_type)
 
+        # Prohibit redirect itself
         if page.redirect == page and redirect_type != '200':
             raise HTTPNotFound
 
+        # Redirect to Page
         if page.redirect_page:
             if not page.redirect.visible:
                 raise HTTPNotFound
@@ -43,6 +46,7 @@ def page_view(context, request):
                     context.__class__(page.redirect, context.prefix))
                 return Response(status_code=int(redirect_type),
                                 location=redirect_resource_url)
+        # Redirect to URL
         if page.redirect_url:
             if redirect_type == '200':
                 raise HTTPNotFound
