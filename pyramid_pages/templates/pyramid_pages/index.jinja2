@@ -2,9 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
-  <title>Index</title>
+  <title>{% include 'pyramid_pages/title.jinja2' %}</title>
+  {% include 'pyramid_pages/meta.jinja2' %}
   <link href="{{ request.static_url('pyramid_pages:static/css/__pyramid_pages.css') }}" rel="stylesheet" />
 </head>
+
 <body>
   <div class="wrapper">
     <div class="wrapper__inner">
@@ -20,12 +22,11 @@
         </div>
         <div class="page__right">
           <div class="page-note"><strong>Important:</strong> Redefine me in "<your static>/pyramid_pages/index.jinja2"</your></div>
-          <div class="page-title">{{ context.node.name }}</div>
-          <div class="content">{{ context.node.description }}</div>
+          <div class="page-title">{{ page.name }}</div>
+          <div class="content">{{ page.description|safe }}</div>
         </div>
       </div>
     </div>
   </div>
 </body>
 </html>
-

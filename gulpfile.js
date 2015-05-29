@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp'),
-    $ = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'] }),
+    plugins = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'] }),
     minifyCSS = require('gulp-minify-css');
 
 var browserify = require('browserify'),
@@ -11,28 +11,28 @@ var browserify = require('browserify'),
     mainBowerFiles = require('main-bower-files'),
     source = require('vinyl-source-stream');
 
-var TARGET_CSS_FILE = '__ps_pages.css',
-    TARGET_JS_FILE = '__ps_pages.js',
+var TARGET_CSS_FILE = '__pyramid_pages.css',
+    TARGET_JS_FILE = '__pyramid_pages.js',
     BROWSERIFY_FILE = 'main.js';
 
-var CSS_PATH = './ps_pages/static/css/',
-    JS_PATH = './ps_pages/static/js/',
-    IMG_PATH = './ps_pages/static/img/';
+var CSS_PATH = './pyramid_pages/static/css/',
+    JS_PATH = './pyramid_pages/static/js/',
+    IMG_PATH = './pyramid_pages/static/img/';
 
 var TARGET_CSS_PATH = CSS_PATH + TARGET_CSS_FILE,
     TARGET_JS_PATH = JS_PATH + TARGET_JS_FILE;
 
-var CSS_FILES = ['./ps_pages/static/css/*.css',
-                 './ps_pages/static/css/**/*.css',
-                 '!ps_pages/static/css/no-js.css',
-                 '!ps_pages/static/css/' + TARGET_CSS_FILE
+var CSS_FILES = ['./pyramid_pages/static/css/*.css',
+                 './pyramid_pages/static/css/**/*.css',
+                 '!pyramid_pages/static/css/no-js.css',
+                 '!pyramid_pages/static/css/' + TARGET_CSS_FILE
                 ],
-    JS_FILES = ['./ps_pages/static/js/*.js',
-                './ps_pages/static/js/**/*.js',
-                '!ps_pages/static/js/' + TARGET_JS_FILE,
-                '!ps_pages/static/js/vendor/*.js'
+    JS_FILES = ['./pyramid_pages/static/js/*.js',
+                './pyramid_pages/static/js/**/*.js',
+                '!pyramid_pages/static/js/' + TARGET_JS_FILE,
+                '!pyramid_pages/static/js/vendor/*.js'
                ],
-    TEMPLATES_FILES = ['./ps_pages/**/*.jinja2','./example/**/*.jinja2'];
+    TEMPLATES_FILES = ['./pyramid_pages/**/*.jinja2','./example/**/*.jinja2'];
 
 
 gulp.task('browser-sync', function() {
@@ -46,13 +46,13 @@ gulp.task('browser-sync', function() {
 gulp.task('bower-js', function() {
   return gulp.src(mainBowerFiles({ filter: (/.*\.(js|map)$/i) }),
                  { base: 'bower_components' })
-  .pipe($.rename(function (path) {
+  .pipe(plugins.rename(function (path) {
     path.dirname = path.dirname.slice(0, path.dirname.indexOf('/') + 1);
   }))
   .pipe(gulp.dest(JS_PATH + 'vendor/'))
   .pipe(map(function(code, filename) {
-    $.util.log('Bower JS ' +
-    $.util.colors.green(filename));
+    plugins.util.log('Bower JS ' +
+    plugins.util.colors.green(filename));
   }));
 });
 
@@ -60,13 +60,13 @@ gulp.task('bower-js', function() {
 gulp.task('bower-css', function() {
   return gulp.src(mainBowerFiles({ filter: (/.*\.(css)$/i) }),
                  { base: 'bower_components' })
-  .pipe($.rename(function (path) {
+  .pipe(plugins.rename(function (path) {
     path.dirname = path.dirname.slice(0, path.dirname.indexOf('/') + 1);
   }))
   .pipe(gulp.dest(CSS_PATH + 'vendor/'))
   .pipe(map(function(code, filename) {
-    $.util.log('Bower CSS ' +
-    $.util.colors.green(filename));
+    plugins.util.log('Bower CSS ' +
+    plugins.util.colors.green(filename));
   }));
 });
 
@@ -74,13 +74,13 @@ gulp.task('bower-css', function() {
 gulp.task('bower-img', function() {
   return gulp.src(mainBowerFiles({ filter: (/.*\.(png|jpg|gif)$/i) }),
                  { base: 'bower_components' })
-  .pipe($.rename(function (path) {
+  .pipe(plugins.rename(function (path) {
     path.dirname = path.dirname.slice(0, path.dirname.indexOf('/') + 1);
   }))
   .pipe(gulp.dest(IMG_PATH))
   .pipe(map(function(code, filename) {
-    $.util.log('Bower Images ' +
-    $.util.colors.green(filename));
+    plugins.util.log('Bower Images ' +
+    plugins.util.colors.green(filename));
   }));
 });
 
@@ -90,12 +90,12 @@ gulp.task('browserify', function() {
     .bundle()
     .pipe(source(TARGET_JS_PATH))
     .pipe(buffer())
-    .pipe($.sourcemaps.init({ loadMaps: true }))
-    .pipe($.sourcemaps.write('./'))
+    .pipe(plugins.sourcemaps.init({ loadMaps: true }))
+    .pipe(plugins.sourcemaps.write('./'))
     .pipe(gulp.dest('./'))
     .pipe(map(function(code, filename) {
-      $.util.log('Browserify ' +
-      $.util.colors.green(filename));
+      plugins.util.log('Browserify ' +
+      plugins.util.colors.green(filename));
     }))
     .pipe(browserSync.reload({ stream:true }));
 });
@@ -103,34 +103,34 @@ gulp.task('browserify', function() {
 
 gulp.task('css', function() {
   return gulp.src(CSS_FILES)
-    .pipe($.newer(TARGET_CSS_PATH))
-    .pipe($.sourcemaps.init())
-    .pipe($.autoprefixer({
+    .pipe(plugins.newer(TARGET_CSS_PATH))
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.autoprefixer({
       browsers: ['Firefox >= 3', 'Explorer >= 6', 'Opera >= 9',
                  'Chrome >= 15', 'Safari >= 4', '> 1%'],
       cascade: false
     }))
     .on('error', function(err) {
-      $.util.log($.util.colors.red('Autoprefixer Error'),
-      $.util.colors.yellow(err.message));
+      plugins.util.log(plugins.util.colors.red('Autoprefixer Error'),
+      plugins.util.colors.yellow(err.message));
     })
-    .pipe($.cssBase64({
+    .pipe(plugins.cssBase64({
       extensions: ['png', 'jpg', 'gif'],
       maxWeightResource: 100,
     }))
     .on('error', function(err) {
-      $.util.log($.util.colors.red('Base64 Error'),
-      $.util.colors.yellow(err.message));
+      plugins.util.log(plugins.util.colors.red('Base64 Error'),
+      plugins.util.colors.yellow(err.message));
     })
-    .pipe($.concat(TARGET_CSS_FILE))
+    .pipe(plugins.concat(TARGET_CSS_FILE))
     .pipe(minifyCSS({ keepSpecialComments: 0 }))
-    .pipe($.sourcemaps.write('.'))
+    .pipe(plugins.sourcemaps.write('.'))
     .pipe(gulp.dest(CSS_PATH))
-    .on('error', $.util.log)
-    .pipe($.filter('*.css'))
+    .on('error', plugins.util.log)
+    .pipe(plugins.filter('*.css'))
     .pipe(map(function(code, filename) {
-      $.util.log('CSS ' +
-      $.util.colors.green(filename));
+      plugins.util.log('CSS ' +
+      plugins.util.colors.green(filename));
     }))
     .pipe(browserSync.reload({ stream:true }));
 });
@@ -143,21 +143,21 @@ gulp.task('html', function() {
 
 
 gulp.task('watch', function() {
-  $.watch(CSS_FILES,{ verbose: true },
-    $.batch(function (cb) {
+  plugins.watch(CSS_FILES,{ verbose: true },
+    plugins.batch(function (cb) {
       gulp.start('css');
       cb();
     }));
 
-  $.watch(JS_FILES, { verbose: true },
-    $.batch(function (cb) {
+  plugins.watch(JS_FILES, { verbose: true },
+    plugins.batch(function (cb) {
       console.log(JS_FILES);
       gulp.start('browserify');
       cb();
     }));
 
-  $.watch(TEMPLATES_FILES, { verbose: true },
-    $.batch(function (cb) {
+  plugins.watch(TEMPLATES_FILES, { verbose: true },
+    plugins.batch(function (cb) {
       gulp.start('html');
       cb();
     }));

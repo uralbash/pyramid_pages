@@ -16,6 +16,9 @@ from sqlalchemy import or_
 
 from .views import page_view
 
+CONFIG_MODELS = 'pyramid_pages.models'
+CONFIG_DBSESSION = 'pyramid_pages.dbsession'
+
 
 class PageResource(object):
 
@@ -55,16 +58,16 @@ class PageResource(object):
             node = self.node
         node = node.__class__
         settings = request.registry.settings
-        models = settings['ps_pages.models']
+        models = settings[CONFIG_MODELS]
         reversed_models = dict(zip(models.values(), models.keys()))
         return reversed_models.get(node, None)
 
 
 def page_factory(request):
     settings = request.registry.settings
-    models = settings['ps_pages.models']
+    models = settings[CONFIG_MODELS]
     prefix = request.matchdict['prefix']
-    dbsession = settings['ps_pages.dbsession']
+    dbsession = settings[CONFIG_DBSESSION]
 
     if prefix not in models:
         # prepend {prefix} to *traverse
@@ -84,9 +87,9 @@ def page_factory(request):
 
 def home_page_factory(request):
     settings = request.registry.settings
-    models = settings['ps_pages.models']
+    models = settings[CONFIG_MODELS]
     table = models[''] or models['/']
-    dbsession = settings['ps_pages.dbsession']
+    dbsession = settings[CONFIG_DBSESSION]
     node = dbsession.query(table).filter(table.slug.is_('/')).first()
     if not node:
         raise HTTPNotFound
@@ -98,7 +101,7 @@ def includeme(config):
     config.add_route(name, '/{prefix}*traverse', factory=page_factory)
     config.add_view(page_view,
                     route_name=name,
-                    renderer='ps_pages/index.jinja2',
+                    renderer='pyramid_pages/index.jinja2',
                     context=PageResource,
                     permission=name)
 
@@ -106,6 +109,6 @@ def includeme(config):
     config.add_route(name, '/', factory=home_page_factory)
     config.add_view(page_view,
                     route_name=name,
-                    renderer='ps_pages/index.jinja2',
+                    renderer='pyramid_pages/index.jinja2',
                     context=PageResource,
                     permission=name)
