@@ -46,7 +46,9 @@
     top: 1em;
     margin: 0 0 0 -2em;
   }
-  .main-menu_type_vertical .main-menu-list__item_state_has-child .main-menu-list__item-link:after
+  .main-menu_type_vertical .main-menu-list__item_state_has-child > .main-menu-list__item-link:after,
+  .main-menu_type_vertical .main-menu-list__item_state_has-child .main-menu-list >
+  .main-menu_type_vertical .main-menu-list__item_state_has-child > .main-menu-list__item-link:after
   {
     display: inline-block;
     content: "";
