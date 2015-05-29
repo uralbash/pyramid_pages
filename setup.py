@@ -11,7 +11,7 @@ def read(name):
 
 setup(
     name='pyramid_pages',
-    version='0.0.1',
+    version='0.0.1.b1',
     url='http://github.com/ITCase/pyramid_pages/',
     author='Svintsov Dmitry',
     author_email='sacrud@uralbash.ru',
@@ -20,11 +20,11 @@ setup(
     zip_safe=False,
     test_suite="nose.collector",
     license="MIT",
-    description='Tree pages for pyramid CRUD interface sacrud',
+    description='Tree pages for pyramid',
     long_description=read('README.rst'),
     install_requires=read('requirements.txt'),
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',

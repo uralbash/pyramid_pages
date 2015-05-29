@@ -18,11 +18,13 @@ def page_view(context, request):
 
     if not page.visible:
         raise HTTPNotFound
-    elif page.redirect_url and page.redirect_page:
-        raise HTTPNotFound
 
     if all([hasattr(page, attr)
             for attr in ('redirect', 'redirect_url', 'redirect_page')]):
+        # Prohibit redirect both url and page
+        if page.redirect_url and page.redirect_page:
+            raise HTTPNotFound
+
         # check redirect type
         if not page.redirect_type and page.redirect_url:
             redirect_type = '302'

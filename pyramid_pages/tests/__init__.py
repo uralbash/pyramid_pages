@@ -31,8 +31,7 @@ class BaseTestCase(unittest.TestCase):
     def setUp(self):
         # bind an individual Session to the connection
         self.dbsession = self.DBSession(bind=self.engine)
-        Base.metadata.create_all(bind=self.engine)
-        self.dbsession.commit()
+        self.create_db()
 
     def tearDown(self):
         # rollback - everything that happened with the
@@ -41,6 +40,14 @@ class BaseTestCase(unittest.TestCase):
         testing.tearDown()
         Base.metadata.drop_all(bind=self.engine)
         self.dbsession.close()
+
+    def drop_db(self):
+        Base.metadata.drop_all(bind=self.engine)
+        self.dbsession.commit()
+
+    def create_db(self):
+        Base.metadata.create_all(bind=self.engine)
+        self.dbsession.commit()
 
 
 class UnitTestBase(BaseTestCase):
