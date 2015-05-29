@@ -1,33 +1,4 @@
-.dropdown-menu
+body, html
 {
-	min-width: 150px;
-	cursor: pointer;
-	border: 1px solid #ccc;
-	background: #fff;
-	padding: 0;
-	margin: 0;
-	list-style: none;
-	float: left;
-	display: none;
+    height: 100%;
 }
-	.dropdown-menu__item
-	{
-		/*padding: 0.5em 1em 0.5em 1.5em;*/
-	}
-		.dropdown-menu__item-link
-		{
-			font: 1em 'Segoe UI Light_', 'Open Sans Light', Verdana, Arial, Helvetica, sans-serif;
-			color: #000;
-			text-decoration: none;
-			padding: 0.5em 1em 0.5em 1.5em;
-			display: block;
-		}
-
-	.dropdown-menu__item:hover
-	{
-		background: #4183c4;
-	}
-		.dropdown-menu__item:hover .dropdown-menu__item-link
-		{
-			color: #fff;
-		}

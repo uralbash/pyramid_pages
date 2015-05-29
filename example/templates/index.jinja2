@@ -1,20 +1,26 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Index</title>
-  </head>
-  <body>
-    Hello Traversal World!
-    <br/>
-    {{ context.node.name }}
-    <br/>
-    {{ context.node.description }}
-    <br/>
-    <br/>
-
-    {% with menu=page_menu(from_lvl=1).items() + news_menu(from_lvl=1).items() %}
-      {% include 'ps_pages/menu.jinja2' with context %}
-    {% endwith %}
-  </body>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>Index</title>
+	<link href="{{ request.static_url('ps_pages:static/css/__ps_pages.css') }}" rel="stylesheet" />
+</head>
+<body>
+	<div class="wrapper">
+		<div class="wrapper__inner">
+			<div class="page clearfix">
+				<div class="page__left">
+					{% with menu=page_menu(from_lvl=1) %}
+						{% include 'ps_pages/menu.jinja2' with context %}
+					{% endwith %}
+				</div>
+				<div class="page__right">
+					<div class="page-note"><strong>Important:</strong> Redefine me in "<your static>/ps_pages/index.jinja2"</your></div>
+					<div class="page-title">{{ context.node.name }}</div>
+					<div class="content">{{ context.node.description }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
 </html>
