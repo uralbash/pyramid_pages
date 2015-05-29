@@ -1,18 +1,18 @@
 <div class="main-menu">
-	{% for node, children in menu.items() recursive %}
-		<div class="main-menu-list">
-			<div class="main-menu-list__item">
-				<a href="{{ request.resource_url(context.__class__(node, context.prefix)) }}"
-                                        {% if node == context.node %}
-                                          class="main-menu-list__item_state_current"
-                                        {% endif %}
-					class="main-menu-list__item-link">
-					{{ node.name }}
-				</a>
-				<div class="main-menu-list">
-					{{ loop(children.items()) }}
-				</div>
-			</div>
-		</div>
-	{% endfor %}
+  {% for node, children in menu.items() recursive %}
+    <div class="main-menu-list">
+      <div class="main-menu-list__item">
+        <a href="{{ request.resource_url(context.__class__(node, context.prefix)) }}"
+          {% if node == context.node %}
+            class="main-menu-list__item_state_current"
+          {% endif %}
+          class="main-menu-list__item-link">
+          {{ node.name }}
+        </a>
+        <div class="main-menu-list">
+          {{ loop(children.items()) }}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
 </div>
