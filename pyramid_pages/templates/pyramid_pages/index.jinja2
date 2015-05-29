@@ -13,7 +13,7 @@
       <div class="page clearfix">
         <div class="main-menu clearfix">
           <div class="main-menu-title">Pyramid Pages</div>
-            {% with menu=page_menu(from_lvl=1, to_lvl=3, trees=(1, 2, 3)) %}
+            {% with menu=page_menu(from_lvl=1, to_lvl=6, trees=(1, 2, 3)) %}
               {% include 'pyramid_pages/menu.jinja2' with context %}
             {% endwith %}
         </div>

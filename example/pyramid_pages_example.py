@@ -27,6 +27,10 @@ from sqlalchemy_mptt import BaseNestedSets
 Base = declarative_base()
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
+CONFIG_SQLALCHEMY_URL = 'sqlalchemy.url'
+CONFIG_PYRAMID_PAGES_MODELS = 'pyramid_pages.models'
+CONFIG_PYRAMID_PAGES_DBSESSION = 'pyramid_pages.dbsession'
+
 
 class MPTTPages(BasePages, Base):
     __tablename__ = "mptt_pages"
@@ -72,6 +76,8 @@ def add_mptt_tree(session):
          'visible': True,
          'in_menu': True,
          'parent_id': '2'},
+
+        # Redirect
         {'id': '4', 'slug': 'redirect-301',
          'name': 'Redirect 301 to we-love-gevent',
          'redirect_type': '301',
@@ -91,6 +97,8 @@ def add_mptt_tree(session):
          'visible': True,
          'in_menu': True,
          'parent_id': '4'},
+
+        # Not visible
         {'id': '7', 'slug': 'our-strategy', 'name': 'Our strategy',
          'visible': True, 'parent_id': '1'},
         {'id': '8', 'slug': 'wordwide', 'name': 'Wordwide', 'visible': True,
@@ -101,6 +109,17 @@ def add_mptt_tree(session):
          'visible': True, 'parent_id': '7'},
         {'id': '11', 'slug': 'at-a-glance', 'name': 'at a glance',
          'visible': True, 'parent_id': '10'},
+
+        # Deep tree
+        {'id': '12', 'slug': 'and-aiohttp', 'name': 'and aiohttp!',
+         'in_menu': True,
+         'visible': True, 'parent_id': '3'},
+        {'id': '13', 'slug': 'and-beer', 'name': 'and beer!',
+         'in_menu': True,
+         'visible': True, 'parent_id': '12'},
+        {'id': '14', 'slug': 'and-bear-to', 'name': 'and beer to!',
+         'in_menu': True,
+         'visible': True, 'parent_id': '13'},
     )
 
     tree2 = (
@@ -108,131 +127,130 @@ def add_mptt_tree(session):
          'visible': True,
          'in_menu': True,
          'parent_id': None, 'tree_id': '2'},
-        {'id': '12', 'slug': 'africa', 'name': 'Africa',
+        {'id': '101', 'slug': 'africa', 'name': 'Africa',
          'visible': True,
          'in_menu': True,
          'parent_id': '100', 'tree_id': '2'},
-        {'id': '13', 'slug': 'algeria', 'name': 'Algeria',
+        {'id': '102', 'slug': 'algeria', 'name': 'Algeria',
          'visible': True,
          'in_menu': True,
-         'parent_id': '12', 'tree_id': '2'},
-        {'id': '14', 'slug': 'marocco', 'name': 'Marocco',
+         'parent_id': '101', 'tree_id': '2'},
+        {'id': '103', 'slug': 'marocco', 'name': 'Marocco',
          'visible': True,
          'in_menu': True,
-         'parent_id': '12', 'tree_id': '2'},
-        {'id': '15', 'slug': 'libya', 'name': 'Libya',
+         'parent_id': '101', 'tree_id': '2'},
+        {'id': '104', 'slug': 'libya', 'name': 'Libya',
          'visible': True,
          'in_menu': True,
-         'parent_id': '12', 'tree_id': '2'},
-        {'id': '16', 'slug': 'somalia', 'name': 'Somalia',
+         'parent_id': '101', 'tree_id': '2'},
+        {'id': '105', 'slug': 'somalia', 'name': 'Somalia',
          'visible': True,
          'in_menu': True,
-         'parent_id': '12', 'tree_id': '2'},
-        {'id': '17', 'slug': 'kenya', 'name': 'Kenya',
+         'parent_id': '101', 'tree_id': '2'},
+        {'id': '106', 'slug': 'kenya', 'name': 'Kenya',
          'visible': True,
          'in_menu': True,
-         'parent_id': '12', 'tree_id': '2'},
-        {'id': '18', 'slug': 'mauritania', 'name': 'Mauritania',
+         'parent_id': '101', 'tree_id': '2'},
+        {'id': '107', 'slug': 'mauritania', 'name': 'Mauritania',
          'visible': True,
          'in_menu': True,
-         'parent_id': '12', 'tree_id': '2'},
-        {'id': '19', 'slug': 'foo19', 'name': 'South Africa',
+         'parent_id': '101', 'tree_id': '2'},
+        {'id': '108', 'slug': 'foo19', 'name': 'South Africa',
          'visible': True,
          'in_menu': True,
-         'parent_id': '12', 'tree_id': '2'},
+         'parent_id': '101', 'tree_id': '2'},
 
         {'id': '200', 'slug': 'america', 'name': 'America',
          'visible': True,
          'in_menu': True,
          'parent_id': '100', 'tree_id': '2'},
-        {'id': '2213', 'slug': 'north-america', 'name': 'North-America',
+        {'id': '201', 'slug': 'north-america', 'name': 'North-America',
          'visible': True,
          'in_menu': True,
          'parent_id': '200', 'tree_id': '2'},
-        {'id': '4216', 'slug': 'Canada', 'name': 'Canada',
+        {'id': '202', 'slug': 'Canada', 'name': 'Canada',
          'visible': True,
          'in_menu': True,
-         'parent_id': '2213', 'tree_id': '2'},
-        {'id': '4217', 'slug': 'usa', 'name': 'USA',
+         'parent_id': '201', 'tree_id': '2'},
+        {'id': '203', 'slug': 'usa', 'name': 'USA',
          'visible': True,
          'in_menu': True,
-         'parent_id': '2213', 'tree_id': '2'},
+         'parent_id': '201', 'tree_id': '2'},
 
-        {'id': '2214', 'slug': 'middle-america', 'name': 'Middle-America',
+        {'id': '300', 'slug': 'middle-america', 'name': 'Middle-America',
          'visible': True,
          'in_menu': True,
          'parent_id': '200', 'tree_id': '2'},
+        {'id': '301', 'slug': 'mexico', 'name': 'Mexico',
+         'visible': True,
+         'in_menu': True,
+         'parent_id': '300', 'tree_id': '2'},
+        {'id': '302', 'slug': 'honduras', 'name': 'Honduras',
+         'visible': True,
+         'in_menu': True,
+         'parent_id': '300', 'tree_id': '2'},
+        {'id': '303', 'slug': 'guatemala', 'name': 'Guatemala',
+         'visible': True,
+         'in_menu': True,
+         'parent_id': '300', 'tree_id': '2'},
 
-        {'id': '3215', 'slug': 'mexico', 'name': 'Mexico',
-         'visible': True,
-         'in_menu': True,
-         'parent_id': '2214', 'tree_id': '2'},
-        {'id': '3216', 'slug': 'honduras', 'name': 'Honduras',
-         'visible': True,
-         'in_menu': True,
-         'parent_id': '2214', 'tree_id': '2'},
-        {'id': '3217', 'slug': 'guatemala', 'name': 'Guatemala',
-         'visible': True,
-         'in_menu': True,
-         'parent_id': '2214', 'tree_id': '2'},
-
-        {'id': '2215', 'slug': 'south-america', 'name': 'South-America',
+        {'id': '400', 'slug': 'south-america', 'name': 'South-America',
          'visible': True,
          'in_menu': True,
          'parent_id': '200', 'tree_id': '2'},
-        {'id': '214', 'slug': 'brazil', 'name': 'Brazil',
+        {'id': '401', 'slug': 'brazil', 'name': 'Brazil',
          'visible': True,
          'in_menu': True,
-         'parent_id': '2215', 'tree_id': '2'},
-        {'id': '215', 'slug': 'argentina', 'name': 'Argentina',
+         'parent_id': '400', 'tree_id': '2'},
+        {'id': '402', 'slug': 'argentina', 'name': 'Argentina',
          'visible': True,
          'in_menu': True,
-         'parent_id': '2215', 'tree_id': '2'},
-        {'id': '216', 'slug': 'uruguay', 'name': 'Uruguay',
+         'parent_id': '400', 'tree_id': '2'},
+        {'id': '403', 'slug': 'uruguay', 'name': 'Uruguay',
          'visible': True,
          'in_menu': True,
-         'parent_id': '2215', 'tree_id': '2'},
-        {'id': '217', 'slug': 'chile', 'name': 'Chile',
+         'parent_id': '400', 'tree_id': '2'},
+        {'id': '404', 'slug': 'chile', 'name': 'Chile',
          'visible': True,
          'in_menu': True,
-         'parent_id': '2215', 'tree_id': '2'},
+         'parent_id': '400', 'tree_id': '2'},
 
-        {'id': '300', 'slug': 'asia', 'name': 'Asia',
+        {'id': '500', 'slug': 'asia', 'name': 'Asia',
          'visible': True,
          'in_menu': True,
          'parent_id': '100', 'tree_id': '2'},
-        {'id': '45214', 'slug': 'china', 'name': 'China',
+        {'id': '501', 'slug': 'china', 'name': 'China',
          'visible': True,
          'in_menu': True,
-         'parent_id': '300', 'tree_id': '2'},
-        {'id': '45215', 'slug': 'india', 'name': 'India',
+         'parent_id': '500', 'tree_id': '2'},
+        {'id': '502', 'slug': 'india', 'name': 'India',
          'visible': True,
          'in_menu': True,
-         'parent_id': '300', 'tree_id': '2'},
-        {'id': '45216', 'slug': 'malaysia', 'name': 'Malaysia',
+         'parent_id': '500', 'tree_id': '2'},
+        {'id': '503', 'slug': 'malaysia', 'name': 'Malaysia',
          'visible': True,
          'in_menu': True,
-         'parent_id': '300', 'tree_id': '2'},
-        {'id': '45217', 'slug': 'thailand', 'name': 'Thailand',
+         'parent_id': '500', 'tree_id': '2'},
+        {'id': '504', 'slug': 'thailand', 'name': 'Thailand',
          'visible': True,
          'in_menu': True,
-         'parent_id': '300', 'tree_id': '2'},
-        {'id': '453215', 'slug': 'vietnam', 'name': 'Vietnam',
+         'parent_id': '500', 'tree_id': '2'},
+        {'id': '505', 'slug': 'vietnam', 'name': 'Vietnam',
          'visible': True,
          'in_menu': True,
-         'parent_id': '300', 'tree_id': '2'},
-        {'id': '452216', 'slug': 'singapore', 'name': 'Singapore',
+         'parent_id': '500', 'tree_id': '2'},
+        {'id': '506', 'slug': 'singapore', 'name': 'Singapore',
          'visible': True,
          'in_menu': True,
-         'parent_id': '300', 'tree_id': '2'},
-        {'id': '451217', 'slug': 'indonesia', 'name': 'Indonesia',
+         'parent_id': '500', 'tree_id': '2'},
+        {'id': '507', 'slug': 'indonesia', 'name': 'Indonesia',
          'visible': True,
          'in_menu': True,
-         'parent_id': '300', 'tree_id': '2'},
-        {'id': '42312217', 'slug': 'mongolia', 'name': 'Mongolia',
+         'parent_id': '500', 'tree_id': '2'},
+        {'id': '508', 'slug': 'mongolia', 'name': 'Mongolia',
          'visible': True,
          'in_menu': True,
-         'parent_id': '300', 'tree_id': '2'},
+         'parent_id': '500', 'tree_id': '2'},
     )
 
     news = (
@@ -295,15 +313,18 @@ def main(global_settings, **settings):
     config.include('pyramid_jinja2')
     config.add_jinja2_search_path('pyramid_pages_example:templates')
 
-    config.add_route('index', '/', factory=index_page_factory)
-    config.add_view(index_view,
-                    route_name='index',
-                    context=PageResource,
-                    renderer='index.jinja2')
+    if settings.get('index_view', False):
+        config.add_route('index', '/', factory=index_page_factory)
+        config.add_view(index_view,
+                        route_name='index',
+                        context=PageResource,
+                        renderer='index.jinja2')
 
     # Database
     settings = config.registry.settings
-    settings['sqlalchemy.url'] = "sqlite:///example.sqlite"
+    settings[CONFIG_SQLALCHEMY_URL] =\
+        settings.get(CONFIG_SQLALCHEMY_URL,
+                     'sqlite:///example.sqlite')
     engine = engine_from_config(settings)
     DBSession.configure(bind=engine)
     try:
@@ -316,12 +337,16 @@ def main(global_settings, **settings):
 
     # pyramid_pages
     config.include("pyramid_pages")
-    settings['pyramid_pages.dbsession'] = DBSession
-    settings['pyramid_pages.models'] = {
-        '': MPTTPages,
-        'pages': MPTTPages,
-        'news': MPTTNews
-    }
+    settings[CONFIG_PYRAMID_PAGES_DBSESSION] =\
+        settings.get(CONFIG_PYRAMID_PAGES_DBSESSION,
+                     DBSession)
+    settings[CONFIG_PYRAMID_PAGES_MODELS] =\
+        settings.get(CONFIG_PYRAMID_PAGES_MODELS,
+                     {
+                         '': MPTTPages,
+                         'pages': MPTTPages,
+                         'news': MPTTNews
+                     })
     config.add_subscriber(add_global_menu, BeforeRender)
     return config.make_wsgi_app()
 
