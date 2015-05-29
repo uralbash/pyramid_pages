@@ -2,9 +2,11 @@
     {% for node, children in menu.items() recursive %}
       <div class="main-menu-list__item
                   {% if node == context.node %}
-                  main-menu-list__item_state_current
+                    main-menu-list__item_state_current
                   {% endif %}
-                  main-menu-list__item_state_has-child">
+                  {% if children|length %}
+                    main-menu-list__item_state_has-child
+                  {% endif %}">
         <a href="{{ request.resource_url(
                       context.__class__(node,
                       context.get_prefix(request, node=node))) }}"

@@ -2,6 +2,7 @@
 {
   background: none;
   padding: 0;
+  z-index: 500;
 }
   .main-menu_type_vertical .main-menu-title
   {
