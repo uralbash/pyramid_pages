@@ -274,7 +274,16 @@ def add_mptt_tree(session):
         {'id': '4', 'slug': 'foo15', 'name': 'foo15',
          'visible': True,
          'in_menu': True,
-         'parent_id': '3', 'tree_id': '1'}
+         'parent_id': '3', 'tree_id': '1'},
+
+        {'id': '5', 'slug': 'hi', 'name': 'Hello',
+         'visible': True,
+         'in_menu': True,
+         'parent_id': None},
+        {'id': '6', 'slug': 'bye', 'name': 'Bye',
+         'visible': True,
+         'in_menu': True,
+         'parent_id': None}
     )
     add_fixture(MPTTPages, tree1, session)
     add_fixture(MPTTPages, tree2, session)
