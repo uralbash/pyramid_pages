@@ -19,6 +19,9 @@ notifications:
 
 python:
   - "2.7"
+  - "3.3"
+  - "3.4"
+  - "pypy"
 
 install:
   - pip install nose coverage coveralls flake8 webtest
