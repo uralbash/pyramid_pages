@@ -23,7 +23,11 @@ python:
   - "3.3"
   - "3.4"
   - "pypy"
-  - "pypy3"
+
+matrix:
+  include:
+    - python: "pypy3"
+      env: NO_RSTLINT=1
 
 install:
   - pip install -r requirements.txt
@@ -33,7 +37,7 @@ install:
 
 script:
   - python setup.py nosetests
-  - ./test.sh
+  - if [ -z "$NO_RSTLINT" ]; then ./test.sh; fi
 
 after_success:
   coveralls
