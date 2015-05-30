@@ -195,6 +195,7 @@ class TestPageView(UnitTestBase):
             view = page_view(context, self.request)
             self.assertEqual(view.status_code, redirect_code)
             self.assertEqual(view.location, 'http://example.com/node2/node3/')
+            self.dbsession.close()
 
         do_it(301)
         do_it(302)

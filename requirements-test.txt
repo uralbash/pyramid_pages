@@ -1,0 +1,7 @@
+nose
+coverage
+coveralls
+flake8
+webtest
+zope.sqlalchemy
+git+git://github.com/myint/rstcheck.git
