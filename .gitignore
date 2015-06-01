@@ -1,4 +1,5 @@
 *.egg-info
+*.map
 *.pyc
 *.sqlite*
 *.swo
