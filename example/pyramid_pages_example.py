@@ -120,7 +120,7 @@ def add_mptt_tree(session):
         {'id': '14', 'slug': 'and-beer', 'name': 'and beer!',
          'in_menu': True,
          'visible': True, 'parent_id': '12'},
-        {'id': '15', 'slug': 'and-bear-to', 'name': 'and beer to!',
+        {'id': '15', 'slug': 'and-bear-to', 'name': 'and bear to!',
          'in_menu': True,
          'visible': True, 'parent_id': '14'},
     )

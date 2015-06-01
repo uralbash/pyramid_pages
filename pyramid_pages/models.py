@@ -9,7 +9,6 @@
 """
 Models for page.
 """
-import deform
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import foreign, relationship
@@ -33,15 +32,10 @@ class PageMixin(object):
     name = Column(String, nullable=False)
     visible = Column(Boolean)
     in_menu = Column(Boolean)
-    slug = Column(
-        SlugType('name', False), unique=True, nullable=False,
-        info={"colanderalchemy": {'title': "URL (slug)"},
-              "description":
-              """Example: <br />
-              contacts => http://mysite.com/about/contacts"""})
+    slug = Column(SlugType('name', False), unique=True, nullable=False)
 
     def __repr__(self):
-        return self.name
+        return self.name or '<{}>'.format(self)
 
     def get_menu(self, **kwargs):
         table = self.__class__
@@ -51,31 +45,10 @@ class PageMixin(object):
 
 class SeoMixin(object):
 
-    seo_title = Column(String, nullable=True,
-                       info={"colanderalchemy": {'title': "Title"},
-                             "description":
-                             "Generate: &lt;title&gt;Value&lt;/title&gt;"})
-    seo_keywords = Column(String, nullable=True,
-                          info={"colanderalchemy": {'title': "META Keywords"},
-                                "description":
-                                """Generate:
-                                  &lt;meta name=''keywords''
-                                  content=/"Value/" /&gt;"""})
-    seo_description = Column(
-        String, nullable=True,
-        info={"colanderalchemy": {'title': "META Description"},
-              "description": """Generate: &lt;meta name='description'
-                                content='Value' /&gt;"""})
-    seo_metatags = Column(
-        Text, nullable=True,
-        info={'colanderalchemy': {'title': 'META Tags',
-                                  'widget': deform.widget.TextAreaWidget()},
-              "description":
-              """Example: <br />
-              &lt;meta name='robots' content='Allow'/&gt;
-              <br />&lt;meta property='og:image'
-              content='http://mysite.com/logo.png'
-              /&gt;"""})
+    seo_title = Column(String)
+    seo_keywords = Column(String)
+    seo_description = Column(String)
+    seo_metatags = Column(Text)
 
 
 class RedirectMixin(object):
@@ -96,7 +69,6 @@ class RedirectMixin(object):
         pk = getattr(cls, cls.get_pk())
         return relationship(
             cls, foreign_keys=[cls.redirect_page],
-            info={"colanderalchemy": {'title': "Redirect page"}},
             remote_side=cls.get_class_pk(),  # for show in sacrud relation
             primaryjoin=lambda: foreign(cls.redirect_page) == pk,
         )
@@ -104,12 +76,7 @@ class RedirectMixin(object):
 
 class BasePages(BaseNestedSets, PageMixin, SeoMixin, RedirectMixin):
 
-    description = Column(
-        Text,
-        info={'colanderalchemy': {
-            'title': 'Description',
-            'widget': deform.widget.TextAreaWidget(css_class='tinymce')}}
-    )
+    description = Column(Text)
 
     # sacrud
     verbose_name = 'MPTT pages'

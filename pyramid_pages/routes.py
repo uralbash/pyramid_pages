@@ -15,6 +15,7 @@ from pyramid.httpexceptions import HTTPNotFound
 from sqlalchemy import or_
 
 from .views import page_view
+from .security import PREFIX_PAGE, HOME_PAGE
 
 CONFIG_MODELS = 'pyramid_pages.models'
 CONFIG_DBSESSION = 'pyramid_pages.dbsession'
@@ -97,18 +98,16 @@ def home_page_factory(request):
 
 
 def includeme(config):
-    name = 'pyramid_pages_prefix_page_view'
-    config.add_route(name, '/{prefix}*traverse', factory=page_factory)
+    config.add_route(PREFIX_PAGE, '/{prefix}*traverse', factory=page_factory)
     config.add_view(page_view,
-                    route_name=name,
+                    route_name=PREFIX_PAGE,
                     renderer='pyramid_pages/index.jinja2',
                     context=PageResource,
-                    permission=name)
+                    permission=PREFIX_PAGE)
 
-    name = 'pyramid_pages_home_page_view'
-    config.add_route(name, '/', factory=home_page_factory)
+    config.add_route(HOME_PAGE, '/', factory=home_page_factory)
     config.add_view(page_view,
-                    route_name=name,
+                    route_name=HOME_PAGE,
                     renderer='pyramid_pages/index.jinja2',
                     context=PageResource,
-                    permission=name)
+                    permission=HOME_PAGE)

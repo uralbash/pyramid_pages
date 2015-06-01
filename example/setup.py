@@ -10,4 +10,7 @@ setup(
 [paste.app_factory]
 main = pyramid_pages_example:main
     """,
+    install_requires=[
+        "zope.sqlalchemy",
+    ],
 )
