@@ -20,6 +20,8 @@ class TestPageView(UnitTestBase):
     """
 
     def test_visible_node(self):
+        """ Node is visible.
+        """
 
         def do_it(model):
             node = model(visible=True)
@@ -31,9 +33,17 @@ class TestPageView(UnitTestBase):
         do_it(MPTTPages)
 
     def test_not_visible_node(self):
+        """ Node is not visible.
+        """
 
         def do_it(model):
+            # visible is None
             node = model()
+            context = PageResource(node)
+            self.assertRaises(HTTPNotFound, page_view, context, self.request)
+
+            # visible is False
+            node = model(visible=False)
             context = PageResource(node)
             self.assertRaises(HTTPNotFound, page_view, context, self.request)
 
@@ -47,7 +57,8 @@ class TestPageView(UnitTestBase):
     redirect_type: [200, 301, 302]
     """
     def test_redirect_200(self):
-        """
+        """ Redirect 200 w/o page.
+
         redirect_type = 200
         redirect_url  = None
         redirect_page = None
@@ -61,7 +72,8 @@ class TestPageView(UnitTestBase):
         redirect to page
     """
     def test_redirect_200_to_self(self):
-        """
+        """ Redirect 200 to itself.
+
         redirect_type = 200
         redirect_url  = None
         redirect_page = self
@@ -76,7 +88,8 @@ class TestPageView(UnitTestBase):
         self.assertEqual(view['page'], node)
 
     def test_redirect_page_with_out_type(self):
-        """
+        """ Redirect to page w/o redirect type.
+
         redirect_type = None
         redirect_url  = None
         redirect_page = 2
@@ -90,7 +103,8 @@ class TestPageView(UnitTestBase):
         self.assertRaises(HTTPNotFound, page_view, context, self.request)
 
     def test_redirect_200_to_not_visible_page(self):
-        """
+        """ Redirect 200 to not visible page.
+
         redirect_type = 200
         redirect_url  = None
         redirect_page = 2
@@ -104,7 +118,8 @@ class TestPageView(UnitTestBase):
         self.assertRaises(HTTPNotFound, page_view, context, self.request)
 
     def test_redirect_200_to_visible_page(self):
-        """
+        """ Redirect 200 to visible page.
+
         redirect_type = 200
         redirect_url  = None
         redirect_page = 2
@@ -122,7 +137,8 @@ class TestPageView(UnitTestBase):
         redirect to page
     """
     def test_redirect_300_to_self(self):
-        """
+        """ Redirect 300 to itself.
+
         redirect_type = 300
         redirect_url  = None
         redirect_page = self
@@ -140,7 +156,8 @@ class TestPageView(UnitTestBase):
         do_it(302)
 
     def test_redirect_300_to_not_visible_page(self):
-        """
+        """ Redirect 300 to not visible page.
+
         redirect_type = 300
         redirect_url  = None
         redirect_page = 2
@@ -158,7 +175,8 @@ class TestPageView(UnitTestBase):
         do_it(302)
 
     def test_redirect_300_to_visible_page(self):
-        """
+        """ Redirect 300 to visible page.
+
         redirect_type = 300
         redirect_url  = None
         redirect_page = 2
@@ -204,7 +222,8 @@ class TestPageView(UnitTestBase):
         redirect to URL
     """
     def test_redirect_200_to_url(self):
-        """
+        """ Redirect 200 to external URL.
+
         redirect_type = 200
         redirect_url  = http://example.org
         redirect_page = None
@@ -217,7 +236,8 @@ class TestPageView(UnitTestBase):
         self.assertRaises(HTTPNotFound, page_view, context, self.request)
 
     def test_redirect_url_with_out_type(self):
-        """
+        """ Redirect to external URL w/o type.
+
         redirect_type = None
         redirect_url  = http://example.org
         redirect_page = None
@@ -236,8 +256,9 @@ class TestPageView(UnitTestBase):
         redirect to URL
     """
     def test_redirect_300_to_url(self):
-        """
-        redirect_type = 200
+        """ Redirect 300 to external URL.
+
+        redirect_type = 300
         redirect_url  = http://example.org
         redirect_page = None
         """
@@ -259,7 +280,8 @@ class TestPageView(UnitTestBase):
     """ Bad case.
     """
     def test_redirect_simultaneously_url_and_page(self):
-        """
+        """ Redirect simultaneously to URL and Page.
+
         redirect_type = None
         redirect_url  = http://example.org
         redirect_page = 2
