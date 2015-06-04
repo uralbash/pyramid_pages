@@ -3,3 +3,8 @@ body, html
   height: 100%;
   min-height: 100%;
 }
+
+.hoverclass2
+{
+  border: solid 5px lime;
+}

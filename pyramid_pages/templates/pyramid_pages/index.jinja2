@@ -5,6 +5,7 @@
   <title>{% include 'pyramid_pages/title.jinja2' %}</title>
   {% include 'pyramid_pages/meta.jinja2' %}
   <link href="{{ request.static_url('pyramid_pages:static/css/__pyramid_pages.css') }}" rel="stylesheet" />
+  <script src="{{ request.static_url('pyramid_pages:static/js/vendor/jquery.min.js') }}"></script>
 </head>
 
 <body>
@@ -37,5 +38,6 @@
       </div>
     </div>
   </div>
+  <script src="{{ request.static_url('pyramid_pages:static/js/__pyramid_pages.js') }}"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 *.map
 *.pyc
 *.sqlite*
+*.sublime*
 *.swo
 *.swp
 *~

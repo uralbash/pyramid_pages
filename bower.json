@@ -12,11 +12,18 @@
   "license": "MIT",
   "dependencies": {
     "normalize.css": "~3.0.2",
-    "html5-boilerplate": "~5.2.0"
+    "html5-boilerplate": "~5.2.0",
+    "jquery": "~2.1.4"
   },
   "overrides": {
     "html5-boilerplate": {
       "main": "dist/css/main.css"
+    },
+    "jquery": {
+      "main": [
+        "dist/jquery.min.js",
+        "dist/jquery.min.map"
+      ]
     }
   }
 }

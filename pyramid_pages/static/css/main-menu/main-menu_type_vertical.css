@@ -36,7 +36,7 @@
       }
   .main-menu_type_vertical .main-menu-list__item > .main-menu-list
   {
-    background: #bbb;
+    background: #fff;
     box-shadow: 0 0.1em 0.5em #333;
   }
   .main-menu_type_vertical .main-menu-list__item > .main-menu-list
@@ -64,6 +64,11 @@
   }
 
   .main-menu_type_vertical .main-menu-list__item_state_current
+  {
+    background: #ccc;
+  }
+
+  .main-menu_type_vertical .main-menu-list__item_state_active
   {
     background: #ccc;
   }

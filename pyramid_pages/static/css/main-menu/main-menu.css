@@ -117,3 +117,8 @@
       border-width: 5px 0 5px 5px;
       border-color: transparent transparent transparent #fff;
     }
+
+    .main-menu-list__item_state_active
+    {
+      background: #811621;
+    }
