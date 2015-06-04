@@ -31,6 +31,7 @@ matrix:
       env: NO_RSTLINT=1
 
 install:
+  - python setup.py develop
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
   - pip install -r example/requirements.txt
@@ -46,11 +47,15 @@ script:
 
   # BDD
   - cd example
-  - python pyramid_pages_example.py&
+  - nohup python pyramid_pages_example.py&
+  - sleep 5
   - cd ..
-    
+
   # Link checker
   - if [ -n "$LINK_CHECK" ];then linkchecker http://localhost:6543/ --ignore-url="unquote\(%*" --no-status; fi
 
 after_success:
   coveralls
+
+after_failure:
+  cat example/nohup.out

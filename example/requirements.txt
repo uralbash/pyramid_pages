@@ -1,1 +1,5 @@
+waitress
+transaction
 zope.sqlalchemy
+sqlalchemy_mptt
+pyramid_jinja2
