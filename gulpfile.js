@@ -93,7 +93,7 @@ gulp.task('browserify', function() {
     .pipe(buffer())
     .pipe(plugins.uglify())
     .pipe(plugins.sourcemaps.init({ loadMaps: true }))
-    .pipe(plugins.sourcemaps.write('./'))
+    //.pipe(plugins.sourcemaps.write('./'))
     .pipe(gulp.dest('./'))
     .pipe(map(function(code, filename) {
       plugins.util.log('Browserify ' +
@@ -126,7 +126,7 @@ gulp.task('css', function() {
     })
     .pipe(plugins.concat(TARGET_CSS_FILE))
     .pipe(minifyCSS({ keepSpecialComments: 0 }))
-    .pipe(plugins.sourcemaps.write('.'))
+    //.pipe(plugins.sourcemaps.write('.'))
     .pipe(gulp.dest(CSS_PATH))
     .on('error', plugins.util.log)
     .pipe(plugins.filter('*.css'))
