@@ -19,13 +19,14 @@ notifications:
     on_failure: always
 
 python:
-  - "2.7"
   - "3.3"
   - "3.4"
   - "pypy"
 
 matrix:
   include:
+    - python: "2.7"
+      env: LINK_CHECK=1
     - python: "pypy3"
       env: NO_RSTLINT=1
 
@@ -34,10 +35,22 @@ install:
   - pip install -r requirements-test.txt
   - pip install -r example/requirements.txt
   - pip install --upgrade --force-reinstall git+git://github.com/ITCase/sacrud.git
+  - if [ -n "$LINK_CHECK" ];then pip install linkchecker; fi
 
 script:
+  # Nosetests
   - python setup.py nosetests
+
+  # Styles check
   - if [ -z "$NO_RSTLINT" ]; then ./test.sh; fi
+
+  # BDD
+  - cd example
+  - python pyramid_pages_example.py&
+  - cd ..
+    
+  # Link checker
+  - if [ -n "$LINK_CHECK" ];then linkchecker http://localhost:6543/ --ignore-url="unquote\(%*" --no-status; fi
 
 after_success:
   coveralls
