@@ -37,7 +37,7 @@ def get_pages_menu(session, model, from_lvl=1, **kwargs):
         menu = menu.filter(model.level <= kwargs['to_lvl'])
     if 'trees' in kwargs:
         menu = menu.filter(model.tree_id.in_(kwargs['trees']))
-    menu = menu.filter_by(in_menu=True).all()
+    menu = menu.filter_by(in_menu=True).filter(model.slug != '/').all()
     if not menu:
         return {}
 

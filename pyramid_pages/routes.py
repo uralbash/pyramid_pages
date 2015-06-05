@@ -31,6 +31,8 @@ class PageResource(object):
     def __name__(self):
         if self.node and not self.node.slug == '/':
             return self.node.slug
+        elif self.node and self.node.slug == '/':
+            return ''
         elif self.prefix:
             return self.prefix
         return None
