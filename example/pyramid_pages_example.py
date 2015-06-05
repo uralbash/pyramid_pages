@@ -62,6 +62,11 @@ def add_mptt_tree(session):
     session.query(MPTTNews).delete()
     transaction.commit()
     tree1 = (
+        {'id': '0', 'slug': '/',
+         'name': 'Default home page',
+         'visible': True,
+         'in_menu': True
+         },
         {'id': '1', 'slug': 'about-company', 'name': 'Hello Traversal World!',
          'visible': True,
          'in_menu': True,
@@ -366,5 +371,6 @@ if __name__ == '__main__':
     settings = {'index_view': True}
     app = main({}, **settings)
 
-    from waitress import serve
-    serve(app, host='0.0.0.0', port=6543)
+    from wsgiref.simple_server import make_server
+    httpd = make_server('', 6543, app)
+    httpd.serve_forever()

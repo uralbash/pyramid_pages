@@ -26,7 +26,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'ps_pages'
+project = u'pyramid_pages'
 copyright = u'2014, ITCase'
 
 # List of patterns, relative to source directory, that match files and
@@ -51,4 +51,4 @@ html_theme_path = [itcase_sphinx_theme.get_html_themes_path()]
 html_static_path = ['_static']
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'ps_pagesdoc'
+htmlhelp_basename = 'pyramid_pagesdoc'

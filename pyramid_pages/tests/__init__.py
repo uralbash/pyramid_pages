@@ -22,10 +22,14 @@ imp.load_source('pyramid_pages_example', 'example/pyramid_pages_example.py')
 
 from pyramid_pages_example import MPTTNews, MPTTPages, Base, main  # noqa
 
-settings = {'sqlalchemy.url': 'sqlite:///test.sqlite'}
+settings = {
+    'index_view': True,
+    'sqlalchemy.url': 'sqlite:///test.sqlite'
+}
 
 
 class BaseTestCase(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.engine = engine_from_config(settings, prefix='sqlalchemy.')
@@ -41,7 +45,7 @@ class BaseTestCase(unittest.TestCase):
         # Session above (including calls to commit())
         # is rolled back.
         testing.tearDown()
-        Base.metadata.drop_all(bind=self.engine)
+        self.drop_db()
         self.dbsession.close()
 
     def drop_db(self):
@@ -54,19 +58,26 @@ class BaseTestCase(unittest.TestCase):
 
 
 class UnitTestBase(BaseTestCase):
+
     def setUp(self):
         self.request = testing.DummyRequest()
         self.config = testing.setUp(request=self.request)
         super(UnitTestBase, self).setUp()
 
 
-class IntegrationTestBase(BaseTestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.app = main({}, **settings)
-        super(IntegrationTestBase, cls).setUpClass()
+class IntegrationTestBaseWithIndex(BaseTestCase):
 
     def setUp(self):
-        self.app = TestApp(self.app)
+        self.app = TestApp(main({}, **settings))
+        self.config = testing.setUp()
+        super(IntegrationTestBaseWithIndex, self).setUp()
+
+
+class IntegrationTestBase(BaseTestCase):
+
+    def setUp(self):
+        settings2 = {key: value for key, value in settings.items()
+                     if key != 'index_view'}
+        self.app = TestApp(main({}, **settings2))
         self.config = testing.setUp()
         super(IntegrationTestBase, self).setUp()
