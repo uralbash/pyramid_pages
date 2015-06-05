@@ -7,7 +7,7 @@ pyramid_pages
 This is very similar to **django.contrib.flatpages** but with a tree structure
 and traversal algorithm in URL dispath.
 
-See documentation http://pyramid-sacrud-pages.readthedocs.org/en/master/
+See documentation http://pyramid-pages.readthedocs.org/en/master/
 
 .. image:: https://raw.githubusercontent.com/ITCase/pyramid_pages/master/docs/_static/img/example.png
     :alt: pyramid_pages - example of website pages tree
