@@ -1,18 +1,18 @@
-.. ps_pages documentation master file, created by
+.. pyramid_pages documentation master file, created by
    sphinx-quickstart on Tue Oct  7 16:14:25 2014.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-ps_pages
-========
+pyramid_pages
+=============
 
-**ps_pages** provides a collections of pages to your Pyramid application.
+**pyramid_pages** provides a collections of pages to your Pyramid application.
 This is very similar to **django.contrib.flatpages** but with a tree structure
 and traversal algorithm in URL dispath.
 
-.. image:: _static/img/index.png
-    :alt: SACRUD pages tree
-    :align: right
+.. image:: _static/img/example.png
+    :alt: pyramid_pages - example of website pages tree
+    :align: center
 
 .. toctree::
    :maxdepth: 4
@@ -32,8 +32,8 @@ Tutorials and Cookbook Recipes
 Support and Development
 =======================
 
-To report bugs, use the `issue tracker <https://github.com/ITCase/ps_pages/issues>`_
-or `waffle board <https://waffle.io/ITCase/ps_pages>`_.
+To report bugs, use the `issue tracker <https://github.com/ITCase/pyramid_pages/issues>`_
+or `waffle board <https://waffle.io/ITCase/pyramid_pages>`_.
 
 We welcome any contribution: suggestions, ideas, commits with new futures, bug
 fixes, refactoring, docs, tests, translations etc

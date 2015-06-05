@@ -9,9 +9,9 @@ and traversal algorithm in URL dispath.
 
 See documentation http://pyramid-sacrud-pages.readthedocs.org/en/master/
 
-.. image:: https://raw.githubusercontent.com/ITCase/pyramid_pages/master/docs/_static/img/index.png
-    :alt: SACRUD pages tree
-    :align: right
+.. image:: https://raw.githubusercontent.com/ITCase/pyramid_pages/master/docs/_static/img/example.png
+    :alt: pyramid_pages - example of website pages tree
+    :align: center
 
 Support and Development
 =======================

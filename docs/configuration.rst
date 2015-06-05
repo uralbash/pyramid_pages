@@ -4,73 +4,49 @@ Configuration
 Custom model for tree pages
 ---------------------------
 
-Create model of tree pages.
+To build a tree, using the model from `sqlalchemy_mptt <https://github.com/ITCase/sqlalchemy_mptt>`_.
+
+.. note::
+
+   The plans make it more versatile
+
+Create model of tree pages. For more detail see example `pyramid_pages_example
+<https://github.com/ITCase/pyramid_pages/blob/master/example/pyramid_pages_example.py>`_.
 
 .. no-code-block:: python
 
-    from ps_pages.models import BasePages
+    from pyramid_pages.models import BasePages, PageMixin
+    from sqlalchemy_mptt import BaseNestedSets
 
     ...
 
     class MPTTPages(BasePages, Base):
         __tablename__ = "mptt_pages"
 
-        id = Column(Integer, primary_key=True)
+        id = Column('id', Integer, primary_key=True)
 
-        @TableProperty
-        def sacrud_list_col(cls):
-            col = cls.columns
-            return [col.name, col.level, col.tree_id,
-                    col.parent_id, col.left, col.right]
 
-        @TableProperty
-        def sacrud_detail_col(cls):
-            col = cls.columns
-            return [('', [col.name, col.slug, col.description, col.visible,
-                        col.in_menu, col.parent_id]),
-                    ('Redirection', [col.redirect_url, col.redirect_page,
-                                    col.redirect_type]),
-                    ('SEO', [col.seo_title, col.seo_keywords, col.seo_description,
-                            col.seo_metatags])
-                    ]
+    class MPTTNews(BaseNestedSets, PageMixin, Base):
+        __tablename__ = "mptt_news"
 
-Configure `pyramid_sacrud`
---------------------------
+        id = Column('id', Integer, primary_key=True)
 
-First, configure `pyramid_sacrud <https://github.com/ITCase/pyramid_sacrud>`_
+Configure `pyramid_pages`
+-------------------------
+
+Then add settings of `pyramid_pages`.
 
 .. no-code-block:: python
 
-    from youproject.models import MPTTPages
+    from youproject.models import MPTTPages, MPTTNews
 
     ...
 
-    # SACRUD configuration
-    config.include('pyramid_sacrud', route_prefix='/admin')
-    settings = config.registry.settings
-    settings['pyramid_sacrud.models'] = (('Tree pages', [MPTTPages]), )
+    settings['pyramid_pages.models'] = {
+       '': MPTTPages,
+       'pages': MPTTPages,  # available with prefix '/pages/'
+       'news': MPTTNews
+    }
 
-Configure `ps_pages`
---------------------
-
-Then add settings of `ps_pages`
-
-As string, support ini config
-
-.. code-block:: python
-
-    settings['ps_pages.model_locations'] = 'youproject.models:MPTTPages'
-    # ps_pages - put it after all routes
-    config.include("ps_pages")
-
-Or just add model
-
-.. no-code-block:: python
-
-    from youproject.models import MPTTPages
-
-    ...
-
-    settings['ps_pages.model_locations'] = MPTTPages
-    # ps_pages - put it after all routes
-    config.include("ps_pages")
+    # pyramid_pages - put it after all routes
+    config.include("pyramid_pages")
