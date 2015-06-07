@@ -1,0 +1,51 @@
+[
+    {
+        "id": "1",
+        "in_menu": 1,
+        "name": "Sed ut perspiciatis",
+        "slug": "sed-ut-perspiciatis",
+        "tree_id": "1",
+        "visible": 1
+    },
+    {
+        "id": "2",
+        "in_menu": 1,
+        "name": "Dolor sit, amet, consectetur, adipisc",
+        "parent_id": "1",
+        "slug": "dolor-sit-amet-consectetur-adipisc",
+        "tree_id": "1",
+        "visible": 1
+    },
+    {
+        "id": "3",
+        "in_menu": 1,
+        "name": "foo14",
+        "parent_id": "2",
+        "slug": "foo14",
+        "tree_id": "1",
+        "visible": 1
+    },
+    {
+        "id": "4",
+        "in_menu": 1,
+        "name": "foo15",
+        "parent_id": "3",
+        "slug": "foo15",
+        "tree_id": "1",
+        "visible": 1
+    },
+    {
+        "id": "5",
+        "in_menu": 1,
+        "name": "Hello",
+        "slug": "hi",
+        "visible": 1
+    },
+    {
+        "id": "6",
+        "in_menu": 1,
+        "name": "Bye",
+        "slug": "bye",
+        "visible": 1
+    }
+]

@@ -1,0 +1,130 @@
+[
+    {
+        "id": "0",
+        "in_menu": 1,
+        "name": "Default home page",
+        "slug": "/",
+        "visible": 1
+    },
+    {
+        "description": "Hello Traversal World! Hello Traversal World! Hello Traversal World!",
+        "id": "1",
+        "in_menu": 1,
+        "name": "Hello Traversal World!",
+        "slug": "about-company",
+        "visible": 1
+    },
+    {
+        "id": "2",
+        "in_menu": 1,
+        "name": "We \u2665  gevent",
+        "parent_id": "1",
+        "slug": "we-love-gevent",
+        "visible": 1
+    },
+    {
+        "id": "3",
+        "in_menu": 1,
+        "name": "And Pyramid",
+        "parent_id": "2",
+        "slug": "and-pyramid",
+        "visible": 1
+    },
+    {
+        "id": "4",
+        "in_menu": 1,
+        "name": "Redirect 301 to we-love-gevent",
+        "parent_id": "1",
+        "redirect_page": 2,
+        "redirect_type": "301",
+        "slug": "redirect-301",
+        "visible": 1
+    },
+    {
+        "id": "5",
+        "in_menu": 1,
+        "name": "Redirect 200 to about-company",
+        "parent_id": "4",
+        "redirect_page": 1,
+        "redirect_type": "200",
+        "slug": "redirect-200",
+        "visible": 1
+    },
+    {
+        "id": "6",
+        "in_menu": 1,
+        "name": "Компания ITCase",
+        "parent_id": "4",
+        "redirect_type": "302",
+        "redirect_url": "http://itcase.pro/",
+        "slug": "kompania-itcase",
+        "visible": 1
+    },
+    {
+        "id": "7",
+        "name": "Our strategy",
+        "parent_id": "1",
+        "slug": "our-strategy",
+        "visible": 1
+    },
+    {
+        "id": "8",
+        "name": "Wordwide",
+        "parent_id": "7",
+        "slug": "wordwide",
+        "visible": 1
+    },
+    {
+        "id": "9",
+        "name": "Technology",
+        "parent_id": "8",
+        "slug": "technology",
+        "visible": 0
+    },
+    {
+        "id": "10",
+        "name": "What we do",
+        "parent_id": "7",
+        "slug": "what-we-do",
+        "visible": 1
+    },
+    {
+        "id": "11",
+        "name": "at a glance",
+        "parent_id": "10",
+        "slug": "at-a-glance",
+        "visible": 1
+    },
+    {
+        "id": "12",
+        "in_menu": 1,
+        "name": "and aiohttp!",
+        "parent_id": "3",
+        "slug": "and-aiohttp",
+        "visible": 1
+    },
+    {
+        "id": "13",
+        "in_menu": 1,
+        "name": "and asyncio!",
+        "parent_id": "3",
+        "slug": "and-asyncio",
+        "visible": 1
+    },
+    {
+        "id": "14",
+        "in_menu": 1,
+        "name": "and beer!",
+        "parent_id": "12",
+        "slug": "and-beer",
+        "visible": 1
+    },
+    {
+        "id": "15",
+        "in_menu": 1,
+        "name": "and bear to!",
+        "parent_id": "14",
+        "slug": "and-bear-to",
+        "visible": 1
+    }
+]
