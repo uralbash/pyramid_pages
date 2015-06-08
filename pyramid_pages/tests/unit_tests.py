@@ -1,7 +1,7 @@
 from pyramid.httpexceptions import HTTPNotFound
 
 from pyramid_pages.routes import PageResource
-from pyramid_pages.views import page_view
+from pyramid_pages.views import PageView
 
 from . import NewsPage, WebPage, UnitTestBase
 
@@ -26,7 +26,7 @@ class TestPageView(UnitTestBase):
         def do_it(model):
             node = model(visible=True)
             context = PageResource(node)
-            view = page_view(context, self.request)
+            view = PageView(context, self.request).page_with_redirect()
             self.assertEqual(view['page'], node)
 
         do_it(NewsPage)
@@ -40,12 +40,12 @@ class TestPageView(UnitTestBase):
             # visible is None
             node = model()
             context = PageResource(node)
-            self.assertRaises(HTTPNotFound, page_view, context, self.request)
+            self.assertRaises(HTTPNotFound, PageView, context, self.request)
 
             # visible is False
             node = model(visible=False)
             context = PageResource(node)
-            self.assertRaises(HTTPNotFound, page_view, context, self.request)
+            self.assertRaises(HTTPNotFound, PageView, context, self.request)
 
         do_it(NewsPage)
         do_it(WebPage)
@@ -65,7 +65,7 @@ class TestPageView(UnitTestBase):
         """
         node = WebPage(visible=True, redirect_type=200)
         context = PageResource(node)
-        view = page_view(context, self.request)
+        view = PageView(context, self.request).page_with_redirect()
         self.assertEqual(view['page'], node)
 
     """ 200 OK
@@ -84,7 +84,7 @@ class TestPageView(UnitTestBase):
         )
         node.redirect = node
         context = PageResource(node)
-        view = page_view(context, self.request)
+        view = PageView(context, self.request).page_with_redirect()
         self.assertEqual(view['page'], node)
 
     def test_redirect_page_with_out_type(self):
@@ -100,7 +100,8 @@ class TestPageView(UnitTestBase):
             redirect_page=2, redirect=node2
         )
         context = PageResource(node)
-        self.assertRaises(HTTPNotFound, page_view, context, self.request)
+        view = PageView(context, self.request)
+        self.assertRaises(HTTPNotFound, view.page_with_redirect)
 
     def test_redirect_200_to_not_visible_page(self):
         """ Redirect 200 to not visible page.
@@ -115,7 +116,8 @@ class TestPageView(UnitTestBase):
             redirect_type=200, redirect_page=2, redirect=node2
         )
         context = PageResource(node)
-        self.assertRaises(HTTPNotFound, page_view, context, self.request)
+        view = PageView(context, self.request)
+        self.assertRaises(HTTPNotFound, view.page_with_redirect)
 
     def test_redirect_200_to_visible_page(self):
         """ Redirect 200 to visible page.
@@ -130,7 +132,7 @@ class TestPageView(UnitTestBase):
             redirect_type=200, redirect_page=2, redirect=node2
         )
         context = PageResource(node)
-        view = page_view(context, self.request)
+        view = PageView(context, self.request).page_with_redirect()
         self.assertEqual(view['page'], node2)
 
     """ 300
@@ -150,7 +152,8 @@ class TestPageView(UnitTestBase):
             )
             node.redirect = node
             context = PageResource(node)
-            self.assertRaises(HTTPNotFound, page_view, context, self.request)
+            view = PageView(context, self.request)
+            self.assertRaises(HTTPNotFound, view.page_with_redirect)
 
         do_it(301)
         do_it(302)
@@ -169,7 +172,8 @@ class TestPageView(UnitTestBase):
                 redirect_type=redirect_code, redirect_page=2, redirect=node2
             )
             context = PageResource(node)
-            self.assertRaises(HTTPNotFound, page_view, context, self.request)
+            view = PageView(context, self.request)
+            self.assertRaises(HTTPNotFound, view.page_with_redirect)
 
         do_it(301)
         do_it(302)
@@ -205,12 +209,12 @@ class TestPageView(UnitTestBase):
 
             # 301
             context = PageResource(node)
-            view = page_view(context, self.request)
+            view = PageView(context, self.request).page_with_redirect()
             self.assertEqual(view.status_code, redirect_code)
             self.assertEqual(view.location, 'http://example.com/node2/')
 
             context = PageResource(node4)
-            view = page_view(context, self.request)
+            view = PageView(context, self.request).page_with_redirect()
             self.assertEqual(view.status_code, redirect_code)
             self.assertEqual(view.location, 'http://example.com/node2/node3/')
             self.dbsession.close()
@@ -233,7 +237,8 @@ class TestPageView(UnitTestBase):
             visible=True, redirect_type=200, redirect_url=URL
         )
         context = PageResource(node)
-        self.assertRaises(HTTPNotFound, page_view, context, self.request)
+        view = PageView(context, self.request)
+        self.assertRaises(HTTPNotFound, view.page_with_redirect)
 
     def test_redirect_url_with_out_type(self):
         """ Redirect to external URL w/o type.
@@ -248,7 +253,7 @@ class TestPageView(UnitTestBase):
         )
 
         context = PageResource(node)
-        view = page_view(context, self.request)
+        view = PageView(context, self.request).page_with_redirect()
         self.assertEqual(view.status_code, 302)
         self.assertEqual(view.location, 'http://example.org')
 
@@ -270,7 +275,7 @@ class TestPageView(UnitTestBase):
 
             # 301
             context = PageResource(node)
-            view = page_view(context, self.request)
+            view = PageView(context, self.request).page_with_redirect()
             self.assertEqual(view.status_code, 301)
             self.assertEqual(view.location, 'http://example.org')
 
@@ -294,4 +299,5 @@ class TestPageView(UnitTestBase):
         )
 
         context = PageResource(node)
-        self.assertRaises(HTTPNotFound, page_view, context, self.request)
+        view = PageView(context, self.request)
+        self.assertRaises(HTTPNotFound, view.page_with_redirect)

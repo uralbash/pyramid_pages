@@ -13,45 +13,52 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid.response import Response
 
 
-def page_view(context, request):
-    page = context.node
+class PageView(object):
 
-    if not page.visible:
-        raise HTTPNotFound
+    def __init__(self, context, request):
+        self.request = request
+        self.context = context
+        self.page = context.node
 
-    if all([hasattr(page, attr)
-            for attr in ('redirect', 'redirect_url', 'redirect_page')]):
-        # Prohibit redirect both url and page
-        if page.redirect_url and page.redirect_page:
+        if not self.page.visible:
             raise HTTPNotFound
 
-        # check redirect type
-        if not page.redirect_type and page.redirect_url:
-            redirect_type = '302'
-        elif not page.redirect_type and page.redirect_page:
-            redirect_type = '200'
-        else:
-            redirect_type = str(page.redirect_type)
+    def page_with_redirect(self):
 
-        # Prohibit redirect itself
-        if page.redirect == page and redirect_type != '200':
-            raise HTTPNotFound
-
-        # Redirect to Page
-        if page.redirect_page:
-            if not page.redirect.visible:
+        if all([hasattr(self.page, attr)
+                for attr in ('redirect', 'redirect_url', 'redirect_page')]):
+            # Prohibit redirect both url and page
+            if self.page.redirect_url and self.page.redirect_page:
                 raise HTTPNotFound
-            if redirect_type == '200':
-                page = page.redirect
+
+            # check redirect type
+            if not self.page.redirect_type and self.page.redirect_url:
+                redirect_type = '302'
+            elif not self.page.redirect_type and self.page.redirect_page:
+                redirect_type = '200'
             else:
-                redirect_resource_url = request.resource_url(
-                    context.__class__(page.redirect, context.prefix))
-                return Response(status_code=int(redirect_type),
-                                location=redirect_resource_url)
-        # Redirect to URL
-        if page.redirect_url:
-            if redirect_type == '200':
+                redirect_type = str(self.page.redirect_type)
+
+            # Prohibit redirect itself
+            if self.page.redirect == self.page and redirect_type != '200':
                 raise HTTPNotFound
-            return Response(status_code=int(redirect_type),
-                            location=page.redirect_url)
-    return {'page': page}
+
+            # Redirect to Page
+            if self.page.redirect_page:
+                if not self.page.redirect.visible:
+                    raise HTTPNotFound
+                if redirect_type == '200':
+                    self.page = self.page.redirect
+                else:
+                    redirect_resource_url = self.request.resource_url(
+                        self.context.__class__(self.page.redirect,
+                                               self.context.prefix))
+                    return Response(status_code=int(redirect_type),
+                                    location=redirect_resource_url)
+            # Redirect to URL
+            if self.page.redirect_url:
+                if redirect_type == '200':
+                    raise HTTPNotFound
+                return Response(status_code=int(redirect_type),
+                                location=self.page.redirect_url)
+        return {'page': self.page}
