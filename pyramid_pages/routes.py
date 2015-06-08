@@ -39,7 +39,11 @@ class PageResource(object):
 
     @property
     def __parent__(self):
-        return PageResource(self.node.parent, self.prefix)
+        if hasattr(self.node, 'parent'):
+            return PageResource(self.node.parent, self.prefix)
+        elif self.node:
+            return PageResource(None, self.prefix)
+        return None
 
     def __getitem__(self, name):
         children = {str(child.slug or ''): PageResource(child, self.prefix)
@@ -80,10 +84,11 @@ def page_factory(request):
         table = models['']
     else:
         table = models[prefix]
-    nodes = dbsession.query(table)\
-        .filter(or_(table.parent_id.is_(''),
-                    table.parent_id.is_(None),
-                    table.parent.has(table.slug == '/'))).all()
+    nodes = dbsession.query(table)
+    if hasattr(table, 'parent_id'):
+        nodes = nodes.filter(or_(table.parent_id.is_(''),
+                                 table.parent_id.is_(None),
+                                 table.parent.has(table.slug == '/')))
     return {node.slug: PageResource(node, prefix)
             for node in nodes if node.slug}
 

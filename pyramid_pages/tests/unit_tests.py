@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid_pages.routes import PageResource
 from pyramid_pages.views import page_view
 
-from . import MPTTNews, MPTTPages, UnitTestBase
+from . import NewsPage, WebPage, UnitTestBase
 
 
 class TestResource(UnitTestBase):
@@ -29,8 +29,8 @@ class TestPageView(UnitTestBase):
             view = page_view(context, self.request)
             self.assertEqual(view['page'], node)
 
-        do_it(MPTTNews)
-        do_it(MPTTPages)
+        do_it(NewsPage)
+        do_it(WebPage)
 
     def test_not_visible_node(self):
         """ Node is not visible.
@@ -47,8 +47,8 @@ class TestPageView(UnitTestBase):
             context = PageResource(node)
             self.assertRaises(HTTPNotFound, page_view, context, self.request)
 
-        do_it(MPTTNews)
-        do_it(MPTTPages)
+        do_it(NewsPage)
+        do_it(WebPage)
 
     """ REDIRECT
 
@@ -63,7 +63,7 @@ class TestPageView(UnitTestBase):
         redirect_url  = None
         redirect_page = None
         """
-        node = MPTTPages(visible=True, redirect_type=200)
+        node = WebPage(visible=True, redirect_type=200)
         context = PageResource(node)
         view = page_view(context, self.request)
         self.assertEqual(view['page'], node)
@@ -78,7 +78,7 @@ class TestPageView(UnitTestBase):
         redirect_url  = None
         redirect_page = self
         """
-        node = MPTTPages(
+        node = WebPage(
             id=1, visible=True,
             redirect_type=200, redirect_page=1
         )
@@ -94,8 +94,8 @@ class TestPageView(UnitTestBase):
         redirect_url  = None
         redirect_page = 2
         """
-        node2 = MPTTPages(id=2)
-        node = MPTTPages(
+        node2 = WebPage(id=2)
+        node = WebPage(
             id=1, visible=True,
             redirect_page=2, redirect=node2
         )
@@ -109,8 +109,8 @@ class TestPageView(UnitTestBase):
         redirect_url  = None
         redirect_page = 2
         """
-        node2 = MPTTPages(id=2)
-        node = MPTTPages(
+        node2 = WebPage(id=2)
+        node = WebPage(
             id=1, visible=True,
             redirect_type=200, redirect_page=2, redirect=node2
         )
@@ -124,8 +124,8 @@ class TestPageView(UnitTestBase):
         redirect_url  = None
         redirect_page = 2
         """
-        node2 = MPTTPages(id=2, visible=True)
-        node = MPTTPages(
+        node2 = WebPage(id=2, visible=True)
+        node = WebPage(
             id=1, visible=True,
             redirect_type=200, redirect_page=2, redirect=node2
         )
@@ -144,7 +144,7 @@ class TestPageView(UnitTestBase):
         redirect_page = self
         """
         def do_it(redirect_code):
-            node = MPTTPages(
+            node = WebPage(
                 id=1, visible=True,
                 redirect_type=redirect_code, redirect_page=1
             )
@@ -163,8 +163,8 @@ class TestPageView(UnitTestBase):
         redirect_page = 2
         """
         def do_it(redirect_code):
-            node2 = MPTTPages(id=2)
-            node = MPTTPages(
+            node2 = WebPage(id=2)
+            node = WebPage(
                 id=1, visible=True,
                 redirect_type=redirect_code, redirect_page=2, redirect=node2
             )
@@ -185,14 +185,14 @@ class TestPageView(UnitTestBase):
             self.drop_db()
             self.create_db()
 
-            node = MPTTPages(
+            node = WebPage(
                 id=1, visible=True, name='node', slug='node',
                 redirect_type=redirect_code, redirect_page=2
             )
-            node2 = MPTTPages(id=2, visible=True, name='node2', slug='node2')
-            node3 = MPTTPages(id=3, visible=True, name='node3', slug='node3',
-                              parent_id=2)
-            node4 = MPTTPages(
+            node2 = WebPage(id=2, visible=True, name='node2', slug='node2')
+            node3 = WebPage(id=3, visible=True, name='node3', slug='node3',
+                            parent_id=2)
+            node4 = WebPage(
                 id=4, visible=True, name='node4', slug='node4',
                 redirect_type=redirect_code, redirect_page=3
             )
@@ -229,7 +229,7 @@ class TestPageView(UnitTestBase):
         redirect_page = None
         """
         URL = 'http://example.org'
-        node = MPTTPages(
+        node = WebPage(
             visible=True, redirect_type=200, redirect_url=URL
         )
         context = PageResource(node)
@@ -243,7 +243,7 @@ class TestPageView(UnitTestBase):
         redirect_page = None
         """
         URL = 'http://example.org'
-        node = MPTTPages(
+        node = WebPage(
             visible=True, redirect_url=URL,
         )
 
@@ -264,7 +264,7 @@ class TestPageView(UnitTestBase):
         """
         def do_it(redirect_code):
             URL = 'http://example.org'
-            node = MPTTPages(
+            node = WebPage(
                 visible=True, redirect_type=301, redirect_url=URL
             )
 
@@ -287,8 +287,8 @@ class TestPageView(UnitTestBase):
         redirect_page = 2
         """
         URL = 'http://example.org'
-        node2 = MPTTPages(id=2, visible=True)
-        node = MPTTPages(
+        node2 = WebPage(id=2, visible=True)
+        node = WebPage(
             visible=True, redirect_url=URL,
             redirect_page=2, redirect=node2
         )

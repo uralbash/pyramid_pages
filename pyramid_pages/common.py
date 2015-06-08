@@ -11,6 +11,17 @@ Menu generator
 from collections import OrderedDict
 
 
+class PageMenu(object):
+
+    def __init__(self, items, template):
+        self.items = items
+        self.template = template
+
+    def __iter__(self):
+        for item in self.items:
+            yield item
+
+
 def sort_by_left(tree):
     """ Sort dict by left and tree_id field
     """
@@ -30,21 +41,30 @@ def recursive_node_to_dict(node, menu, json=None, json_fields=None):
     return result
 
 
-def get_pages_menu(session, model, from_lvl=1, **kwargs):
-    menu = session.query(model).filter_by(visible=True)\
-        .filter(model.level >= from_lvl)
-    if 'to_lvl' in kwargs:
-        menu = menu.filter(model.level <= kwargs['to_lvl'])
-    if 'trees' in kwargs:
-        menu = menu.filter(model.tree_id.in_(kwargs['trees']))
-    menu = menu.filter_by(in_menu=True).filter(model.slug != '/').all()
-    if not menu:
-        return {}
+class Menu(object):
 
-    tree = {}
-    min_lvl = min(menu, key=lambda item: item.level).level
-    top_nodes = filter(lambda item: item.level == min_lvl, menu)
-    for item in top_nodes:
-        tree.update(recursive_node_to_dict(item, menu))
+    def __init__(self, session, model):
+        self.model = model
+        self.template = self.model.menu_template
+        self.items = session.query(model).filter_by(visible=True)\
+            .filter_by(in_menu=True).filter(model.slug != '/')
 
-    return sort_by_left(tree)
+    def flat(self):
+        return PageMenu(self.items, self.template)
+
+    def mptt(self, from_lvl=1, **kwargs):
+        menu = self.items.filter(self.model.level >= from_lvl)
+        if 'to_lvl' in kwargs:
+            menu = menu.filter(self.model.level <= kwargs['to_lvl'])
+        if 'trees' in kwargs:
+            menu = menu.filter(self.model.tree_id.in_(kwargs['trees']))
+        if not menu:
+            return {}
+
+        tree = {}
+        min_lvl = min(menu, key=lambda item: item.level).level
+        top_nodes = filter(lambda item: item.level == min_lvl, menu)
+        for item in top_nodes:
+            tree.update(recursive_node_to_dict(item, menu))
+
+        return PageMenu(sort_by_left(tree).items(), self.template)

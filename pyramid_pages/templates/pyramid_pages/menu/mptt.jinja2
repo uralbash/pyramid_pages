@@ -1,5 +1,5 @@
 <div class="main-menu-list">
-  {% for node, children in menu.items() recursive %}
+  {% for node, children in menu recursive %}
     <div class="main-menu-list__item
                 {% if node == context.node %}
                   main-menu-list__item_state_current

@@ -1,51 +1,34 @@
 [
     {
+        "description": "Pyramid - Hacker T-Shirt, designed by artist Felix Laflamme, is now available for online purchase via the Pylons Project Store - Hacker page.",
         "id": "1",
         "in_menu": 1,
-        "name": "Sed ut perspiciatis",
-        "slug": "sed-ut-perspiciatis",
-        "tree_id": "1",
+        "name": "Pyramid - Hacker T-Shirt",
+        "slug": "pyramid-hacker-t-shirt",
         "visible": 1
     },
     {
+        "description": "Pyramid 1.5 was released on April, 8 2014. Read the What's New In Pyramid 1.5 document for an overview of changes. Thanks to everyone who contributed to making this release possible.",
         "id": "2",
         "in_menu": 1,
-        "name": "Dolor sit, amet, consectetur, adipisc",
-        "parent_id": "1",
-        "slug": "dolor-sit-amet-consectetur-adipisc",
-        "tree_id": "1",
+        "name": "Pyramid 1.5 released",
+        "slug": "pyramid-1-5-released",
         "visible": 1
     },
     {
+        "description": "Pyramid - Dashboard T-Shirt, designed by artist Felix Laflamme, is now available for online purchase via the Pylons Project Store - Dashboard page.",
         "id": "3",
         "in_menu": 1,
-        "name": "foo14",
-        "parent_id": "2",
-        "slug": "foo14",
-        "tree_id": "1",
+        "name": "Pyramid - Dashboard T-Shirt",
+        "slug": "pyramid-dashboard-t-shirt",
         "visible": 1
     },
     {
+        "description": "The Pylons framework developers have merged efforts with the repoze.bfg framework under the Pylons Project Organization. Read about the Pylons Project and the joint effort, the Pyramid web framework, and notes on the merger.",
         "id": "4",
         "in_menu": 1,
-        "name": "foo15",
-        "parent_id": "3",
-        "slug": "foo15",
-        "tree_id": "1",
-        "visible": 1
-    },
-    {
-        "id": "5",
-        "in_menu": 1,
-        "name": "Hello",
-        "slug": "hi",
-        "visible": 1
-    },
-    {
-        "id": "6",
-        "in_menu": 1,
-        "name": "Bye",
-        "slug": "bye",
+        "name": "Pylons merges with repoze.bfg",
+        "slug": "pylons-merges-with-repoze-bfg",
         "visible": 1
     }
 ]

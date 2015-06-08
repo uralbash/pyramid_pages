@@ -9,7 +9,8 @@
 """
 Models for page.
 """
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
+from sqlalchemy import (Boolean, Column, ForeignKey, Integer, String,
+                        UnicodeText)
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import foreign, relationship
 from sqlalchemy.orm.session import Session
@@ -18,7 +19,7 @@ from sacrud.common import TableProperty
 from sacrud.exttype import ChoiceType, SlugType
 from sqlalchemy_mptt import BaseNestedSets
 
-from .common import get_pages_menu
+from .common import Menu
 
 REDIRECT_CHOICES = (
     ('200', 'OK (200)'),
@@ -33,14 +34,35 @@ class PageMixin(object):
     visible = Column(Boolean)
     in_menu = Column(Boolean)
     slug = Column(SlugType('name', False), unique=True, nullable=False)
+    description = Column(UnicodeText)
 
     def __repr__(self):
         return self.name or '<{}>'.format(self)
 
+
+class MpttPageMixin(BaseNestedSets, PageMixin):
+
+    menu_template = 'menu/mptt.jinja2'
+
     def get_menu(self, **kwargs):
         table = self.__class__
         session = Session.object_session(self)
-        return get_pages_menu(session, table, **kwargs)
+        return Menu(session, table).mptt(**kwargs)
+
+
+class FlatPageMixin(PageMixin):
+
+    menu_template = 'menu/flat.jinja2'
+
+    def get_menu(self):
+        table = self.__class__
+        session = Session.object_session(self)
+        return Menu(session, table).flat()
+
+
+class RecursionPageMixin(PageMixin):
+    """ model with single parent_id field """
+    pass
 
 
 class SeoMixin(object):
@@ -48,7 +70,7 @@ class SeoMixin(object):
     seo_title = Column(String)
     seo_keywords = Column(String)
     seo_description = Column(String)
-    seo_metatags = Column(Text)
+    seo_metatags = Column(UnicodeText)
 
 
 class RedirectMixin(object):
@@ -74,9 +96,7 @@ class RedirectMixin(object):
         )
 
 
-class BasePages(BaseNestedSets, PageMixin, SeoMixin, RedirectMixin):
-
-    description = Column(Text)
+class BasePage(PageMixin, SeoMixin, RedirectMixin):
 
     # sacrud
     verbose_name = 'MPTT pages'

@@ -20,7 +20,7 @@ from webtest import TestApp
 import imp
 imp.load_source('pyramid_pages_example', 'example/pyramid_pages_example.py')
 
-from pyramid_pages_example import MPTTNews, MPTTPages, Base, main  # noqa
+from pyramid_pages_example import NewsPage, WebPage, Base, main  # noqa
 
 settings = {
     'index_view': True,

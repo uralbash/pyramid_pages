@@ -15,17 +15,14 @@ import os
 import transaction
 from pyramid.config import Configurator
 from pyramid.events import BeforeRender
-from pyramid.httpexceptions import HTTPNotFound
 from pyramid.session import SignedCookieSessionFactory
 from sqlalchemy import Column, Integer, engine_from_config
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
 
-from pyramid_pages.common import get_pages_menu
-from pyramid_pages.models import BasePages, PageMixin
-from pyramid_pages.routes import PageResource
-from sqlalchemy_mptt import BaseNestedSets
+from pyramid_pages.common import Menu
+from pyramid_pages.models import BasePage, MpttPageMixin, FlatPageMixin
 
 Base = declarative_base()
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
@@ -35,14 +32,14 @@ CONFIG_PYRAMID_PAGES_MODELS = 'pyramid_pages.models'
 CONFIG_PYRAMID_PAGES_DBSESSION = 'pyramid_pages.dbsession'
 
 
-class MPTTPages(Base, BasePages):
+class WebPage(Base, BasePage, MpttPageMixin):
     __tablename__ = "mptt_pages"
 
     id = Column('id', Integer, primary_key=True)
 
 
-class MPTTNews(Base, BaseNestedSets, PageMixin):
-    __tablename__ = "mptt_news"
+class NewsPage(Base, FlatPageMixin):
+    __tablename__ = "flat_news"
 
     id = Column('id', Integer, primary_key=True)
 
@@ -56,25 +53,8 @@ def add_fixture(model, fixtures, session):
 
 
 def add_global_menu(event):
-    def page_menu(**kwargs):
-        return get_pages_menu(DBSession, MPTTPages, **kwargs)
-
-    def news_menu(**kwargs):
-        return get_pages_menu(DBSession, MPTTNews, **kwargs)
-    event['page_menu'] = page_menu
-    event['news_menu'] = news_menu
-
-
-def index_page_factory(request):
-    settings = request.registry.settings
-    models = settings['pyramid_pages.models']
-    table = models[''] or models['/']
-    dbsession = settings['pyramid_pages.dbsession']
-    node = dbsession.query(table)\
-        .filter(table.slug.is_('about-company')).first()
-    if not node:
-        raise HTTPNotFound
-    return PageResource(node)
+    event['page_menu'] = Menu(DBSession, WebPage).mptt
+    event['news_menu'] = Menu(DBSession, NewsPage).flat
 
 
 def main(global_settings, **settings):
@@ -82,16 +62,8 @@ def main(global_settings, **settings):
         settings=settings,
         session_factory=SignedCookieSessionFactory('itsaseekreet')
     )
-
     config.include('pyramid_jinja2')
     config.add_jinja2_search_path('pyramid_pages_example:templates')
-
-    if settings.get('index_view', False):
-        config.add_route('index', '/', factory=index_page_factory)
-        config.add_view(lambda request: {},
-                        route_name='index',
-                        context=PageResource,
-                        renderer='index.jinja2')
 
     # Database
     settings = config.registry.settings
@@ -102,9 +74,9 @@ def main(global_settings, **settings):
     DBSession.configure(bind=engine)
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
-    add_fixture(MPTTPages, 'fixtures/pages.json', DBSession)
-    add_fixture(MPTTPages, 'fixtures/country.json', DBSession)
-    add_fixture(MPTTNews, 'fixtures/news.json', DBSession)
+    add_fixture(WebPage, 'fixtures/pages.json', DBSession)
+    add_fixture(WebPage, 'fixtures/country.json', DBSession)
+    add_fixture(NewsPage, 'fixtures/news.json', DBSession)
     transaction.commit()
 
     # pyramid_pages
@@ -113,17 +85,18 @@ def main(global_settings, **settings):
         settings.get(CONFIG_PYRAMID_PAGES_DBSESSION,
                      DBSession)
     settings[CONFIG_PYRAMID_PAGES_MODELS] =\
-        settings.get(CONFIG_PYRAMID_PAGES_MODELS,
-                     {
-                         '': MPTTPages,
-                         'pages': MPTTPages,
-                         'news': MPTTNews
-                     })
+        settings.get(
+            CONFIG_PYRAMID_PAGES_MODELS,
+            {
+                '': WebPage,
+                'pages': WebPage,
+                'news': NewsPage
+            })
     config.add_subscriber(add_global_menu, BeforeRender)
     return config.make_wsgi_app()
 
 if __name__ == '__main__':
-    settings = {'index_view': True}
+    settings = {}
     app = main({}, **settings)
 
     from wsgiref.simple_server import make_server
