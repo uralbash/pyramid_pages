@@ -60,7 +60,7 @@ class Photo(Base):
     __tablename__ = 'photos'
 
     id = Column('id', Integer, primary_key=True)
-    path = Column('name', Text)
+    path = Column('path', Text)
     gallery_id = Column(Integer, ForeignKey('mptt_gallery.id'))
     gallery = relationship('Gallery', backref='photos')
 
@@ -76,6 +76,7 @@ class Fixtures(object):
         fixtures = json.loads(file.read())
         for fixture in fixtures:
             self.session.add(model(**fixture))
+        transaction.commit()
 
 
 def add_global_menu(event):
@@ -107,7 +108,6 @@ def main(global_settings, **settings):
     fixture.add(NewsPage, 'fixtures/news.json')
     fixture.add(Gallery, 'fixtures/gallery.json')
     fixture.add(Photo, 'fixtures/photos.json')
-    transaction.commit()
 
     # pyramid_pages
     settings[CONFIG_PYRAMID_PAGES_DBSESSION] =\

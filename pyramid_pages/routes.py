@@ -77,7 +77,8 @@ class PageResource(object):
 
         # search prefix for resource
         for model in models.values():
-            if hasattr(model, 'model') and model.model == node:
+            if not hasattr(model, '__table__') and hasattr(model, 'model')\
+                    and model.model == node:
                 return reversed_models.get(model, None)
         return None
 
@@ -97,7 +98,7 @@ def page_factory(request):
     else:
         table = models[prefix]
 
-    if hasattr(table, 'model'):
+    if not hasattr(table, '__table__') and hasattr(table, 'model'):
         resource = table
         table = table.model
     else:
@@ -146,7 +147,7 @@ def includeme(config):
     settings = config.registry.settings
     models = settings[CONFIG_MODELS]
     for resource in models.values():
-        if not hasattr(resource, 'model'):
+        if hasattr(resource, '__table__') and not hasattr(resource, 'model'):
             continue
 
         config.add_view(resource.view,
