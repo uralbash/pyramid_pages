@@ -16,9 +16,11 @@ import transaction
 from pyramid.config import Configurator
 from pyramid.events import BeforeRender
 from pyramid.session import SignedCookieSessionFactory
-from sqlalchemy import Column, ForeignKey, Integer, Text, engine_from_config
+from sqlalchemy import (Column, Date, ForeignKey, Integer, Text,
+                        engine_from_config)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, scoped_session, sessionmaker
+from sqlalchemy.sql import func
 from zope.sqlalchemy import ZopeTransactionExtension
 
 from pyramid_pages.common import Menu
@@ -43,6 +45,7 @@ class NewsPage(Base, FlatPageMixin):
     __tablename__ = 'flat_news'
 
     id = Column('id', Integer, primary_key=True)
+    date = Column(Date, default=func.now())
 
 
 class Gallery(Base, BasePage, MpttPageMixin):
@@ -54,6 +57,11 @@ class Gallery(Base, BasePage, MpttPageMixin):
 class GalleryResource(PageResource):
     model = Gallery
     template = 'gallery/index.jinja2'
+
+
+class NewsResource(PageResource):
+    model = NewsPage
+    template = 'news/index.jinja2'
 
 
 class Photo(Base):
@@ -119,7 +127,7 @@ def main(global_settings, **settings):
             {
                 '': WebPage,
                 'pages': WebPage,
-                'news': NewsPage,
+                'news': NewsResource,
                 'gallery': GalleryResource,
             })
     config.include("pyramid_pages")
