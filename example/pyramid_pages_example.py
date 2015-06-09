@@ -54,6 +54,15 @@ class Gallery(Base, BasePage, MpttPageMixin):
     id = Column('id', Integer, primary_key=True)
 
 
+class Photo(Base):
+    __tablename__ = 'photos'
+
+    id = Column('id', Integer, primary_key=True)
+    path = Column('path', Text)
+    gallery_id = Column(Integer, ForeignKey('mptt_gallery.id'))
+    gallery = relationship('Gallery', backref='photos')
+
+
 class GalleryResource(PageResource):
     model = Gallery
     template = 'gallery/index.jinja2'
@@ -62,15 +71,6 @@ class GalleryResource(PageResource):
 class NewsResource(PageResource):
     model = NewsPage
     template = 'news/index.jinja2'
-
-
-class Photo(Base):
-    __tablename__ = 'photos'
-
-    id = Column('id', Integer, primary_key=True)
-    path = Column('path', Text)
-    gallery_id = Column(Integer, ForeignKey('mptt_gallery.id'))
-    gallery = relationship('Gallery', backref='photos')
 
 
 class Fixtures(object):

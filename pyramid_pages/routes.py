@@ -23,7 +23,7 @@ CONFIG_DBSESSION = 'pyramid_pages.dbsession'
 
 class PageResource(object):
 
-    renderer = 'pyramid_pages/index.jinja2'
+    template = 'pyramid_pages/index.jinja2'
     view = PageView
     attr = 'page_with_redirect'
 
@@ -130,7 +130,7 @@ def includeme(config):
     config.add_view(PageResource.view,
                     attr=PageResource.attr,
                     route_name=HOME_PAGE,
-                    renderer=PageResource.renderer,
+                    renderer=PageResource.template,
                     context=PageResource,
                     permission=HOME_PAGE)
 
@@ -139,7 +139,7 @@ def includeme(config):
     config.add_view(PageResource.view,
                     attr=PageResource.attr,
                     route_name=PREFIX_PAGE,
-                    renderer=PageResource.renderer,
+                    renderer=PageResource.template,
                     context=PageResource,
                     permission=PREFIX_PAGE)
 

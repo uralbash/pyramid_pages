@@ -8,7 +8,8 @@ To build a tree, using the model from `sqlalchemy_mptt <https://github.com/ITCas
 
 .. note::
 
-   The plans make it more versatile
+  | Otherwise, it will look like flat pages. 
+  | Plans to add a recursive model with only `parent_id` field.
 
 Create model of tree pages. For more detail see example `pyramid_pages_example
 <https://github.com/ITCase/pyramid_pages/blob/master/example/pyramid_pages_example.py>`_.
@@ -20,16 +21,20 @@ Create model of tree pages. For more detail see example `pyramid_pages_example
 
     ...
 
-    class MPTTPages(BasePages, Base):
-        __tablename__ = "mptt_pages"
+    class WebPage(Base, BasePage, MpttPageMixin):
+        __tablename__ = 'mptt_pages'
 
         id = Column('id', Integer, primary_key=True)
 
 
-    class MPTTNews(BaseNestedSets, PageMixin, Base):
-        __tablename__ = "mptt_news"
+    class NewsPage(Base, FlatPageMixin):
+        __tablename__ = 'flat_news'
 
         id = Column('id', Integer, primary_key=True)
+        date = Column(Date, default=func.now())
+
+
+
 
 Configure `pyramid_pages`
 -------------------------
@@ -43,10 +48,63 @@ Then add settings of `pyramid_pages`.
     ...
 
     settings['pyramid_pages.models'] = {
-       '': MPTTPages,
-       'pages': MPTTPages,  # available with prefix '/pages/'
-       'news': MPTTNews
+       '': WebPage,
+       'pages': WebPage,  # available with prefix '/pages/'
+       'news': NewsPage
     }
 
     # pyramid_pages - put it after all routes
+    # and after pyramid_pages configuration.
     config.include("pyramid_pages")
+
+Custom resource
+---------------
+
+Base resource for pages can be found in the module :mod:`pyramid_pages.routes`.
+
+.. literalinclude:: /../pyramid_pages/routes.py
+   :language: python
+   :linenos:
+   :caption: Base resource for pages.
+   :pyobject: PageResource
+
+Just inherit your resource from :class:`~pyramid_pages.routes.PageResource`.
+
+.. no-code-block:: python
+   :linenos:
+   :emphasize-lines: 20-22
+
+   from pyramid_pages.routes import PageResource
+
+   ...
+
+   class Gallery(Base, BasePage, MpttPageMixin):
+       __tablename__ = 'mptt_gallery'
+
+       id = Column('id', Integer, primary_key=True)
+
+
+   class Photo(Base):
+       __tablename__ = 'photos'
+
+       id = Column('id', Integer, primary_key=True)
+       path = Column('path', Text)
+       gallery_id = Column(Integer, ForeignKey('mptt_gallery.id'))
+       gallery = relationship('Gallery', backref='photos')
+
+
+   class GalleryResource(PageResource):
+       model = Gallery
+       template = 'gallery/index.jinja2'
+
+And add it to config.
+
+.. code-block:: python
+    :emphasize-lines: 5
+
+    settings['pyramid_pages.models'] = {
+       '': WebPage,
+       'pages': WebPage,  # available with prefix '/pages/'
+       'news': NewsPage,
+       'gallery': GalleryResource
+    }
