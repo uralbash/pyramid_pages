@@ -1,10 +1,12 @@
 .main-menu-title
 {
+  width: 18%;
   font: 1.3em Arial, Helvetica, sans-serif;
   position: relative;
   float: left;
   color: #fff;
   padding: 0.4em 1.5em 0 0;
+  text-align: center;
 }
   .main-menu-title__link
   {

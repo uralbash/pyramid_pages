@@ -1,0 +1,91 @@
+.main-menu_type_right
+{
+  background: none;
+  padding: 0;
+  z-index: 500;
+}
+  .main-menu_type_right .main-menu-title
+  {
+    float: none;
+    color: #000;
+    padding: 0.7em 1.5em 0.2em 0.5em;
+  }
+  .main-menu_type_right .main-menu-list
+  {
+    width: 100%;
+    display: block;
+    float: none;
+  }
+    .main-menu_type_right .main-menu-list__item
+    {
+      display: block;
+      padding: 0;
+      width: 100%;
+    }
+      .main-menu_type_right .main-menu-list__item-link
+      {
+        display: block;
+        color: #000;
+        padding-left: 2em;
+      }
+      .main-menu_type_right .main-menu-list__item-link:hover
+      {
+        background: #bbb;
+        color: #fff;
+      }
+  .main-menu_type_right .main-menu-list__item > .main-menu-list
+  {
+    background: #fff;
+    box-shadow: 0 0.1em 0.5em #333;
+  }
+  .main-menu_type_right .main-menu-list__item > .main-menu-list
+  {
+    position: absolute;
+    left: -100%;
+    top: 1em;
+    margin: 0 0 0 0;
+  }
+      .main-menu_type_right .main-menu-list__item > .main-menu-list .main-menu-list__item-link
+      {
+        min-width: 50px;
+      }
+  .main-menu_type_right .main-menu-list__item_state_has-child > .main-menu-list__item-link:after,
+  .main-menu_type_right .main-menu-list__item_state_has-child .main-menu-list >
+  .main-menu_type_right .main-menu-list__item_state_has-child > .main-menu-list__item-link:after
+  {
+    left: 1em;
+    top: 1em;
+    color: #000;
+    border-style: solid;
+    border-width: 5px 5px 5px 0;
+    border-color: transparent #000 transparent transparent;
+  }
+  .main-menu_type_right .main-menu-list__item_state_has-child .main-menu-list >
+  .main-menu-list__item_state_has-child > .main-menu-list__item-link
+  {
+    padding-left: 2em;
+  }
+  .main-menu_type_right .main-menu-list__item_state_has-child .main-menu-list >
+  .main-menu-list__item_state_has-child > .main-menu-list__item-link:after
+  {
+    display: inline-block;
+    content: "";
+    position: absolute;
+    right: 1em;
+    top: 1em;
+    color: lime;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px 5px 5px 0;
+    border-color: transparent #000 transparent transparent;
+  }
+  .main-menu_type_right .main-menu-list__item_state_current
+  {
+    background: #ccc;
+  }
+
+  .main-menu_type_right .main-menu-list__item_state_active
+  {
+    background: #ccc;
+  }

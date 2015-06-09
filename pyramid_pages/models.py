@@ -42,7 +42,7 @@ class PageMixin(object):
 
 class MpttPageMixin(BaseNestedSets, PageMixin):
 
-    menu_template = 'menu/mptt.jinja2'
+    menu_template = 'pyramid_pages/menu/mptt.jinja2'
 
     def get_menu(self, **kwargs):
         table = self.__class__
@@ -52,7 +52,7 @@ class MpttPageMixin(BaseNestedSets, PageMixin):
 
 class FlatPageMixin(PageMixin):
 
-    menu_template = 'menu/flat.jinja2'
+    menu_template = 'pyramid_pages/menu/flat.jinja2'
 
     def get_menu(self):
         table = self.__class__

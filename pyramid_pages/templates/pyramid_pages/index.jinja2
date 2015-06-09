@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
-  <title>{% include 'pyramid_pages/title.jinja2' %}</title>
-  {% include 'pyramid_pages/meta.jinja2' %}
-  <link href="{{ request.static_url('pyramid_pages:static/css/__pyramid_pages.css') }}" rel="stylesheet" />
-  <script src="{{ request.static_url('pyramid_pages:static/js/vendor/jquery.min.js') }}"></script>
+    <meta charset="utf-8" />
+    <title>{% include 'pyramid_pages/title.jinja2' %}</title>
+    {% include 'pyramid_pages/meta.jinja2' %}
+    <script src="{{ request.static_url('pyramid_pages:static/js/vendor/jquery.min.js') }}"></script>
+    <link href="{{ request.static_url('pyramid_pages:static/css/__pyramid_pages.css') }}" rel="stylesheet" />
 </head>
 
 <body>
-  <div class="wrapper">
-    <div class="wrapper__inner">
-      <div class="page clearfix">
-        <div class="main-menu clearfix">
-          <div class="main-menu-title">
-            <a href="/" class="main-menu-title__link">Pyramid Pages</a>
-          </div>
-            {% with menu=page.get_menu() %}
-              {% include 'pyramid_pages/mptt_menu.jinja2' with context %}
-            {% endwith %}
+    <div class="wrapper">
+        <div class="wrapper__inner">
+            <div class="page clearfix">
+                <div class="main-menu clearfix">
+                    <div class="main-menu-title">
+                        <a href="/" class="main-menu-title__link">Pyramid Pages</a>
+                    </div>
+                        {% with menu=page.get_menu() %}
+                            {% include 'pyramid_pages/mptt_menu.jinja2' with context %}
+                        {% endwith %}
+                </div>
+                <div class="page-inner">
+                    <div class="page__right">
+                        <div class="page-note"><strong>Important:</strong> Redefine me in "<your static>/pyramid_pages/index.jinja2"</your></div>
+                        <div class="page-title">{{ context.node.name }}</div>
+                        <div class="content">{{ context.node.description }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="page-inner">
-          <div class="page__right">
-            <div class="page-note"><strong>Important:</strong> Redefine me in "<your static>/pyramid_pages/index.jinja2"</your></div>
-            <div class="page-title">{{ context.node.name }}</div>
-            <div class="content">{{ context.node.description }}</div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-  <script src="{{ request.static_url('pyramid_pages:static/js/__pyramid_pages.js') }}"></script>
+    <script src="{{ request.static_url('pyramid_pages:static/js/__pyramid_pages.js') }}"></script>
 </body>
 </html>

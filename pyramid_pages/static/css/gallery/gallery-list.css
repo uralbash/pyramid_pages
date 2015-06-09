@@ -1,0 +1,34 @@
+.gallery-list
+{
+  display: table;
+}
+  .gallery-list__item
+  {
+    width: 25%;
+    min-height: 100px;
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+    *display: inline;
+    _height: 100px;
+    margin: 0 0 2em 0;
+  }
+      .gallery-list__item-link
+      {
+        display: inline-block;
+        text-decoration: none;
+        border: solid 3px #fff;
+        padding: 0.1em;
+      }
+        .gallery-list__item-image
+        {
+          width: 150px;
+          display: inline-block;
+          position: relative;
+          box-shadow: #bbb 0 1px 3px;
+          vertical-align: bottom;
+        }
+      .gallery-list__item-link:hover
+      {
+        border: solid 3px #bc2131;
+      }
