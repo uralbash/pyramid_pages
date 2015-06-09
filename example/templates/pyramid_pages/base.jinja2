@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <title>Index</title>
+  <link href="{{ request.static_url('pyramid_pages:static/css/__pyramid_pages.css') }}" rel="stylesheet" />
+  <script src="{{ request.static_url('pyramid_pages:static/js/vendor/jquery.min.js') }}"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="wrapper__inner">
+      <div class="page clearfix">
+        <div class="main-menu clearfix">
+          <div class="main-menu-title">
+            <a href="/" class="main-menu-title__link">Pyramid Pages</a>
+          </div>
+          {% with menu=page_menu(from_lvl=1, to_lvl=6, trees=(1, 2, 3)) %}
+            {% include menu.template with context %}
+          {% endwith %}
+        </div>
+        <div class="page-inner">
+          <div class="page__left">
+            <div class="main-menu main-menu_type_vertical clearfix">
+              <div class="main-menu-title">News</div>
+                {% with menu=news_menu() %}
+                  {% include menu.template with context %}
+                {% endwith %}
+            </div>
+          </div>
+          <div class="page__right">
+            {% block content %}
+            {% endblock %}
+          </div>
+          <div class="page-inner">
+            <div class="page__right">
+              <div class="main-menu main-menu_type_vertical clearfix">
+                <div class="main-menu-title">Gallery</div>
+                  {% with menu=gallery_menu() %}
+                    {% include menu.template with context %}
+                  {% endwith %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{{ request.static_url('pyramid_pages:static/js/__pyramid_pages.js') }}"></script>
+</body>
+</html>
+
