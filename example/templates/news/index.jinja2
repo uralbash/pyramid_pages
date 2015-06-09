@@ -1,6 +1,6 @@
 {% extends 'pyramid_pages/base.jinja2' %}
 
 {% block content %}
-  {{ context.node.date }}<div class="page-title">{{ context.node.name }}</div>
-  <div class="content">{{ context.node.description or '' }}</div>
+  {{ context.node.date }}
+  {{ super() }}
 {% endblock %}

@@ -1,8 +1,7 @@
 {% extends 'pyramid_pages/base.jinja2' %}
 
 {% block content %}
-  <div class="page-title">{{ context.node.name }}</div>
-  <div class="content">{{ context.node.description or '' }}</div>
+  {{ super() }}
   {% for photo in context.node.photos %}
     <img width="150px" src="{{ photo.path }}"/>
   {% endfor %}

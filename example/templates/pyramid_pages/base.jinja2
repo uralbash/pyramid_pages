@@ -29,6 +29,8 @@
           </div>
           <div class="page__right">
             {% block content %}
+              <div class="page-title">{{ context.node.name }}</div>
+              <div class="content">{{ context.node.description or '' }}</div>
             {% endblock %}
           </div>
           <div class="page-inner">
