@@ -8,7 +8,7 @@ To build a tree, using the model from `sqlalchemy_mptt <https://github.com/ITCas
 
 .. note::
 
-  | Otherwise, it will look like flat pages. 
+  | Otherwise, it will look like flat pages.
   | Plans to add a recursive model with only `parent_id` field.
 
 Create model of tree pages. For more detail see example `pyramid_pages_example
@@ -32,9 +32,6 @@ Create model of tree pages. For more detail see example `pyramid_pages_example
 
         id = Column('id', Integer, primary_key=True)
         date = Column(Date, default=func.now())
-
-
-
 
 Configure `pyramid_pages`
 -------------------------
@@ -108,3 +105,56 @@ And add it to config.
        'news': NewsPage,
        'gallery': GalleryResource
     }
+
+Generate menu
+-------------
+
+Make menu object and pass it in context.
+
+.. code-block:: python
+
+    from pyramid_pages.common import Menu
+
+
+    class Gallery(Base, BasePage, MpttPageMixin):
+        __tablename__ = 'mptt_gallery'
+
+        menu_template = 'myproject/templates/my_custom_menu.mako'
+
+        id = Column('id', Integer, primary_key=True)
+
+    page_menu = Menu(DBSession, WebPage).mptt
+    news_menu = Menu(DBSession, NewsPage).flat
+    gallery_menu = Menu(DBSession, Gallery).mptt
+
+Just include menu template.
+
+.. code-block:: jinja
+
+    {% with menu=news_menu() %}
+      {% include menu.template with context %}
+    {% endwith %}
+
+    {% with menu=page_menu(from_lvl=1, to_lvl=6, trees=(1, 2, 3)) %}
+      {% include menu.template with context %}
+    {% endwith %}
+
+Or write your own.
+
+.. literalinclude:: /../pyramid_pages/templates/pyramid_pages/menu/flat.jinja2
+   :language: jinja
+   :linenos:
+   :caption: Flat menu template.
+
+.. literalinclude:: /../pyramid_pages/templates/pyramid_pages/menu/mptt.jinja2
+   :language: jinja
+   :linenos:
+   :caption: MPTT menu template.
+
+If you want show mptt menu with ``to_lvl==max-2`` or similar, just use ``to_lvl=-2``.
+
+.. code-block:: jinja
+
+    {% with menu=page_menu(from_lvl=1, to_lvl=-2, trees=(1, 2, 3)) %}
+      {% include menu.template with context %}
+    {% endwith %}

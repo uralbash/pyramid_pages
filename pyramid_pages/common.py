@@ -55,7 +55,15 @@ class Menu(object):
     def mptt(self, from_lvl=1, **kwargs):
         menu = self.items.filter(self.model.level >= from_lvl)
         if 'to_lvl' in kwargs:
-            menu = menu.filter(self.model.level <= kwargs['to_lvl'])
+            to_lvl = int(kwargs['to_lvl'])
+            if to_lvl > 0:
+                menu = menu.filter(self.model.level <= to_lvl)
+            elif to_lvl < 0:
+                from sqlalchemy import func
+                menu = menu.filter(
+                    self.model.level <=
+                    func.max(self.model.level + to_lvl).select()
+                )
         if 'trees' in kwargs:
             menu = menu.filter(self.model.tree_id.in_(kwargs['trees']))
         if not menu:
