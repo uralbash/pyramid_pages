@@ -15,7 +15,7 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import foreign, relationship
 from sqlalchemy.orm.session import Session
 
-from sacrud.common import TableProperty
+from sacrud.common import TableProperty, ClassProperty
 from sacrud.exttype import ChoiceType, SlugType
 from sqlalchemy_mptt import BaseNestedSets
 
@@ -96,14 +96,28 @@ class RedirectMixin(object):
         )
 
 
-class BasePage(PageMixin, SeoMixin, RedirectMixin):
+class BaseSacrudMpttPage(SeoMixin, RedirectMixin, MpttPageMixin):
 
-    # sacrud
+    # pyramid_sacrud options.
     verbose_name = 'MPTT pages'
 
     @TableProperty
     def sacrud_css_class(cls):
         col = cls.columns
-        return {'tinymce': [col.description],
-                'content': [col.description],
-                'name': [col.name]}
+        return {
+            'tinymce': [col.description],
+            'description': [col.description],
+            'name': [col.name]
+        }
+
+    @ClassProperty
+    def sacrud_detail_col(cls):
+        col = cls.__table__.columns
+        return [
+            ('', [col.name, col.slug, col.description, col.visible,
+                  col.in_menu, cls.parent]),
+            ('Redirection', [col.redirect_url, cls.redirect,
+                             col.redirect_type]),
+            ('SEO', [col.seo_title, col.seo_keywords, col.seo_description,
+                     col.seo_metatags])
+        ]

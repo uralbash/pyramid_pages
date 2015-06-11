@@ -24,7 +24,7 @@ from sqlalchemy.sql import func
 from zope.sqlalchemy import ZopeTransactionExtension
 
 from pyramid_pages.common import Menu
-from pyramid_pages.models import BasePage, FlatPageMixin, MpttPageMixin
+from pyramid_pages.models import FlatPageMixin, MpttPageMixin, RedirectMixin
 from pyramid_pages.routes import PageResource
 
 Base = declarative_base()
@@ -35,7 +35,7 @@ CONFIG_PYRAMID_PAGES_MODELS = 'pyramid_pages.models'
 CONFIG_PYRAMID_PAGES_DBSESSION = 'pyramid_pages.dbsession'
 
 
-class WebPage(Base, BasePage, MpttPageMixin):
+class WebPage(Base, MpttPageMixin, RedirectMixin):
     __tablename__ = 'mptt_pages'
 
     id = Column('id', Integer, primary_key=True)
@@ -48,7 +48,7 @@ class NewsPage(Base, FlatPageMixin):
     date = Column(Date, default=func.now())
 
 
-class Gallery(Base, BasePage, MpttPageMixin):
+class Gallery(Base, MpttPageMixin):
     __tablename__ = 'mptt_gallery'
 
     id = Column('id', Integer, primary_key=True)
