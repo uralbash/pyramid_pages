@@ -1,3 +1,4 @@
+pyramid>=1.6a1
 transaction
 zope.sqlalchemy
 sqlalchemy_mptt
