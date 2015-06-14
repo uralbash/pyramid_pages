@@ -102,7 +102,7 @@ def main(global_settings, **settings):
     config.add_jinja2_search_path('pyramid_pages_example:templates')
 
     # Database
-    settings = config.registry.settings
+    settings = config.get_settings()
     settings[CONFIG_SQLALCHEMY_URL] =\
         settings.get(CONFIG_SQLALCHEMY_URL,
                      'sqlite:///example.sqlite')
