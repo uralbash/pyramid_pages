@@ -124,6 +124,23 @@ def home_page_factory(request):
     return PageResource(node)
 
 
+def register(*args):
+    config = args[0]
+    settings = config.get_settings()
+    models = settings[CONFIG_MODELS]
+    for resource in models.values():
+        if hasattr(resource, '__table__')\
+                and not hasattr(resource, 'model'):
+            continue
+
+        config.add_view(resource.view,
+                        attr=resource.attr,
+                        route_name=PREFIX_PAGE,
+                        renderer=resource.template,
+                        context=resource,
+                        permission=PREFIX_PAGE)
+
+
 def includeme(config):
     # Home page factory
     config.add_route(HOME_PAGE, '/', factory=home_page_factory)
@@ -143,16 +160,10 @@ def includeme(config):
                     context=PageResource,
                     permission=PREFIX_PAGE)
 
-    # Models from setting factory
-    settings = config.registry.settings
-    models = settings[CONFIG_MODELS]
-    for resource in models.values():
-        if hasattr(resource, '__table__') and not hasattr(resource, 'model'):
-            continue
-
-        config.add_view(resource.view,
-                        attr=resource.attr,
-                        route_name=PREFIX_PAGE,
-                        renderer=resource.template,
-                        context=resource,
-                        permission=PREFIX_PAGE)
+    import pkg_resources
+    pyramid_version = pkg_resources.get_distribution("pyramid").parsed_version
+    if pyramid_version >= pkg_resources.SetuptoolsVersion('1.6a1'):
+        # Allow you to change settings after including the addon
+        config.action('pyramid_pages_routes', register, args=(config, ))
+    else:
+        config.include(register)

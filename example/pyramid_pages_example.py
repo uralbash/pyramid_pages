@@ -102,7 +102,7 @@ def main(global_settings, **settings):
     config.add_jinja2_search_path('pyramid_pages_example:templates')
 
     # Database
-    settings = config.registry.settings
+    settings = config.get_settings()
     settings[CONFIG_SQLALCHEMY_URL] =\
         settings.get(CONFIG_SQLALCHEMY_URL,
                      'sqlite:///example.sqlite')
@@ -118,6 +118,7 @@ def main(global_settings, **settings):
     fixture.add(Photo, 'fixtures/photos.json')
 
     # pyramid_pages
+    config.include("pyramid_pages")
     settings[CONFIG_PYRAMID_PAGES_DBSESSION] =\
         settings.get(CONFIG_PYRAMID_PAGES_DBSESSION,
                      DBSession)
@@ -130,7 +131,6 @@ def main(global_settings, **settings):
                 'news': NewsResource,
                 'gallery': GalleryResource,
             })
-    config.include("pyramid_pages")
     config.add_subscriber(add_global_menu, BeforeRender)
     return config.make_wsgi_app()
 

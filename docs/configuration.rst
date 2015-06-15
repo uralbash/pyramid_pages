@@ -16,22 +16,22 @@ Create model of tree pages. For more detail see example `pyramid_pages_example
 
 .. no-code-block:: python
 
-    from pyramid_pages.models import BasePages, PageMixin
-    from sqlalchemy_mptt import BaseNestedSets
+   from pyramid_pages.models import FlatPageMixin, MpttPageMixin, RedirectMixin
+   from sqlalchemy_mptt import BaseNestedSets
 
-    ...
+   ...
 
-    class WebPage(Base, BasePage, MpttPageMixin):
-        __tablename__ = 'mptt_pages'
+   class WebPage(Base, MpttPageMixin, RedirectMixin):
+       __tablename__ = 'mptt_pages'
 
-        id = Column('id', Integer, primary_key=True)
+       id = Column('id', Integer, primary_key=True)
 
 
-    class NewsPage(Base, FlatPageMixin):
-        __tablename__ = 'flat_news'
+   class NewsPage(Base, FlatPageMixin):
+       __tablename__ = 'flat_news'
 
-        id = Column('id', Integer, primary_key=True)
-        date = Column(Date, default=func.now())
+       id = Column('id', Integer, primary_key=True)
+       date = Column(Date, default=func.now())
 
 Configure `pyramid_pages`
 -------------------------
@@ -54,6 +54,22 @@ Then add settings of `pyramid_pages`.
     # and after pyramid_pages configuration.
     config.include("pyramid_pages")
 
+If you use version of pyramid >= 1.6a1, there is a possibility put
+``config.include("pyramid_pages")`` before pyramid_pages Configuration.
+
+.. no-code-block:: python
+
+    from youproject.models import MPTTPages, MPTTNews
+
+    ...
+
+    config.include("pyramid_pages")
+    settings['pyramid_pages.models'] = {
+       '': WebPage,
+       'pages': WebPage,  # available with prefix '/pages/'
+       'news': NewsPage
+    }
+
 Custom resource
 ---------------
 
@@ -67,32 +83,23 @@ Base resource for pages can be found in the module :mod:`pyramid_pages.routes`.
 
 Just inherit your resource from :class:`~pyramid_pages.routes.PageResource`.
 
-.. no-code-block:: python
+.. literalinclude:: /../example/pyramid_pages_example.py
+   :language: python
    :linenos:
-   :emphasize-lines: 20-22
+   :caption: Custom resource for gallery.
+   :pyobject: GalleryResource
 
-   from pyramid_pages.routes import PageResource
+.. literalinclude:: /../example/pyramid_pages_example.py
+   :language: python
+   :linenos:
+   :caption: Model for GalleryResource.
+   :pyobject: Gallery
 
-   ...
-
-   class Gallery(Base, BasePage, MpttPageMixin):
-       __tablename__ = 'mptt_gallery'
-
-       id = Column('id', Integer, primary_key=True)
-
-
-   class Photo(Base):
-       __tablename__ = 'photos'
-
-       id = Column('id', Integer, primary_key=True)
-       path = Column('path', Text)
-       gallery_id = Column(Integer, ForeignKey('mptt_gallery.id'))
-       gallery = relationship('Gallery', backref='photos')
-
-
-   class GalleryResource(PageResource):
-       model = Gallery
-       template = 'gallery/index.jinja2'
+.. literalinclude:: /../example/pyramid_pages_example.py
+   :language: python
+   :linenos:
+   :caption: Model photo for Gallery.
+   :pyobject: Photo
 
 And add it to config.
 
@@ -109,14 +116,14 @@ And add it to config.
 Generate menu
 -------------
 
-Make menu object and pass it in context.
+Make menu object and pass it in template context.
 
 .. code-block:: python
 
     from pyramid_pages.common import Menu
 
 
-    class Gallery(Base, BasePage, MpttPageMixin):
+    class Gallery(Base, MpttPageMixin):
         __tablename__ = 'mptt_gallery'
 
         menu_template = 'myproject/templates/my_custom_menu.mako'
