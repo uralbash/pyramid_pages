@@ -24,3 +24,15 @@
             padding: 2em 0 2em 5%;
             vertical-align: top;
         }
+            .page__right-inner
+            {
+                width: 75%;
+                float: left;
+            }
+            .page__right-menu
+            {
+                width: 20%;
+                float: right;
+                position: relative;
+                margin: -2em 0 0 0;
+            }

@@ -1,3 +1,6 @@
+var popup = require('./popup.js').Popup(),
+    gallery = require('./gallery.js').Gallery();
+
 (function($){
 
   'use strict';

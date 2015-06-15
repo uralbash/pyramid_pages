@@ -22,23 +22,28 @@ var CSS_PATH = './pyramid_pages/static/css/',
 var TARGET_CSS_PATH = CSS_PATH + TARGET_CSS_FILE,
     TARGET_JS_PATH = JS_PATH + TARGET_JS_FILE;
 
-var CSS_FILES = ['./pyramid_pages/static/css/*.css',
-                 './pyramid_pages/static/css/**/*.css',
-                 '!pyramid_pages/static/css/no-js.css',
-                 '!pyramid_pages/static/css/' + TARGET_CSS_FILE
-                ],
-    JS_FILES = ['./pyramid_pages/static/js/*.js',
-                './pyramid_pages/static/js/**/*.js',
-                '!pyramid_pages/static/js/' + TARGET_JS_FILE,
-                '!pyramid_pages/static/js/vendor/*.js'
-               ],
-    TEMPLATES_FILES = ['./pyramid_pages/**/*.jinja2','./example/**/*.jinja2'];
+var CSS_FILES = [
+  './pyramid_pages/static/css/*.css',
+  './pyramid_pages/static/css/**/*.css',
+  '!pyramid_pages/static/css/no-js.css',
+  '!pyramid_pages/static/css/' + TARGET_CSS_FILE
+];
+var JS_FILES = [
+  './pyramid_pages/static/js/*.js',
+  './pyramid_pages/static/js/**/*.js',
+  '!pyramid_pages/static/js/' + TARGET_JS_FILE,
+  '!pyramid_pages/static/js/vendor/*.js'
+];
+var TEMPLATES_FILES = [
+  './pyramid_pages/**/*.jinja2',
+  './example/**/*.jinja2'
+];
 
 
 gulp.task('browser-sync', function() {
   browserSync({
     proxy: '127.0.0.1:6543',
-    logLevel: 'silent',
+    logLevel: 'info',
     open: false
   });
 });

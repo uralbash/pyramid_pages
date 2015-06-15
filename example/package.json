@@ -23,37 +23,10 @@
     "node": ">= 0.8.0"
   },
   "devDependencies": {
-    "browser-sync": "^2.7.6",
-    "browserify": "^10.2.3",
-    "browserify-shim": "^3.8.7",
     "gulp": "^3.8.11",
-    "gulp-autoprefixer": "^2.3.0",
-    "gulp-batch": "~1.0.5",
-    "gulp-concat": "^2.5.2",
-    "gulp-css-base64": "^1.3.2",
-    "gulp-filter": "^2.0.2",
-    "gulp-inject": "^1.2.0",
-    "gulp-load-plugins": "^0.10.0",
-    "gulp-minify-css": "^1.1.3",
-    "gulp-newer": "^0.5.0",
     "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.5.3",
-    "gulp-sourcemaps": "^1.5.2",
-    "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.5",
-    "gulp-watch": "^4.2.4",
     "main-bower-files": "^2.8.0",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-map": "^1.0.1",
-    "vinyl-source-stream": "^1.1.0"
-  },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
-  "browser": {
-  },
-  "browserify-shim": {
+    "vinyl-map": "^1.0.1"
   }
 }
