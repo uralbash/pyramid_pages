@@ -82,16 +82,17 @@ class RedirectMixin(object):
     def redirect_page(cls):
         return Column(
             Integer,
-            ForeignKey('{}.{}'.format(cls.__tablename__, cls.get_db_pk()),
-                       ondelete='CASCADE')
+            ForeignKey(
+                '{}.{}'.format(cls.__tablename__, cls.get_pk_name()),
+                ondelete='CASCADE')
         )
 
     @declared_attr
     def redirect(cls):
-        pk = getattr(cls, cls.get_pk())
+        pk = getattr(cls, cls.get_pk_name())
         return relationship(
             cls, foreign_keys=[cls.redirect_page],
-            remote_side=cls.get_class_pk(),  # for show in sacrud relation
+            remote_side=cls.get_pk_with_class_name(),
             primaryjoin=lambda: foreign(cls.redirect_page) == pk,
         )
 

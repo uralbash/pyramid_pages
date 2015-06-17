@@ -100,6 +100,8 @@ def main(global_settings, **settings):
     )
     config.include('pyramid_jinja2')
     config.add_jinja2_search_path('pyramid_pages_example:templates')
+    config.add_static_view('pyramid_pages_example_static',
+                           'static')
 
     # Database
     settings = config.get_settings()
