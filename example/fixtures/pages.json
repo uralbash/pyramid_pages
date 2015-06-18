@@ -4,7 +4,8 @@
         "in_menu": 1,
         "name": "Default home page",
         "slug": "/",
-        "visible": 1
+        "visible": 1,
+        "tree_id": 1
     },
     {
         "description": "Hello Traversal World! Hello Traversal World! Hello Traversal World!",
@@ -12,6 +13,7 @@
         "in_menu": 1,
         "name": "Hello Traversal World!",
         "slug": "about-company",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -20,6 +22,7 @@
         "name": "We \u2665  gevent",
         "parent_id": "1",
         "slug": "we-love-gevent",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -28,6 +31,7 @@
         "name": "And Pyramid",
         "parent_id": "2",
         "slug": "and-pyramid",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -38,6 +42,7 @@
         "redirect_page": 2,
         "redirect_type": "301",
         "slug": "redirect-301",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -48,6 +53,7 @@
         "redirect_page": 1,
         "redirect_type": "200",
         "slug": "redirect-200",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -58,6 +64,7 @@
         "redirect_type": "302",
         "redirect_url": "http://itcase.pro/",
         "slug": "kompania-itcase",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -65,6 +72,7 @@
         "name": "Our strategy",
         "parent_id": "1",
         "slug": "our-strategy",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -72,6 +80,7 @@
         "name": "Wordwide",
         "parent_id": "7",
         "slug": "wordwide",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -79,6 +88,7 @@
         "name": "Technology",
         "parent_id": "8",
         "slug": "technology",
+        "tree_id": 1,
         "visible": 0
     },
     {
@@ -86,6 +96,7 @@
         "name": "What we do",
         "parent_id": "7",
         "slug": "what-we-do",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -93,6 +104,7 @@
         "name": "at a glance",
         "parent_id": "10",
         "slug": "at-a-glance",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -101,6 +113,7 @@
         "name": "and aiohttp!",
         "parent_id": "3",
         "slug": "and-aiohttp",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -109,6 +122,7 @@
         "name": "and asyncio!",
         "parent_id": "3",
         "slug": "and-asyncio",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -117,6 +131,7 @@
         "name": "and beer!",
         "parent_id": "12",
         "slug": "and-beer",
+        "tree_id": 1,
         "visible": 1
     },
     {
@@ -125,6 +140,7 @@
         "name": "and bear to!",
         "parent_id": "14",
         "slug": "and-bear-to",
+        "tree_id": 1,
         "visible": 1
     }
 ]
