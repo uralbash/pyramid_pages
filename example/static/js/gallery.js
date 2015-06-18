@@ -26,18 +26,7 @@ Gallery.prototype.getImageId = function() {
           ratio: '16/9',
           thumbwidth: '80',
           thumbheight: '55',
-          data: [
-            {
-              img: 'http://i.imgur.com/ZVTBpjV.jpg',
-              thumb: 'http://i.imgur.com/ZVTBpjV.jpg'
-            }, {
-              img: 'http://i.imgur.com/1RHsVNy.jpg',
-              thumb: 'http://i.imgur.com/1RHsVNy.jpg'
-            }, {
-              img: 'http://i.imgur.com/fmck85z.jpg',
-              thumb: 'http://i.imgur.com/fmck85z.jpg'
-            }
-          ]
+          data: IMAGES_LIST
         });
         var fotorama = $('.fotorama').data('fotorama'),
             target = $(this).data('fotorama-image-id');
