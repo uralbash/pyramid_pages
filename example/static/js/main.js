@@ -2,5 +2,6 @@
 
 if (typeof $ === 'undefined') { require('jquery'); }
 
-var popup = require('./popup.js').Popup(),
+var fotorama = require('./vendor/fotorama.js'),
+    popup = require('./popup.js').Popup(),
     gallery = require('./gallery.js').Gallery();
