@@ -22,10 +22,20 @@
             {% for photo in context.node.photos %}
                 <div class="gallery-list__item">
                     <a href="{{ photo.path }}" class="gallery-list__item-link" data-fotorama-image-id="{{ loop.index }}">
-                        <img class="gallery-list__item-image" src="{{ photo.path }}" />
+                        <img class="gallery-list__item-image" src="{{ photo.path[:-4] }}t.jpg" />
                     </a>
                 </div>
             {% endfor %}
         </div>
     </div>
+
+    <script type="text/javascript">
+        var IMAGES_LIST = [
+            {% for photo in context.node.photos %} {
+              'img': '{{ photo.path }}',
+              'thumb': '{{ photo.path[:-4] }}t.jpg'
+            },
+            {% endfor %}
+        ];
+    </script>
 {% endblock %}
