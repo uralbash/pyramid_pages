@@ -32,9 +32,11 @@
     "gulp-concat": "^2.5.2",
     "gulp-css-base64": "^1.3.2",
     "gulp-filter": "^2.0.2",
+    "gulp-if": "^1.2.5",
     "gulp-inject": "^1.2.0",
     "gulp-load-plugins": "^0.10.0",
     "gulp-minify-css": "^1.1.3",
+    "gulp-modify-css-urls": "^0.2.0",
     "gulp-newer": "^0.5.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.3",
@@ -43,17 +45,20 @@
     "gulp-util": "^3.0.5",
     "gulp-watch": "^4.2.4",
     "main-bower-files": "^2.8.0",
+    "minimist": "^1.1.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-map": "^1.0.1",
     "vinyl-source-stream": "^1.1.0"
+  },
+  "browser": {
+    "jquery": "./pyramid_pages/static/js/vendor/jquery.min.js"
   },
   "browserify": {
     "transform": [
       "browserify-shim"
     ]
   },
-  "browser": {
-  },
   "browserify-shim": {
+    "jquery": "$"
   }
 }

@@ -1,9 +1,8 @@
-var popup = require('./popup.js').Popup(),
-    gallery = require('./gallery.js').Gallery();
+'use strict';
+
+if (typeof $ === 'undefined') { require('jquery'); }
 
 (function($){
-
-  'use strict';
 
   $(window).load(function(){
 
