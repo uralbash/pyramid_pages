@@ -294,7 +294,7 @@ gulp.task('watch', function() {
 
     plugins.watch(EXAMPLE_JS_FILES,{ verbose: true },
       plugins.batch(function (cb) {
-        gulp.start('dev-brrowserify');
+        gulp.start('dev-browserify');
         cb();
       }));
 
@@ -310,3 +310,4 @@ gulp.task('watch', function() {
 gulp.task('default', ['browser-sync', 'watch']);
 gulp.task('bower', ['bower-js', 'bower-css', 'bower-img']);
 gulp.task('build', ['bower', 'css', 'browserify']);
+gulp.task('dev-build', ['dev-css', 'dev-browserify']);
