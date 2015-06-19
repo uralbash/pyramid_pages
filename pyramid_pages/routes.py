@@ -132,7 +132,7 @@ def register(*args):
         if hasattr(resource, '__table__')\
                 and not hasattr(resource, 'model'):
             continue
-
+        resource.model.pyramid_pages_template = resource.template
         config.add_view(resource.view,
                         attr=resource.attr,
                         route_name=PREFIX_PAGE,

@@ -10,6 +10,7 @@
 Views for pages
 """
 from pyramid.httpexceptions import HTTPNotFound
+from pyramid.renderers import render_to_response
 from pyramid.response import Response
 
 
@@ -49,10 +50,18 @@ class PageView(object):
                     raise HTTPNotFound
                 if redirect_type == '200':
                     self.page = self.page.redirect
+                    return render_to_response(
+                        getattr(self.page,
+                                'pyramid_pages_template',
+                                self.context.template),
+                        {'page': self.page},
+                        request=self.request
+                    )
                 else:
+                    prefix = self.context.get_prefix(self.request,
+                                                     node=self.page.redirect)
                     redirect_resource_url = self.request.resource_url(
-                        self.context.__class__(self.page.redirect,
-                                               self.context.prefix))
+                        self.context.__class__(self.page.redirect, prefix))
                     return Response(status_code=int(redirect_type),
                                     location=redirect_resource_url)
             # Redirect to URL

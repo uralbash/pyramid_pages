@@ -69,24 +69,15 @@ class WebPage(BasePage, MpttPageMixin):
     }
 
 
-class NewsPage(Base, FlatPageMixin):
+class NewsPage(BasePage, FlatPageMixin):
     __tablename__ = 'flat_news'
 
-    # id = Column(Integer, ForeignKey('base_pages.id'), primary_key=True)
-    id = Column(Integer, primary_key=True)
-    date = Column(Date)  # , default=func.now())
+    id = Column(Integer, ForeignKey('base_pages.id'), primary_key=True)
+    date = Column(Date, default=func.now())
 
-    # __mapper_args__ = {
-    #     'polymorphic_identity': 'news_page',
-    # }
-    #
-    # @classmethod
-    # def get_pk_name(cls):
-    #     return 'id'
-    #
-    # @classmethod
-    # def get_pk_with_class_name(cls):
-    #     return 'NewsPage.id'
+    __mapper_args__ = {
+        'polymorphic_identity': 'news_page',
+    }
 
 
 class Gallery(BasePage, MpttPageMixin):
@@ -172,7 +163,6 @@ def main(global_settings, **settings):
     )
 
     # pyramid_pages
-    config.include("pyramid_pages")
     settings[CONFIG_PYRAMID_PAGES_DBSESSION] =\
         settings.get(CONFIG_PYRAMID_PAGES_DBSESSION,
                      DBSession)
@@ -185,6 +175,7 @@ def main(global_settings, **settings):
                 'news': NewsResource,
                 'gallery': GalleryResource,
             })
+    config.include("pyramid_pages")
     config.add_subscriber(add_global_menu, BeforeRender)
     return config.make_wsgi_app()
 

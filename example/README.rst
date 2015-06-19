@@ -1,10 +1,6 @@
 Usage
 =====
 
-.. note::
-
-   This example requires pyramid>=1.6a version.
-
 .. code-block:: bash
 
    $ cd example

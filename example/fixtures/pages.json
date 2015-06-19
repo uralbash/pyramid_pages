@@ -32,7 +32,9 @@
         "parent_id": "2",
         "slug": "and-pyramid",
         "tree_id": 1,
-        "visible": 1
+        "visible": 1,
+        "redirect_type": 200,
+        "redirect_page": 1003
     },
     {
         "id": "4",
