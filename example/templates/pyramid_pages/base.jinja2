@@ -30,20 +30,18 @@
                                 {% endwith %}
                         </div>
                     </div>
-                    <div class="page__right clearfix">
-                        <div class="page__right-inner">
-                            {% block content %}
-                                <div class="page-title">{{ context.node.name }}</div>
-                                <div class="content">{{ context.node.description or '' }}</div>
-                            {% endblock %}
-                        </div>
-                        <div class="page__right-menu">
-                            <div class="main-menu main-menu_type_right clearfix">
-                                <div class="main-menu-title">Gallery</div>
-                                    {% with menu=gallery_menu() %}
-                                        {% include menu.template with context %}
-                                    {% endwith %}
-                                </div>
+                    <div class="page__middle clearfix">
+                        {% block content %}
+                            <div class="page-title">{{ context.node.name }}</div>
+                            <div class="content">{{ context.node.description or '' }}</div>
+                        {% endblock %}
+                    </div>
+                    <div class="page__right">
+                        <div class="main-menu main-menu_type_right clearfix">
+                            <div class="main-menu-title">Gallery</div>
+                                {% with menu=gallery_menu() %}
+                                    {% include menu.template with context %}
+                                {% endwith %}
                             </div>
                         </div>
                     </div>

@@ -1,8 +1,16 @@
 .popup-inner__content-gallery
 {
   width: 800px;
-  min-height: 450px;
+  height: 550px;
+  max-width: 800px;
   padding: 1.5em 1.1em 1.2em 1.1em;
   background: #fff;
   box-shadow: 0 0 30px 0 #555;
 }
+  .fotorama__stage__frame .fotorama__img
+  {
+    width: auto !important;
+    max-height: 500px !important;
+    margin: 0 auto !important;
+    top: 0 !important;
+  }

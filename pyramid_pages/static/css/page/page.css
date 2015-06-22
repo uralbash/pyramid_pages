@@ -12,27 +12,22 @@
     }
         .page__left
         {
-            width: 25%;
+            width: 23%;
             display: table-cell;
             background: #eee;
             vertical-align: top;
         }
-        .page__right
+        .page__middle
         {
-            width: 70%;
+            width: 50%;
             display: table-cell;
-            padding: 2em 0 2em 5%;
+            padding: 2em 3% 2em 4%;
             vertical-align: top;
         }
-            .page__right-inner
-            {
-                width: 75%;
-                float: left;
-            }
-            .page__right-menu
-            {
-                width: 20%;
-                float: right;
-                position: relative;
-                margin: -2em 0 0 0;
-            }
+        .page__right
+        {
+            width: 20%;
+            display: table-cell;
+            vertical-align: top;
+            background: #eee;
+        }

@@ -18,24 +18,22 @@ Gallery.prototype.getImageId = function() {
 
         $('.fotorama').fotorama({
           width: '100%',
-          fit: 'cover',
+          fit: 'none',
           loop: true,
-          maxwidth: '100%',
-          minheight: '500',
           nav: 'thumbs',
-          ratio: '16/9',
-          thumbwidth: '80',
-          thumbheight: '55',
+          thumbwidth: 80,
+          thumbheight: 55,
+          thumbfit: 'contain',
           data: IMAGES_LIST
         });
+
         var fotorama = $('.fotorama').data('fotorama'),
             target = $(this).data('fotorama-image-id');
 
         fotorama.show(target - 1);
 
         return event.preventDefault();
-      });
+    });
 };
-
 
 module.exports.Gallery = Gallery;

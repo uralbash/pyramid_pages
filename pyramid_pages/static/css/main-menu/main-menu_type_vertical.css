@@ -10,6 +10,10 @@
     color: #000;
     padding: 0.7em 1.5em 0.2em 1.5em;
   }
+  .main-menu_type_vertical .main-menu-title:before
+  {
+    display: none;
+  }
   .main-menu_type_vertical .main-menu-list
   {
     width: 100%;

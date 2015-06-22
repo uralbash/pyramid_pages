@@ -1,17 +1,34 @@
 .main-menu-title
 {
-  width: 18%;
+  width: 24%;
   font: 1.3em Arial, Helvetica, sans-serif;
   position: relative;
   float: left;
   color: #fff;
-  padding: 0.4em 1.5em 0 0;
-  text-align: center;
+  padding: 0.4em 0 0 0;
 }
   .main-menu-title__link
   {
     color: #fff;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    padding: 0 0 0 1.8em;
+    text-decoration: none;
+    margin: 0 0 0 1.4em;
   }
+    .main-menu-title__link:before
+    {
+      width: 2.2em;
+      height: 1.2em;
+      background: url('./../logo.png') no-repeat;
+      background-size: contain;
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
   .main-menu-title__link:hover
   {
     color: #ffcc00;
