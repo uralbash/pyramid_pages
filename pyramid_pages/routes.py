@@ -69,7 +69,11 @@ class PageResource(object):
             node = self.node
         node = node.__class__
         settings = request.registry.settings
-        models = settings[CONFIG_MODELS]
+        try:
+            models = settings[CONFIG_MODELS]
+        except:
+            import ipdb; ipdb.set_trace()
+
         reversed_models = dict(zip(models.values(), models.keys()))
         prefix = reversed_models.get(node, None)
         if prefix:
@@ -132,7 +136,7 @@ def register(*args):
         if hasattr(resource, '__table__')\
                 and not hasattr(resource, 'model'):
             continue
-
+        resource.model.pyramid_pages_template = resource.template
         config.add_view(resource.view,
                         attr=resource.attr,
                         route_name=PREFIX_PAGE,

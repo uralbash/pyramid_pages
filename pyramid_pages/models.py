@@ -37,7 +37,10 @@ class PageMixin(object):
     description = Column(UnicodeText)
 
     def __repr__(self):
-        return self.name or '<{}>'.format(self)
+        return self.name or ''
+
+    def __json__(self, request):
+        return self.id
 
 
 class MpttPageMixin(BaseNestedSets, PageMixin):
