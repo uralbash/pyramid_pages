@@ -21,14 +21,11 @@ notifications:
 python:
   - "3.3"
   - "3.4"
-  - "pypy"
 
 matrix:
   include:
     - python: "2.7"
       env: LINK_CHECK=1
-    - python: "pypy3"
-      env: NO_RSTLINT=1
 
 install:
   - python setup.py develop

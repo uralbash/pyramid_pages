@@ -37,7 +37,10 @@ class PageMixin(object):
     description = Column(UnicodeText)
 
     def __repr__(self):
-        return self.name or '<{}>'.format(self)
+        return self.name or ''
+
+    def __json__(self, request):
+        return self.id
 
 
 class MpttPageMixin(BaseNestedSets, PageMixin):
@@ -92,7 +95,7 @@ class RedirectMixin(object):
         pk = getattr(cls, cls.get_pk_name())
         return relationship(
             cls, foreign_keys=[cls.redirect_page],
-            remote_side=cls.get_pk_with_class_name(),
+            remote_side='{}.{}'.format(cls.__name__, cls.get_pk_name()),
             primaryjoin=lambda: foreign(cls.redirect_page) == pk,
         )
 

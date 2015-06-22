@@ -3,7 +3,8 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid_pages.routes import PageResource
 from pyramid_pages.views import PageView
 
-from . import NewsPage, WebPage, UnitTestBase
+from . import NewsPage, UnitTestBase, WebPage, settings
+from pyramid_pages_example import Gallery
 
 
 class TestResource(UnitTestBase):
@@ -84,8 +85,9 @@ class TestPageView(UnitTestBase):
         )
         node.redirect = node
         context = PageResource(node)
-        view = PageView(context, self.request).page_with_redirect()
-        self.assertEqual(view['page'], node)
+        context.template = 'json'
+        response = PageView(context, self.request).page_with_redirect()
+        self.assertEqual(response.json['page'], 1)
 
     def test_redirect_page_with_out_type(self):
         """ Redirect to page w/o redirect type.
@@ -132,8 +134,9 @@ class TestPageView(UnitTestBase):
             redirect_type=200, redirect_page=2, redirect=node2
         )
         context = PageResource(node)
-        view = PageView(context, self.request).page_with_redirect()
-        self.assertEqual(view['page'], node2)
+        context.template = 'json'
+        response = PageView(context, self.request).page_with_redirect()
+        self.assertEqual(response.json['page'], 2)
 
     """ 300
         redirect to page
@@ -185,38 +188,56 @@ class TestPageView(UnitTestBase):
         redirect_url  = None
         redirect_page = 2
         """
+        self.request.registry.settings = settings
+
         def do_it(redirect_code):
             self.drop_db()
             self.create_db()
 
-            node = WebPage(
-                id=1, visible=True, name='node', slug='node',
-                redirect_type=redirect_code, redirect_page=2
-            )
             node2 = WebPage(id=2, visible=True, name='node2', slug='node2')
+            node1 = WebPage(
+                id=1, visible=True, name='node', slug='node',
+                redirect_type=redirect_code, redirect=node2
+            )
             node3 = WebPage(id=3, visible=True, name='node3', slug='node3',
                             parent_id=2)
             node4 = WebPage(
                 id=4, visible=True, name='node4', slug='node4',
-                redirect_type=redirect_code, redirect_page=3
+                redirect_type=redirect_code, redirect=node3
+            )
+            node5_inheritance = Gallery(
+                id=5, visible=True, name='node5', slug='node5')
+            node6 = WebPage(
+                id=6, visible=True, name='node6', slug='node6',
+                redirect_type=redirect_code, redirect=node5_inheritance
             )
 
-            self.dbsession.add(node)
+            self.dbsession.add(node1)
             self.dbsession.add(node2)
+            self.dbsession.flush()
             self.dbsession.add(node3)
             self.dbsession.add(node4)
+            self.dbsession.add(node5_inheritance)
+            self.dbsession.add(node6)
             self.dbsession.commit()
 
             # 301
-            context = PageResource(node)
+            context = PageResource(node1)
             view = PageView(context, self.request).page_with_redirect()
             self.assertEqual(view.status_code, redirect_code)
-            self.assertEqual(view.location, 'http://example.com/node2/')
+            self.assertEqual(view.location, 'http://example.com/pages/node2/')
 
             context = PageResource(node4)
             view = PageView(context, self.request).page_with_redirect()
             self.assertEqual(view.status_code, redirect_code)
-            self.assertEqual(view.location, 'http://example.com/node2/node3/')
+            self.assertEqual(view.location,
+                             'http://example.com/pages/node2/node3/')
+
+            context = PageResource(node6)
+            view = PageView(context, self.request).page_with_redirect()
+            self.assertEqual(view.status_code, redirect_code)
+            self.assertEqual(view.location,
+                             'http://example.com/gallery/node5/')
             self.dbsession.close()
 
         do_it(301)

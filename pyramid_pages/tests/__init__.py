@@ -16,15 +16,16 @@ from pyramid import testing
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
 from webtest import TestApp
+from sqlalchemy_mptt import mptt_sessionmaker
 
 import imp
 imp.load_source('pyramid_pages_example', 'example/pyramid_pages_example.py')
 
-from pyramid_pages_example import NewsPage, WebPage, Base, main  # noqa
+from pyramid_pages_example import NewsPage, WebPage, Base, main, models  # noqa
 
 settings = {
-    'index_view': True,
-    'sqlalchemy.url': 'sqlite:///test.sqlite'
+    'sqlalchemy.url': 'sqlite:///test.sqlite',
+    'pyramid_pages.models': models
 }
 
 
@@ -33,7 +34,7 @@ class BaseTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.engine = engine_from_config(settings, prefix='sqlalchemy.')
-        cls.DBSession = sessionmaker()
+        cls.DBSession = mptt_sessionmaker(sessionmaker())
 
     def setUp(self):
         # bind an individual Session to the connection
@@ -65,19 +66,9 @@ class UnitTestBase(BaseTestCase):
         super(UnitTestBase, self).setUp()
 
 
-class IntegrationTestBaseWithIndex(BaseTestCase):
-
-    def setUp(self):
-        self.app = TestApp(main({}, **settings))
-        self.config = testing.setUp()
-        super(IntegrationTestBaseWithIndex, self).setUp()
-
-
 class IntegrationTestBase(BaseTestCase):
 
     def setUp(self):
-        settings2 = {key: value for key, value in settings.items()
-                     if key != 'index_view'}
-        self.app = TestApp(main({}, **settings2))
+        self.app = TestApp(main({}, **settings))
         self.config = testing.setUp()
         super(IntegrationTestBase, self).setUp()
