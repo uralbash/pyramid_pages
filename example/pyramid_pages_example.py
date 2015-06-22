@@ -130,6 +130,14 @@ def add_global_menu(event):
     event['gallery_menu'] = Menu(DBSession, Gallery).mptt
 
 
+models = {
+    '': WebPage,
+    'pages': WebPage,
+    'news': NewsResource,
+    'gallery': GalleryResource,
+}
+
+
 def main(global_settings, **settings):
     config = Configurator(
         settings=settings,
@@ -167,14 +175,7 @@ def main(global_settings, **settings):
         settings.get(CONFIG_PYRAMID_PAGES_DBSESSION,
                      DBSession)
     settings[CONFIG_PYRAMID_PAGES_MODELS] =\
-        settings.get(
-            CONFIG_PYRAMID_PAGES_MODELS,
-            {
-                '': WebPage,
-                'pages': WebPage,
-                'news': NewsResource,
-                'gallery': GalleryResource,
-            })
+        settings.get(CONFIG_PYRAMID_PAGES_MODELS, models)
     config.include("pyramid_pages")
     config.add_subscriber(add_global_menu, BeforeRender)
     return config.make_wsgi_app()

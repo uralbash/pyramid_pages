@@ -1,4 +1,4 @@
-from . import IntegrationTestBase, IntegrationTestBaseWithIndex
+from . import IntegrationTestBase
 
 
 class BasePageView(object):
@@ -24,8 +24,4 @@ class BasePageView(object):
 
 
 class TestPageView(IntegrationTestBase, BasePageView):
-    pass
-
-
-class TestPageViewWithIndex(IntegrationTestBaseWithIndex, BasePageView):
     pass

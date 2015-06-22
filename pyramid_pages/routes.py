@@ -69,7 +69,11 @@ class PageResource(object):
             node = self.node
         node = node.__class__
         settings = request.registry.settings
-        models = settings[CONFIG_MODELS]
+        try:
+            models = settings[CONFIG_MODELS]
+        except:
+            import ipdb; ipdb.set_trace()
+
         reversed_models = dict(zip(models.values(), models.keys()))
         prefix = reversed_models.get(node, None)
         if prefix:
