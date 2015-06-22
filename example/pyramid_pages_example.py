@@ -164,12 +164,6 @@ def main(global_settings, **settings):
     fixture.add(Gallery, 'fixtures/gallery.json')
     fixture.add(Photo, 'fixtures/photos.json')
 
-    # pyramid_sacrud
-    config.include("pyramid_sacrud")
-    settings['pyramid_sacrud.models'] = (
-        ('', [BasePage, WebPage, NewsPage, Gallery, Photo])
-    )
-
     # pyramid_pages
     settings[CONFIG_PYRAMID_PAGES_DBSESSION] =\
         settings.get(CONFIG_PYRAMID_PAGES_DBSESSION,
