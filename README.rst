@@ -11,6 +11,7 @@ See documentation http://pyramid-pages.readthedocs.org/en/master/
 
 .. image:: https://raw.githubusercontent.com/ITCase/pyramid_pages/master/docs/_static/img/example.png
     :alt: pyramid_pages - example of website pages tree
+    :width: 800px
     :align: center
 
 Support and Development
