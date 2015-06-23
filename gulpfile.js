@@ -18,7 +18,8 @@ var TARGET_CSS_FILE = '__pyramid_pages.css',
 
 var CSS_PATH = './pyramid_pages/static/css/',
     JS_PATH = './pyramid_pages/static/js/',
-    IMG_PATH = './pyramid_pages/static/img/';
+    IMG_PATH = './pyramid_pages/static/img/',
+    FONT_PATH = './pyramid_pages/static/fonts/';
 
 var TARGET_CSS_PATH = CSS_PATH + TARGET_CSS_FILE,
     TARGET_JS_PATH = JS_PATH + TARGET_JS_FILE;
@@ -73,6 +74,24 @@ var knownOptions = {
 
 var options = minimist(process.argv.slice(2), knownOptions);
 
+var processors = [
+    require('postcss-nested'),
+    require('autoprefixer-core')({
+      browsers: [
+        'Firefox >= 3',
+        'Explorer >= 6',
+        'Opera >= 9',
+        'Chrome >= 15',
+        'Safari >= 4',
+        '> 1%'
+      ],
+      cascade: false
+    }),
+    require('postcss-css-variables'),
+    require('postcss-opacity')
+  ];
+
+
 gulp.task('browser-sync', function() {
   browserSync({
     proxy: '127.0.0.1:6543',
@@ -124,23 +143,34 @@ gulp.task('bower-img', function() {
 });
 
 
+gulp.task('bower-font', function() {
+  return gulp.src(mainBowerFiles(
+    { filter: (/.*\.(svg|ttf|woff|woff2|otf)$/i) }), { base: 'bower_components' })
+    .pipe(plugins.rename(function (path) {
+      path.dirname = path.dirname.slice(0, path.dirname.indexOf('/') + 1);
+    }))
+    .pipe(gulp.dest(FONT_PATH))
+    .pipe(map(function(code, filename) {
+      plugins.util.log('Bower Fonts ' +
+      plugins.util.colors.green(filename));
+    }));
+});
+
+
 gulp.task('browserify', function() {
 
   var b = browserify({
     entries: JS_PATH + BROWSERIFY_FILE,
     debug: true
   });
-
   return b.bundle()
     .pipe(source(TARGET_JS_PATH))
     .pipe(buffer())
     .pipe(plugins.sourcemaps.init({loadMaps: true}))
+    .pipe(plugins.if(options.env === 'production',
+      plugins.uglify()))
     .pipe(plugins.if(options.env === 'development',
-      plugins.uglify())
-    )
-    .pipe(plugins.if(options.env === 'development',
-      plugins.sourcemaps.write('./'))
-    )
+      plugins.sourcemaps.write('./')))
     .pipe(gulp.dest('./'))
     .pipe(map(function(code, filename) {
       plugins.util.log('Browserify ' +
@@ -153,17 +183,10 @@ gulp.task('browserify', function() {
 gulp.task('css', function() {
   return gulp.src(CSS_FILES)
     .pipe(plugins.newer(TARGET_CSS_PATH))
-    .pipe(plugins.if(
-      options.env === 'development',
-      plugins.sourcemaps.init())
-    )
-    .pipe(plugins.autoprefixer({
-      browsers: ['Firefox >= 3', 'Explorer >= 6', 'Opera >= 9',
-                 'Chrome >= 15', 'Safari >= 4', '> 1%'],
-      cascade: false
-    }))
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.postcss(processors))
     .on('error', function(err) {
-      plugins.util.log(plugins.util.colors.red('Autoprefixer Error'),
+      plugins.util.log(plugins.util.colors.red('PostCSS Error'),
       plugins.util.colors.yellow(err.message));
     })
     .pipe(plugins.cssBase64({
@@ -174,12 +197,26 @@ gulp.task('css', function() {
       plugins.util.log(plugins.util.colors.red('Base64 Error'),
       plugins.util.colors.yellow(err.message));
     })
-    .pipe(plugins.modifyCssUrls({ prepend: './../img/vendor/' }))
+    .pipe(plugins.modifyCssUrls({
+      modify: function (url, filePath) {
+        if(filePath.indexOf('vendor') > -1) {
+          if(url.indexOf('./font') > -1) {
+            url = './../' + url.substring(url.indexOf('font'));
+          } else if(url.indexOf('./img') > -1) {
+            url = './../img/vendor/' + url.substring(url.indexOf('img'));
+          }
+          if(url.match(/.*\.(png|jpg|gif)$/i)) {
+            url = './../img/vendor/' + url.substring(url.indexOf('/'));
+          }
+          return url;
+        }
+      }
+    }))
     .pipe(plugins.concat(TARGET_CSS_FILE))
-    .pipe(plugins.minifyCss({ keepSpecialComments: 0 }))
     .pipe(plugins.if(options.env === 'development',
-      plugins.sourcemaps.write('.'))
-    )
+      plugins.sourcemaps.write('.')))
+    .pipe(plugins.if(options.env === 'production',
+      plugins.minifyCss({ keepSpecialComments: 0 })))
     .pipe(gulp.dest(CSS_PATH))
     .on('error', plugins.util.log)
     .pipe(plugins.filter('*.css'))
@@ -208,12 +245,10 @@ gulp.task('dev-browserify', function() {
     .pipe(source(EXAMPLE_TARGET_JS_PATH))
     .pipe(buffer())
     .pipe(plugins.sourcemaps.init({loadMaps: true}))
+    .pipe(plugins.if(options.env === 'production',
+      plugins.uglify()))
     .pipe(plugins.if(options.env === 'development',
-      plugins.uglify())
-    )
-    .pipe(plugins.if(options.env === 'development',
-      plugins.sourcemaps.write('./'))
-    )
+      plugins.sourcemaps.write('./')))
     .pipe(gulp.dest('./'))
     .pipe(map(function(code, filename) {
       plugins.util.log('Browserify ' +
@@ -227,13 +262,9 @@ gulp.task('dev-css', function() {
   return gulp.src(EXAMPLE_CSS_FILES)
     .pipe(plugins.newer(EXAMPLE_TARGET_CSS_PATH))
     .pipe(plugins.sourcemaps.init())
-    .pipe(plugins.autoprefixer({
-      browsers: ['Firefox >= 3', 'Explorer >= 6', 'Opera >= 9',
-                 'Chrome >= 15', 'Safari >= 4', '> 1%'],
-      cascade: false
-    }))
+    .pipe(plugins.postcss(processors))
     .on('error', function(err) {
-      plugins.util.log(plugins.util.colors.red('Autoprefixer Error'),
+      plugins.util.log(plugins.util.colors.red('PostCSS Error'),
       plugins.util.colors.yellow(err.message));
     })
     .pipe(plugins.cssBase64({
@@ -244,12 +275,26 @@ gulp.task('dev-css', function() {
       plugins.util.log(plugins.util.colors.red('Base64 Error'),
       plugins.util.colors.yellow(err.message));
     })
-    .pipe(plugins.modifyCssUrls({ prepend: './../img/vendor/' }))
+    .pipe(plugins.modifyCssUrls({
+      modify: function (url, filePath) {
+        if(filePath.indexOf('vendor') > -1) {
+          if(url.indexOf('./font') > -1) {
+            url = './../' + url.substring(url.indexOf('font'));
+          } else if(url.indexOf('./img') > -1) {
+            url = './../img/vendor/' + url.substring(url.indexOf('img'));
+          }
+          if(url.match(/.*\.(png|jpg|gif)$/i)) {
+            url = './../img/vendor/' + url.substring(url.indexOf('/'));
+          }
+          return url;
+        }
+      }
+    }))
     .pipe(plugins.concat(EXAMPLE_TARGET_CSS_FILE))
     .pipe(plugins.if(options.env === 'development',
-      plugins.sourcemaps.write('.'))
-    )
-    .pipe(plugins.minifyCss({ keepSpecialComments: 0 }))
+      plugins.sourcemaps.write('.')))
+    .pipe(plugins.if(options.env === 'production',
+      plugins.minifyCss({ keepSpecialComments: 0 })))
     .pipe(gulp.dest(EXAMPLE_CSS_PATH))
     .on('error', plugins.util.log)
     .pipe(plugins.filter('*.css'))
@@ -308,6 +353,7 @@ gulp.task('watch', function() {
 
 
 gulp.task('default', ['browser-sync', 'watch']);
-gulp.task('bower', ['bower-js', 'bower-css', 'bower-img']);
+gulp.task('bower', ['bower-js', 'bower-css', 'bower-img', 'bower-font']);
 gulp.task('build', ['bower', 'css', 'browserify']);
 gulp.task('dev-build', ['dev-css', 'dev-browserify']);
+gulp.task('build-all', ['bower', 'build', 'dev-build']);
