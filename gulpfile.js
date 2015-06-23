@@ -209,6 +209,8 @@ gulp.task('css', function() {
             url = './../img/vendor/' + url.substring(url.indexOf('/'));
           }
           return url;
+        } else {
+          return url;
         }
       }
     }))
