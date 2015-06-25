@@ -15,6 +15,7 @@ import os
 import transaction
 from pyramid.config import Configurator
 from pyramid.events import BeforeRender
+from pyramid.location import lineage
 from pyramid.session import SignedCookieSessionFactory
 from sqlalchemy import (Column, Date, ForeignKey, Integer, String, Text,
                         engine_from_config)
@@ -124,7 +125,8 @@ class Fixtures(object):
         transaction.commit()
 
 
-def add_global_menu(event):
+def add_globals(event):
+    event['lineage'] = lineage
     event['page_menu'] = Menu(DBSession, WebPage).mptt
     event['news_menu'] = Menu(DBSession, NewsPage).flat
     event['gallery_menu'] = Menu(DBSession, Gallery).mptt
@@ -171,7 +173,7 @@ def main(global_settings, **settings):
     settings[CONFIG_PYRAMID_PAGES_MODELS] =\
         settings.get(CONFIG_PYRAMID_PAGES_MODELS, models)
     config.include("pyramid_pages")
-    config.add_subscriber(add_global_menu, BeforeRender)
+    config.add_subscriber(add_globals, BeforeRender)
     return config.make_wsgi_app()
 
 if __name__ == '__main__':

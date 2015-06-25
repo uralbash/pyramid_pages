@@ -31,9 +31,12 @@
                         </div>
                     </div>
                     <div class="page__middle clearfix">
+                        {% block breadcrumbs %}
+                            {% include "breadcrumbs.jinja2" %} 
+                        {% endblock %}
                         {% block content %}
-                            <div class="page-title">{{ context.node.name }}</div>
-                            <div class="content">{{ context.node.description or '' }}</div>
+                            <div class="page-title">{{ page.name }}</div>
+                            <div class="content">{{ page.description or '' }}</div>
                         {% endblock %}
                     </div>
                     <div class="page__right">

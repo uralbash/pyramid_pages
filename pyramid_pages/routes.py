@@ -62,6 +62,8 @@ class PageResource(object):
         return url
 
     def __repr__(self):
+        if not hasattr(self.node, 'name'):
+            return '{}'.format(self.node)
         return "<{}>".format(self.node.name.encode('utf-8'))
 
     def get_prefix(self, request, node=None):
