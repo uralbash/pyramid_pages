@@ -11,11 +11,22 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "normalize.css": "~3.0.2",
+    "font-awesome": "~4.3.0",
     "html5-boilerplate": "~5.2.0",
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "normalize.css": "~3.0.2"
   },
   "overrides": {
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.min.css",
+        "fonts/fontawesome-webfont.svg",
+        "fonts/fontawesome-webfont.ttf",
+        "fonts/fontawesome-webfont.woff",
+        "fonts/fontawesome-webfont.woff2",
+        "fonts/fontawesome-webfont.otf"
+      ]
+    },
     "html5-boilerplate": {
       "main": "dist/css/main.css"
     },

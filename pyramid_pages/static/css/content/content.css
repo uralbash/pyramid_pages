@@ -1,153 +1,153 @@
 .content h1
 {
-	font: 1.2em Arial, Helvetica, sans-serif;
-	color: #444;
-	padding: 0 0 0.3em 0;
+  font: 1.2em Arial, Helvetica, sans-serif;
+  color: #444;
+  padding: 0 0 0.3em 0;
 }
 .content h2
 {
-	font: 1.1em Arial, Helvetica, sans-serif;
-	color: #444;
-	padding: 0 0 0.3em 0;
+  font: 1.1em Arial, Helvetica, sans-serif;
+  color: #444;
+  padding: 0 0 0.3em 0;
 }
 .content h3
 {
-	font: 1em Arial, Helvetica, sans-serif;
-	color: #444;
-	padding: 0 0 0.3em 0;
+  font: 1em Arial, Helvetica, sans-serif;
+  color: #444;
+  padding: 0 0 0.3em 0;
 }
 .content h5
 {
-	width: 100%;
-	font: 1em Arial, Helvetica, sans-serif;
-	color: #444;
-	padding: 0.3em 0 0.2em 0.5em;
-	margin: 0 0 0.5em 0;
-	background: #EFEFEF;
-	position: relative;
-	left: -0.5em;
+  width: 100%;
+  font: 1em Arial, Helvetica, sans-serif;
+  color: #444;
+  padding: 0.3em 0 0.2em 0.5em;
+  margin: 0 0 0.5em 0;
+  background: #EFEFEF;
+  position: relative;
+  left: -0.5em;
 }
 .content a
 {
-	color: #336699;
+  color: #336699;
 }
 .content a:hover
 {
-	color: #EF7F1B;
+  color: #EF7F1B;
 }
 .content p
 {
-	font: 0.8em Arial, Helvetica, sans-serif;
-	color: #444;
-	padding: 0 0 1.3em 0;
-	line-height: 1.4em;
+  font: 0.8em Arial, Helvetica, sans-serif;
+  color: #444;
+  padding: 0 0 1.3em 0;
+  line-height: 1.4em;
 }
 .content em
 {
-	font-style: italic;
+  font-style: italic;
 }
 .content strong
 {
-	font-weight: bold;
+  font-weight: bold;
 }
 .content i
 {
-	font-style: italic;
+  font-style: italic;
 }
 .content ol
 {
-	counter-reset: list1;
-	padding: 0 0 1em 1em;
+  counter-reset: list1;
+  padding: 0 0 1em 1em;
 }
-	.content ol li
-	{
-		position: relative;
-		display: block;
-		font: 0.8em Arial;
-		color: #444;
-		padding: 0 0 1em 1.8em;
-		line-height: 1.4em;
-		/*list-style-type:expression(function(t){ t.runtimeStyle.listStyleType = 'none'; t.insertAdjacentHTML('afterBegin','<span class="b-page-content-text-list-item-number">(' + (++t.parentNode.IEcounter || (t.parentNode.IEcounter = 1)) + ') </span>'); }(this));*/
-	}
-		.content ol li:before
-		{
-			content: counter(list1)'.';
-			counter-increment: list1;
-			position: absolute;
-			left: 0;
-			top: 0;
-		}
-			.content ol li .content-list-item-number
-			{
-				color: #555;
-			}
+  .content ol li
+  {
+    position: relative;
+    display: block;
+    font: 0.8em Arial;
+    color: #444;
+    padding: 0 0 1em 1.8em;
+    line-height: 1.4em;
+    /*list-style-type:expression(function(t){ t.runtimeStyle.listStyleType = 'none'; t.insertAdjacentHTML('afterBegin','<span class="b-page-content-text-list-item-number">(' + (++t.parentNode.IEcounter || (t.parentNode.IEcounter = 1)) + ') </span>'); }(this));*/
+  }
+    .content ol li:before
+    {
+      content: counter(list1)'.';
+      counter-increment: list1;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+      .content ol li .content-list-item-number
+      {
+        color: #555;
+      }
 .content ul
 {
-	padding: 0 0 1em 2em;
-	list-style-type: none;
-	text-indent: -1.8em;
+  padding: 0 0 1em 2em;
+  list-style-type: none;
+  text-indent: -1.8em;
 }
-	.content ul li
-	{
+  .content ul li
+  {
 
-		position: relative;
-		display: block;
-		font: 0.8em Arial;
-		color: #444;
-		padding: 0 0 1em 0;
-	}
-	.content ul li:before
-	{
-		content: "\2014\a0";
-		padding: 0 0.5em 0 0;
-	}
-	.content ul li::before
-	{
-		content: "\2014\a0";
-		padding: 0 0.5em 0 0;
-	}
+    position: relative;
+    display: block;
+    font: 0.8em Arial;
+    color: #444;
+    padding: 0 0 1em 0;
+  }
+  .content ul li:before
+  {
+    content: "\2014\a0";
+    padding: 0 0.5em 0 0;
+  }
+  .content ul li::before
+  {
+    content: "\2014\a0";
+    padding: 0 0.5em 0 0;
+  }
 
-	.content table
-	{
-		border-collapse: collapse;
-		margin: 0 0 1em 0;
-	}
-		.content tr
-		{
-			color: #444;
-		}
-		.content tr:hover
-		{
-			background: #efefef;
-		}
-			.content th
-			{
-				font: bold 0.7em Arial;
-				color: #444;
-				text-align: left;
-				border: 1px solid #ccc;
-				padding: 0.5em 1em;
-				background: #eee;
-			}
-				.content th p
-				{
-					font: bold 1em Arial;
-					padding: 0;
-					line-height: 1em;
-				}
-			.content td
-			{
-				font: 0.8em Arial;
-				color: #444;
-				line-height: 1.4em;
-				padding: 0.5em 1em;
-				border: 1px solid #ccc;
-				vertical-align: top;
-			}
-				.content td p
-				{
-					font: 1em Arial;
-					color: #444;
-					line-height: 1.4em;
-					padding: 0;
-				}
+  .content table
+  {
+    border-collapse: collapse;
+    margin: 0 0 1em 0;
+  }
+    .content tr
+    {
+      color: #444;
+    }
+    .content tr:hover
+    {
+      background: #efefef;
+    }
+      .content th
+      {
+        font: bold 0.7em Arial;
+        color: #444;
+        text-align: left;
+        border: 1px solid #ccc;
+        padding: 0.5em 1em;
+        background: #eee;
+      }
+        .content th p
+        {
+          font: bold 1em Arial;
+          padding: 0;
+          line-height: 1em;
+        }
+      .content td
+      {
+        font: 0.8em Arial;
+        color: #444;
+        line-height: 1.4em;
+        padding: 0.5em 1em;
+        border: 1px solid #ccc;
+        vertical-align: top;
+      }
+        .content td p
+        {
+          font: 1em Arial;
+          color: #444;
+          line-height: 1.4em;
+          padding: 0;
+        }

@@ -1,0 +1,41 @@
+.nav
+{
+  position: relative;
+  vertical-align: top;
+  font: 0.8em 'Arial', Helvetica, sans-serif;
+  margin: 0 0 1em 0;
+  display: table;
+}
+  .nav__link
+  {
+    color: #333333;
+    display: inline-block;
+    margin: 0 0.5em 0.5em 0;
+  }
+  .nav__link:hover
+  {
+    color: #ffcc00;
+  }
+  .nav__separator
+  {
+    position: relative;
+    display: inline-block;
+    margin: 0 0.5em 0 0;
+  }
+    .nav__separator .fa-chevron-right
+    {
+      font-size: 0.5em;
+      padding: 0 0.1em 0 0.5em;
+      position: relative;
+      top: -0.2em;
+      display: inline-block;
+      color: #555555;
+    }
+  .nav__item
+  {
+    color: #005197;
+  }
+  .nav__item-state-current
+  {
+    position: relative;
+  }
