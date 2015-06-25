@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title>Index</title>
+    <title>{% include 'pyramid_pages/title.jinja2' %}</title>
+    {% include 'pyramid_pages/meta.jinja2' %}
     <link href="{{ request.static_url('pyramid_pages:static/favicon.ico') }}" rel="shortcut icon" type="image/x-icon" />
     <link href="{{ request.static_url('pyramid_pages:static/css/__pyramid_pages.css') }}" rel="stylesheet" />
 
