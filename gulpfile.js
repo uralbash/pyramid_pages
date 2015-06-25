@@ -209,6 +209,8 @@ gulp.task('css', function() {
             url = './../img/vendor/' + url.substring(url.indexOf('/'));
           }
           return url;
+        } else {
+          return url;
         }
       }
     }))
@@ -286,6 +288,8 @@ gulp.task('dev-css', function() {
           if(url.match(/.*\.(png|jpg|gif)$/i)) {
             url = './../img/vendor/' + url.substring(url.indexOf('/'));
           }
+          return url;
+        } else {
           return url;
         }
       }

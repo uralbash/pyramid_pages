@@ -21,7 +21,7 @@
     {
       width: 2.2em;
       height: 1.2em;
-      background: url('./../logo.png') no-repeat;
+      background: url('../img/logo.png') no-repeat;
       background-size: contain;
       content: '';
       display: block;
