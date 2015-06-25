@@ -1,12 +1,15 @@
-{% for crumb in lineage(context)|reverse %}
-      {% if crumb.node %}
-        <a href="{{ request.resource_url(
-                      context.__class__(crumb.node,
-                      context.get_prefix(request, node=crumb.node))) }}">
-          {{ crumb.node.name }}
-          </a>
-        {% if not loop.last %}
-          ~~
-        {% endif %}
-    {% endif %}
-{% endfor %}
+{% set breadcrumbs = lineage(context)|reverse %}
+{% if  breadcrumbs|length > 2 %}
+  {% for crumb in breadcrumbs %}
+        {% if crumb.node %}
+          <a href="{{ request.resource_url(
+                        context.__class__(crumb.node,
+                        context.get_prefix(request, node=crumb.node))) }}">
+            {{ crumb.node.name }}
+            </a>
+          {% if not loop.last %}
+            ~~
+          {% endif %}
+      {% endif %}
+  {% endfor %}
+{% endif %}
