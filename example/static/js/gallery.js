@@ -18,7 +18,8 @@ Gallery.prototype.getImageId = function() {
 
         $('.fotorama').fotorama({
           width: '100%',
-          fit: 'none',
+          maxheight: 550,
+          fit: 'contain',
           loop: true,
           nav: 'thumbs',
           thumbwidth: 80,
