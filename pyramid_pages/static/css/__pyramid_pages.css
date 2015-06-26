@@ -157,46 +157,6 @@ html {
   line-height: 1.4em;
   padding: 0;
 }
-.gallery-list {
-  display: table;
-}
-
-.gallery-list__item {
-  min-height: 100px;
-  display: inline-block;
-  vertical-align: top;
-  zoom: 1;
-  *display: inline;
-  _height: 100px;
-  margin: 0 0 2em 0;
-}
-
-.gallery-list__item-link {
-  display: inline-block;
-  text-decoration: none;
-  border: solid 3px #fff;
-  padding: 0.1em;
-  width: 150px;
-  position: relative;
-}
-
-.gallery-list__item-image {
-  width: 100%;
-  display: inline-block;
-  position: relative;
-  -webkit-box-shadow: #bbb 0 1px 3px;
-  -moz-box-shadow: #bbb 0 1px 3px;
-  box-shadow: #bbb 0 1px 3px;
-  vertical-align: bottom;
-}
-
-.gallery-list__item-link:hover {
-  border: solid 3px #bc2131;
-}
-.gallery {
-  width: 100%;
-  padding: 1em 0 0 0;
-}
 .main-menu-title {
   width: 24%;
   font: 1.3em Arial, Helvetica, sans-serif;
@@ -608,9 +568,9 @@ html {
 }
 
 .page__middle {
-  width: 50%;
+  width: 53%;
   display: table-cell;
-  padding: 2em 3% 2em 4%;
+  padding: 2em 2% 2em 2%;
   vertical-align: top;
 }
 
@@ -3808,6 +3768,45 @@ td,
 th {
   padding: 0;
 }
+.gallery-list {
+  display: table;
+}
+
+.gallery-list__item {
+  min-height: 100px;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  _height: 100px;
+  margin: 0 0 2em 0;
+}
+
+.gallery-list__item-link {
+  display: inline-block;
+  text-decoration: none;
+  border: solid 3px #fff;
+  padding: 0.1em;
+  position: relative;
+}
+
+.gallery-list__item-image {
+  display: inline-block;
+  position: relative;
+  -webkit-box-shadow: #bbb 0 1px 3px;
+  -moz-box-shadow: #bbb 0 1px 3px;
+  box-shadow: #bbb 0 1px 3px;
+  vertical-align: bottom;
+  max-height: 100px;
+}
+
+.gallery-list__item-link:hover {
+  border: solid 3px #bc2131;
+}
+.gallery {
+  width: 100%;
+  padding: 1em 0 0 0;
+}
 .wrapper {
   min-width: 985px;
   max-width: 1100px;
@@ -3822,6 +3821,7 @@ th {
 }
 .popup-inner__content-gallery {
   width: 800px;
+  min-height: 450px;
   max-width: 800px;
   padding: 1.5em 1.1em 1.2em 1.1em;
   background: #fff;

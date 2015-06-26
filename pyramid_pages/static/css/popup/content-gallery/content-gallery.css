@@ -1,6 +1,7 @@
 .popup-inner__content-gallery
 {
   width: 800px;
+  min-height: 450px;
   max-width: 800px;
   padding: 1.5em 1.1em 1.2em 1.1em;
   background: #fff;

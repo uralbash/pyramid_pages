@@ -19,9 +19,9 @@
         }
         .page__middle
         {
-            width: 50%;
+            width: 53%;
             display: table-cell;
-            padding: 2em 3% 2em 4%;
+            padding: 2em 2% 2em 2%;
             vertical-align: top;
         }
         .page__right

@@ -18,16 +18,15 @@
         text-decoration: none;
         border: solid 3px #fff;
         padding: 0.1em;
-        width: 150px;
         position: relative;
       }
         .gallery-list__item-image
         {
-          width: 100%;
           display: inline-block;
           position: relative;
           box-shadow: #bbb 0 1px 3px;
           vertical-align: bottom;
+          max-height: 100px;
         }
       .gallery-list__item-link:hover
       {
