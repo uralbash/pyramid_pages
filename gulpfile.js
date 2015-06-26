@@ -145,7 +145,7 @@ gulp.task('bower-img', function() {
 
 gulp.task('bower-font', function() {
   return gulp.src(mainBowerFiles(
-    { filter: (/.*\.(svg|ttf|woff|woff2|otf)$/i) }), { base: 'bower_components' })
+    { filter: (/.*\.(eot|otf|svg|ttf|woff|woff2)$/i) }), { base: 'bower_components' })
     .pipe(plugins.rename(function (path) {
       path.dirname = path.dirname.slice(0, path.dirname.indexOf('/') + 1);
     }))

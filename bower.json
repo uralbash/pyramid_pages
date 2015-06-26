@@ -20,11 +20,12 @@
     "font-awesome": {
       "main": [
         "css/font-awesome.min.css",
+        "fonts/fontawesome-webfont.eot",
+        "fonts/fontawesome-webfont.otf",
         "fonts/fontawesome-webfont.svg",
         "fonts/fontawesome-webfont.ttf",
         "fonts/fontawesome-webfont.woff",
-        "fonts/fontawesome-webfont.woff2",
-        "fonts/fontawesome-webfont.otf"
+        "fonts/fontawesome-webfont.woff2"
       ]
     },
     "html5-boilerplate": {
