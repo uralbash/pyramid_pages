@@ -30,21 +30,6 @@
     </div>
 
     <script type="text/javascript">
-        // var IMAGES_LIST = [
-        //      {
-        //       'img': '/pyramid_pages_example_static/img/join-group.jpg',
-        //       'thumb': '/pyramid_pages_example_static/img/join-group.jpg'
-        //     },           {
-        //       'img': '/pyramid_pages_example_static/img/join-group.jpg',
-        //       'thumb': '/pyramid_pages_example_static/img/join-group.jpg'
-        //     },           {
-        //       'img': '/pyramid_pages_example_static/img/join-group.jpg',
-        //       'thumb': '/pyramid_pages_example_static/img/join-group.jpg'
-        //     },           {
-        //       'img': '/pyramid_pages_example_static/img/join-group.jpg',
-        //       'thumb': '/pyramid_pages_example_static/img/join-group.jpg'
-        //     }
-        // ];
         var IMAGES_LIST = [
             {% for photo in page.photos %} {
               'img': '{{ photo.path }}',
