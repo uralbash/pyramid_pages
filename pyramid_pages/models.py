@@ -37,7 +37,7 @@ class PageMixin(object):
     description = Column(UnicodeText)
 
     def __repr__(self):
-        return self.name or ''
+        return self.name.encode('utf-8') or ''
 
     def __json__(self, request):
         return self.id
