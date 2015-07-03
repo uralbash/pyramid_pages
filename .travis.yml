@@ -29,7 +29,6 @@ matrix:
 
 install:
   - python setup.py develop
-  - pip install -r requirements.txt
   - pip install -r example/requirements.txt
   - if [ -n "$LINK_CHECK" ];then pip install linkchecker; fi
 
