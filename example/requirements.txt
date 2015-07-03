@@ -1,6 +1,5 @@
 pyramid
 transaction
 zope.sqlalchemy
-zope.interface
 sqlalchemy_mptt
 pyramid_jinja2

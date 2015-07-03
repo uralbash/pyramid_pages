@@ -28,8 +28,8 @@ matrix:
       env: LINK_CHECK=1
 
 install:
-  - python setup.py develop
   - pip install -r example/requirements.txt
+  - python setup.py develop
   - if [ -n "$LINK_CHECK" ];then pip install linkchecker; fi
 
   - pip install flake8 rstcheck
