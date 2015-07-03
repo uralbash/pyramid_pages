@@ -11,7 +11,7 @@ def read(name):
 
 setup(
     name='pyramid_pages',
-    version='0.0.2',
+    version='0.0.3.dev1',
     url='http://github.com/ITCase/pyramid_pages/',
     author='Svintsov Dmitry',
     author_email='sacrud@uralbash.ru',
@@ -23,6 +23,7 @@ setup(
     description='Tree pages for pyramid',
     long_description=read('README.rst'),
     install_requires=read('requirements.txt'),
+    tests_require=read('requirements.txt') + read('requirements-test.txt'),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',

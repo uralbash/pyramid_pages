@@ -30,10 +30,10 @@ matrix:
 install:
   - python setup.py develop
   - pip install -r requirements.txt
-  - pip install -r requirements-test.txt
   - pip install -r example/requirements.txt
-  - pip install --upgrade --force-reinstall git+git://github.com/ITCase/sacrud.git
   - if [ -n "$LINK_CHECK" ];then pip install linkchecker; fi
+
+  - pip install flake8 rstcheck
 
 script:
   # Nosetests
@@ -52,7 +52,8 @@ script:
   - if [ -n "$LINK_CHECK" ];then linkchecker http://localhost:6543/ --ignore-url="unquote\(%*" --no-status; fi
 
 after_success:
-  coveralls
+  - pip install coveralls
+  - coveralls
 
 after_failure:
   cat example/nohup.out
