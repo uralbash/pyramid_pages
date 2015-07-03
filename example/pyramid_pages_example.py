@@ -181,5 +181,5 @@ if __name__ == '__main__':
     app = main({}, **settings)
 
     from wsgiref.simple_server import make_server
-    httpd = make_server('', 6543, app)
+    httpd = make_server('0.0.0.0', 6543, app)
     httpd.serve_forever()
