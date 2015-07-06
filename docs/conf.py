@@ -14,7 +14,14 @@ directives.register_directive('no-code-block', CodeBlock)
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
+    'sphinx.ext.intersphinx',
 ]
+
+intersphinx_mapping = {
+    'https://docs.python.org/3': None,
+    'http://docs.sqlalchemy.org/en/latest/': None,
+    'http://sqlalchemy-mptt.readthedocs.org/en/master/': None
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

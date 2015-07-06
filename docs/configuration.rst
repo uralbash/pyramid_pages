@@ -149,12 +149,12 @@ Just include menu template.
 Or write your own.
 
 .. literalinclude:: /../pyramid_pages/templates/pyramid_pages/menu/flat.jinja2
-   :language: jinja
+   :language: html+jinja
    :linenos:
    :caption: Flat menu template.
 
 .. literalinclude:: /../pyramid_pages/templates/pyramid_pages/menu/mptt.jinja2
-   :language: jinja
+   :language: html+jinja
    :linenos:
    :caption: MPTT menu template.
 
