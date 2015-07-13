@@ -100,9 +100,8 @@ class RedirectMixin(object):
         )
 
 
-class BaseSacrudMpttPage(SeoMixin, RedirectMixin, MpttPageMixin):
+class SacrudOptions(object):
 
-    # pyramid_sacrud options.
     verbose_name = 'MPTT pages'
 
     @TableProperty
@@ -125,3 +124,12 @@ class BaseSacrudMpttPage(SeoMixin, RedirectMixin, MpttPageMixin):
             ('SEO', [col.seo_title, col.seo_keywords, col.seo_description,
                      col.seo_metatags])
         ]
+
+
+class BaseSacrudMpttPage(
+        SacrudOptions,
+        SeoMixin,
+        RedirectMixin,
+        MpttPageMixin
+):
+    pass
