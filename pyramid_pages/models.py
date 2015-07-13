@@ -9,15 +9,20 @@
 """
 Models for page.
 """
-from sqlalchemy import (Boolean, Column, ForeignKey, Integer, String,
-                        UnicodeText)
-from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy import (
+    Column,
+    String,
+    Boolean,
+    Integer,
+    ForeignKey,
+    UnicodeText
+)
+from sacrud.common import ClassProperty
+from sacrud.exttype import SlugType, ChoiceType
 from sqlalchemy.orm import foreign, relationship
-from sqlalchemy.orm.session import Session
-
-from sacrud.common import TableProperty, ClassProperty
-from sacrud.exttype import ChoiceType, SlugType
 from sqlalchemy_mptt import BaseNestedSets
+from sqlalchemy.orm.session import Session
+from sqlalchemy.ext.declarative import declared_attr
 
 from .common import Menu
 
@@ -101,15 +106,6 @@ class RedirectMixin(object):
 
 
 class SacrudOptions(object):
-
-    @TableProperty
-    def sacrud_css_class(cls):
-        col = cls.columns
-        return {
-            'tinymce': [col.description],
-            'description': [col.description],
-            'name': [col.name]
-        }
 
     @ClassProperty
     def sacrud_detail_col(cls):
