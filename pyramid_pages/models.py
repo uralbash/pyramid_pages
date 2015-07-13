@@ -113,15 +113,24 @@ class SacrudOptions(object):
 
     @ClassProperty
     def sacrud_detail_col(cls):
-        col = cls.__table__.columns
-        return [
-            ('', [col.name, col.slug, col.description, col.visible,
-                  col.in_menu, cls.parent]),
-            ('Redirection', [col.redirect_url, cls.redirect,
-                             col.redirect_type]),
-            ('SEO', [col.seo_title, col.seo_keywords, col.seo_description,
-                     col.seo_metatags])
+        options = [
+            ('', [cls.name, cls.slug, cls.description, cls.visible,
+                  cls.in_menu, cls.parent])
         ]
+        if all(hasattr(cls, name)
+               for name in ('redirect_url', 'redirect', 'redirect_type')):
+            options.append(
+                ('Redirection', [cls.redirect_url, cls.redirect,
+                                 cls.redirect_type])
+            )
+        if all(hasattr(cls, name)
+               for name in ('seo_title', 'seo_keywords', 'seo_description',
+                            'seo_metatags')):
+            options.append(
+                ('SEO', [cls.seo_title, cls.seo_keywords, cls.seo_description,
+                         cls.seo_metatags])
+            )
+        return options
 
 
 class BaseSacrudMpttPage(
