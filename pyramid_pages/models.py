@@ -102,8 +102,6 @@ class RedirectMixin(object):
 
 class SacrudOptions(object):
 
-    verbose_name = 'MPTT pages'
-
     @TableProperty
     def sacrud_css_class(cls):
         col = cls.columns
