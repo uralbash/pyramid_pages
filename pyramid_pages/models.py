@@ -115,7 +115,7 @@ class SacrudOptions(object):
     def sacrud_detail_col(cls):
         options = [
             ('', [cls.name, cls.slug, cls.description, cls.visible,
-                  cls.in_menu, cls.parent])
+                  cls.in_menu, getattr(cls, 'parent', None)])
         ]
         if all(hasattr(cls, name)
                for name in ('redirect_url', 'redirect', 'redirect_type')):
