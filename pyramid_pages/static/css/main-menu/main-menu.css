@@ -122,3 +122,15 @@
     {
       background: #811621;
     }
+    .main-menu-list__item_type_login
+    {
+      background: #4183c4;
+    }
+      .main-menu-list__item_type_login .main-menu-list__item-link
+      {
+        padding-right: 0.9em;
+      }
+    .main-menu-list__item_type_login:hover .main-menu-list__item-link
+    {
+      background: #4078c0;
+    }
