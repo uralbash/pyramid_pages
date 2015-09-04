@@ -37,7 +37,7 @@
                         {% endblock %}
                         {% block content %}
                             <div class="page-title">{{ page.name }}</div>
-                            <div class="content">{{ page.description or '' }}</div>
+                            <div class="content">{{ page.description|safe or '' }}</div>
                         {% endblock %}
                     </div>
                     <div class="page__right">

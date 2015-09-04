@@ -136,3 +136,12 @@ class BaseSacrudMpttPage(
         MpttPageMixin
 ):
     pass
+
+
+class BaseSacrudFlatPage(
+        SacrudOptions,
+        SeoMixin,
+        RedirectMixin,
+        FlatPageMixin
+):
+    pass
