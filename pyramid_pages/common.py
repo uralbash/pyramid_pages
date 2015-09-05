@@ -66,8 +66,8 @@ class Menu(object):
                 )
         if 'trees' in kwargs:
             menu = menu.filter(self.model.tree_id.in_(kwargs['trees']))
-        if not menu:
-            return {}
+        if not menu.all():
+            return PageMenu((), self.template)
 
         tree = {}
         min_lvl = min(menu, key=lambda item: item.level).level

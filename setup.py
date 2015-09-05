@@ -11,7 +11,7 @@ def read(name):
 
 setup(
     name='pyramid_pages',
-    version='0.0.3',
+    version='0.0.4.dev1',
     url='http://github.com/ITCase/pyramid_pages/',
     author='Svintsov Dmitry',
     author_email='sacrud@uralbash.ru',
