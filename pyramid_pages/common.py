@@ -43,11 +43,13 @@ def recursive_node_to_dict(node, menu, json=None, json_fields=None):
 
 class Menu(object):
 
-    def __init__(self, session, model):
+    def __init__(self, session, model, home=False):
         self.model = model
         self.template = self.model.menu_template
         self.items = session.query(model).filter_by(visible=True)\
-            .filter_by(in_menu=True).filter(model.slug != '/')
+            .filter_by(in_menu=True)
+        if not home:
+            self.items.filter(model.slug != '/')
 
     def flat(self):
         return PageMenu(self.items, self.template)

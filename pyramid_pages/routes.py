@@ -96,7 +96,7 @@ def page_factory(request):
         request.matchdict['traverse'] =\
             tuple([prefix] + list(request.matchdict['traverse']))
         prefix = None
-        table = models['']
+        table = models.get('', models.get('/'))
     else:
         table = models[prefix]
 
@@ -118,7 +118,7 @@ def page_factory(request):
 def home_page_factory(request):
     settings = request.registry.settings
     models = settings[CONFIG_MODELS]
-    table = models[''] or models['/']
+    table = models.get('', models.get('/'))
     dbsession = settings[CONFIG_DBSESSION]
     node = dbsession.query(table).filter(table.slug.is_('/')).first()
     if not node:
