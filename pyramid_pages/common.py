@@ -49,7 +49,7 @@ class Menu(object):
         self.items = session.query(model).filter_by(visible=True)\
             .filter_by(in_menu=True)
         if not home:
-            self.items.filter(model.slug != '/')
+            self.items = self.items.filter(model.slug != '/')
 
     def flat(self):
         return PageMenu(self.items, self.template)
