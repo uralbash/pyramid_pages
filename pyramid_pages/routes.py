@@ -108,9 +108,10 @@ def page_factory(request):
 
     nodes = dbsession.query(table)
     if hasattr(table, 'parent_id'):
-        nodes = nodes.filter(or_(table.parent_id.is_(''),
-                                 table.parent_id.is_(None),
-                                 table.parent.has(table.slug == '/')))
+        nodes = nodes.filter(or_(
+            table.parent_id == None,  # noqa
+            table.parent.has(table.slug == '/')
+        ))
     return {node.slug: resource(node, prefix)
             for node in nodes if node.slug}
 
@@ -120,7 +121,7 @@ def home_page_factory(request):
     models = settings[CONFIG_MODELS]
     table = models.get('', models.get('/'))
     dbsession = settings[CONFIG_DBSESSION]
-    node = dbsession.query(table).filter(table.slug.is_('/')).first()
+    node = dbsession.query(table).filter(table.slug == '/').first()
     if not node:
         raise HTTPNotFound
     return PageResource(node)
