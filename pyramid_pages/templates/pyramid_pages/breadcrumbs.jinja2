@@ -3,12 +3,14 @@
     <div class="nav">
         {% for crumb in breadcrumbs %}
             {% if crumb.node %}
-                <a href="{{ request.resource_url(
-                            context.__class__(crumb.node,
-                            context.get_prefix(request, node=crumb.node))) }}"
-                   class="nav__link">{{ crumb.node.name }}</a>
                 {% if not loop.last %}
+                    <a href="{{ request.resource_url(
+                                context.__class__(crumb.node,
+                                context.get_prefix(request, node=crumb.node))) }}"
+                       class="nav__link">{{ crumb.node.name }}</a>
                     <span href="#" class="nav__separator"><i class="fa fa-chevron-right">&nbsp;</i></span>
+                {% else %}
+                    <div class="nav__link">{{ crumb.node.name }}</a>
                 {% endif %}
             {% endif %}
         {% endfor %}
