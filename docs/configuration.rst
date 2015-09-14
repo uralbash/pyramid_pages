@@ -4,7 +4,8 @@ Configuration
 Custom model for tree pages
 ---------------------------
 
-To build a tree, using the model from `sqlalchemy_mptt <https://github.com/ITCase/sqlalchemy_mptt>`_.
+To build a tree, using the model from `sqlalchemy_mptt
+<https://github.com/ITCase/sqlalchemy_mptt>`_.
 
 .. note::
 
@@ -33,10 +34,21 @@ Create model of tree pages. For more detail see example `pyramid_pages_example
        id = Column('id', Integer, primary_key=True)
        date = Column(Date, default=func.now())
 
+If you use `pyramid_sacrud <https://github.com/ITCase/pyramid_sacrud>`_, you
+can inherited from :class:`~pyramid_pages.models.BaseSacrudMpttPage` or
+:class:`~pyramid_pages.models.BaseSacrudFlatPage` or just use
+:class:`~pyramid_pages.models.SacrudOptions`. 
+
+It's look likes this:
+
+.. image:: _static/img/sacrud_pyramid_pages.png 
+    :alt: Integration pyramid_pages with pyramid_sacrud
+    :align: center
+
 Configure `pyramid_pages`
 -------------------------
 
-Then add settings of `pyramid_pages`.
+Then add settings of :mod:`pyramid_pages`.
 
 .. no-code-block:: python
 

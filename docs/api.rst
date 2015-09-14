@@ -9,6 +9,15 @@ common
     :undoc-members:
     :show-inheritance:
 
+resources
+---------
+
+.. automodule:: pyramid_pages.resources
+    :members:
+    :exclude-members: or_
+    :undoc-members:
+    :show-inheritance:
+
 models
 ------
 
@@ -25,6 +34,8 @@ routes
     :exclude-members: or_
     :undoc-members:
     :show-inheritance:
+
+
 
 views
 -----

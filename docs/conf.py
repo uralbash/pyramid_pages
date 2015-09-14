@@ -15,6 +15,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
+    'itcase_sphinx_theme',
 ]
 
 intersphinx_mapping = {
