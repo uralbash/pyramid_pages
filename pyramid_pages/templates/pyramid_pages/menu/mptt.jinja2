@@ -1,15 +1,18 @@
 <div class="main-menu-list">
   {% for node, children in menu recursive %}
     <div class="main-menu-list__item
+                {% if context.node
+                  and context.node.path_to_root
+                  and node in context.node.path_to_root().all() %}
+                  main-menu-list__item_in_current_branch
+                {% endif %}
                 {% if node == context.node or node == page %}
                   main-menu-list__item_state_current
                 {% endif %}
                 {% if children|length %}
                   main-menu-list__item_state_has-child
                 {% endif %}">
-          <a href="{{ request.resource_url(
-                        context.__class__(node,
-                        context.get_prefix(request, node=node))) }}"
+          <a href="{{ request.resource_url(resource_of_node(node)) }}"
             class="main-menu-list__item-link">
             {{ node.name }}
           </a>

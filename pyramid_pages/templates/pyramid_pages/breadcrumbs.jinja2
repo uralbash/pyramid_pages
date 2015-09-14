@@ -4,9 +4,7 @@
         {% for crumb in breadcrumbs %}
             {% if crumb.node %}
                 {% if not loop.last %}
-                    <a href="{{ request.resource_url(
-                                context.__class__(crumb.node,
-                                context.get_prefix(request, node=crumb.node))) }}"
+                    <a href="{{ request.resource_url(resource_of_node(crumb.node)) }}"
                        class="nav__link">{{ crumb.node.name }}</a>
                     <span href="#" class="nav__separator"><i class="fa fa-chevron-right">&nbsp;</i></span>
                 {% else %}

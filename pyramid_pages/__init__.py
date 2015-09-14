@@ -5,6 +5,8 @@
 # Copyright © 2014 uralbash <root@uralbash.ru>
 #
 # Distributed under terms of the MIT license.
+CONFIG_MODELS = 'pyramid_pages.models'
+CONFIG_DBSESSION = 'pyramid_pages.dbsession'
 
 
 def includeme(config):

@@ -10,18 +10,20 @@
 Base classes for tests
 http://www.sontek.net/blog/2011/12/01/writing_tests_for_pyramid_and_sqlalchemy.html
 """
+import imp
 import unittest
 
 from pyramid import testing
-from sqlalchemy import engine_from_config
-from sqlalchemy.orm import sessionmaker
 from webtest import TestApp
+from sqlalchemy import engine_from_config
+from pyramid_pages import CONFIG_MODELS
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy_mptt import mptt_sessionmaker
+from pyramid.threadlocal import get_current_registry
 
-import imp
 imp.load_source('pyramid_pages_example', 'example/pyramid_pages_example.py')
 
-from pyramid_pages_example import NewsPage, WebPage, Base, main, models  # noqa
+from pyramid_pages_example import Base, main, models, WebPage, NewsPage  # noqa
 
 settings = {
     'sqlalchemy.url': 'sqlite:///test.sqlite',
@@ -64,6 +66,7 @@ class UnitTestBase(BaseTestCase):
         self.request = testing.DummyRequest()
         self.config = testing.setUp(request=self.request)
         super(UnitTestBase, self).setUp()
+        get_current_registry().settings[CONFIG_MODELS] = models
 
 
 class IntegrationTestBase(BaseTestCase):

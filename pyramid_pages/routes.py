@@ -7,131 +7,113 @@
 # Distributed under terms of the MIT license.
 
 """
-Routes for sacrud_pages
+Routes for pyramid_pages
 """
-import re
-
-from pyramid.httpexceptions import HTTPNotFound
 from sqlalchemy import or_
+from pyramid.events import BeforeRender
+from pyramid.httpexceptions import HTTPNotFound
 
-from .views import PageView
-from .security import PREFIX_PAGE, HOME_PAGE
+from . import CONFIG_MODELS, CONFIG_DBSESSION
+from .security import HOME_PAGE, PREFIX_PAGE
+from .resources import (
+    BasePageResource,
+    models_of_config,
+    resource_of_node,
+    resources_of_config
+)
 
-CONFIG_MODELS = 'pyramid_pages.models'
-CONFIG_DBSESSION = 'pyramid_pages.dbsession'
 
+def add_globals(event):
+    settings = event['request'].registry.settings
+    pages_config = settings[CONFIG_MODELS]
+    resources = resources_of_config(pages_config)
 
-class PageResource(object):
+    def _resource_of_node(node):
+        return resource_of_node(resources, node)(node)
 
-    template = 'pyramid_pages/index.jinja2'
-    view = PageView
-    attr = 'page_with_redirect'
-
-    def __init__(self, node, prefix=None):
-        self.node = node
-        self.prefix = prefix
-
-    @property
-    def __name__(self):
-        if self.node and not self.node.slug == '/':
-            return self.node.slug
-        elif self.node and self.node.slug == '/':
-            return ''
-        elif self.prefix:
-            return self.prefix
-        return None
-
-    @property
-    def __parent__(self):
-        if hasattr(self.node, 'parent'):
-            return self.__class__(self.node.parent, self.prefix)
-        elif self.node:
-            return self.__class__(None, self.prefix)
-        return None
-
-    def __getitem__(self, name):
-        children = {str(child.slug or ''): self.__class__(child, self.prefix)
-                    for child in self.node.children}
-        return children[name]
-
-    def __resource_url__(self, request, info):
-        separator = '/' if self.prefix else ''
-        # XXX: I feel a dissonance here
-        info['virtual_path'] = re.sub('/+', '/', info['virtual_path'])
-        url = info['app_url'] + separator + info['virtual_path']
-        return url
-
-    def __repr__(self):
-        if not hasattr(self.node, 'name'):
-            return '{}'.format(self.node)
-        return "<{}>".format(self.node.name.encode('utf-8'))
-
-    def get_prefix(self, request, node=None):
-        if not node:
-            node = self.node
-        node = node.__class__
-        settings = request.registry.settings
-        models = settings[CONFIG_MODELS]
-        reversed_models = dict(zip(models.values(), models.keys()))
-        prefix = reversed_models.get(node, None)
-        if prefix:
-            return prefix
-
-        # search prefix for resource
-        for model in models.values():
-            if not hasattr(model, '__table__') and hasattr(model, 'model')\
-                    and model.model == node:
-                return reversed_models.get(model, None)
-        return None
+    event['resource_of_node'] = _resource_of_node
 
 
 def page_factory(request):
-    settings = request.registry.settings
-    models = settings[CONFIG_MODELS]
-    prefix = request.matchdict['prefix']
-    dbsession = settings[CONFIG_DBSESSION]
+    """ Page factory.
 
-    if prefix not in models:
+    Config models example:
+
+    .. code-block:: python
+
+        models = {
+            '': [WebPage, CatalogResource],
+            'catalogue': CatalogResource,
+            'news': NewsResource,
+        }
+    """
+    prefix = request.matchdict['prefix']  # /{prefix}/page1/page2/page3...
+    settings = request.registry.settings
+    dbsession = settings[CONFIG_DBSESSION]
+    config = settings[CONFIG_MODELS]
+
+    if prefix not in config:
         # prepend {prefix} to *traverse
         request.matchdict['traverse'] =\
             tuple([prefix] + list(request.matchdict['traverse']))
         prefix = None
-        table = models.get('', models.get('/'))
-    else:
-        table = models[prefix]
 
-    if not hasattr(table, '__table__') and hasattr(table, 'model'):
-        resource = table
-        table = table.model
-    else:
-        resource = PageResource
+    # Get all resources and models from config with the same prefix.
+    resources = config.get(
+        prefix, config.get(   # 1. get resources with prefix same as URL prefix
+            '', config.get(   # 2. if not, then try to get empty prefix
+                '/', None)))  # 3. else try to get prefix '/' otherwise None
 
-    nodes = dbsession.query(table)
-    if hasattr(table, 'parent_id'):
-        nodes = nodes.filter(or_(
-            table.parent_id == None,  # noqa
-            table.parent.has(table.slug == '/')
-        ))
-    return {node.slug: resource(node, prefix)
-            for node in nodes if node.slug}
+    if not hasattr(resources, '__iter__'):
+        resources = (resources, )
+
+    tree = {}
+
+    if not resources:
+        return tree
+
+    # Add top level nodes of resources in the tree
+    for resource in resources:
+        table = None
+        if not hasattr(resource, '__table__')\
+                and hasattr(resource, 'model'):
+            table = resource.model
+
+        nodes = dbsession.query(table or resource)
+        if hasattr(table, 'parent_id'):
+            nodes = nodes.filter(or_(
+                table.parent_id == None,  # noqa
+                table.parent.has(table.slug == '/')
+            ))
+        for node in nodes:
+            if not node.slug:
+                continue
+            resource = resource_of_node(resources, node)
+            tree[node.slug] = resource(node, prefix)
+    return tree
 
 
 def home_page_factory(request):
     settings = request.registry.settings
-    models = settings[CONFIG_MODELS]
-    table = models.get('', models.get('/'))
     dbsession = settings[CONFIG_DBSESSION]
-    node = dbsession.query(table).filter(table.slug == '/').first()
-    if not node:
-        raise HTTPNotFound
-    return PageResource(node)
+    config = settings[CONFIG_MODELS]
+    models = models_of_config(config)
+    resources = resources_of_config(config)
+    for table in models:
+        node = dbsession.query(table).filter(table.slug == '/').first()
+        if node:
+            return resource_of_node(resources, node)(node)
+    raise HTTPNotFound
 
 
-def register(*args):
+def register_views(*args):
+    """ Registration view for each resource from config.
+    """
     config = args[0]
     settings = config.get_settings()
-    models = settings[CONFIG_MODELS]
-    for resource in models.values():
+    pages_config = settings[CONFIG_MODELS]
+    resources = resources_of_config(pages_config)
+    for resource in resources:
         if hasattr(resource, '__table__')\
                 and not hasattr(resource, 'model'):
             continue
@@ -145,28 +127,31 @@ def register(*args):
 
 
 def includeme(config):
+    config.add_subscriber(add_globals, BeforeRender)
+
     # Home page factory
     config.add_route(HOME_PAGE, '/', factory=home_page_factory)
-    config.add_view(PageResource.view,
-                    attr=PageResource.attr,
+    config.add_view(BasePageResource.view,
+                    attr=BasePageResource.attr,
                     route_name=HOME_PAGE,
-                    renderer=PageResource.template,
-                    context=PageResource,
+                    renderer=BasePageResource.template,
+                    context=BasePageResource,
                     permission=HOME_PAGE)
 
     # Default page factory
     config.add_route(PREFIX_PAGE, '/{prefix}*traverse', factory=page_factory)
-    config.add_view(PageResource.view,
-                    attr=PageResource.attr,
+    config.add_view(BasePageResource.view,
+                    attr=BasePageResource.attr,
                     route_name=PREFIX_PAGE,
-                    renderer=PageResource.template,
-                    context=PageResource,
+                    renderer=BasePageResource.template,
+                    context=BasePageResource,
                     permission=PREFIX_PAGE)
 
     import pkg_resources
     pyramid_version = pkg_resources.get_distribution("pyramid").parsed_version
     if pyramid_version >= pkg_resources.SetuptoolsVersion('1.6a1'):
-        # Allow you to change settings after including the addon
-        config.action('pyramid_pages_routes', register, args=(config, ))
+        # Allow you to change settings after including this function. This
+        # fuature works only in version 1.6 or above.
+        config.action('pyramid_pages_routes', register_views, args=(config, ))
     else:
-        config.include(register)
+        config.include(register_views)

@@ -9,9 +9,11 @@
 """
 Views for pages
 """
-from pyramid.httpexceptions import HTTPNotFound
-from pyramid.renderers import render_to_response
 from pyramid.response import Response
+from pyramid.renderers import render_to_response
+from pyramid.httpexceptions import HTTPNotFound
+
+from . import CONFIG_MODELS
 
 
 class PageView(object):
@@ -58,10 +60,16 @@ class PageView(object):
                         request=self.request
                     )
                 else:
-                    prefix = self.context.get_prefix(self.request,
-                                                     node=self.page.redirect)
-                    redirect_resource_url = self.request.resource_url(
-                        self.context.__class__(self.page.redirect, prefix))
+                    from .resources import (
+                        resource_of_node,
+                        resources_of_config
+                    )
+                    redirect = self.page.redirect
+                    pages_config = self.request.registry\
+                        .settings[CONFIG_MODELS]
+                    resources = resources_of_config(pages_config)
+                    resource = resource_of_node(resources, redirect)(redirect)
+                    redirect_resource_url = self.request.resource_url(resource)
                     return Response(status_code=int(redirect_type),
                                     location=redirect_resource_url)
             # Redirect to URL

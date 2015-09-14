@@ -9,25 +9,32 @@
 """
 Main for example
 """
-import json
 import os
+import json
 
-import transaction
-from pyramid.config import Configurator
-from pyramid.events import BeforeRender
-from pyramid.location import lineage
-from pyramid.session import SignedCookieSessionFactory
-from sqlalchemy import (Column, Date, ForeignKey, Integer, String, Text,
-                        engine_from_config)
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, scoped_session, sessionmaker
-from sqlalchemy.sql import func
 from zope.sqlalchemy import ZopeTransactionExtension
 
+import transaction
+from sqlalchemy import (
+    Date,
+    Text,
+    Column,
+    String,
+    Integer,
+    ForeignKey,
+    engine_from_config
+)
+from pyramid.config import Configurator
+from pyramid.events import BeforeRender
+from sqlalchemy.orm import relationship, sessionmaker, scoped_session
+from sqlalchemy.sql import func
+from pyramid.session import SignedCookieSessionFactory
+from sqlalchemy_mptt import mptt_sessionmaker
+from pyramid.location import lineage
 from pyramid_pages.common import Menu
 from pyramid_pages.models import FlatPageMixin, MpttPageMixin, RedirectMixin
-from pyramid_pages.routes import PageResource
-from sqlalchemy_mptt import mptt_sessionmaker
+from pyramid_pages.resources import BasePageResource
+from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 DBSession = scoped_session(
@@ -48,7 +55,8 @@ class BasePage(Base, RedirectMixin):
 
     __mapper_args__ = {
         'polymorphic_identity': 'base_page',
-        'polymorphic_on': page_type
+        'polymorphic_on': page_type,
+        'with_polymorphic': '*'
     }
 
     @classmethod
@@ -100,12 +108,12 @@ class Photo(Base):
     gallery = relationship('Gallery', backref='photos')
 
 
-class GalleryResource(PageResource):
+class GalleryResource(BasePageResource):
     model = Gallery
     template = 'gallery/index.jinja2'
 
 
-class NewsResource(PageResource):
+class NewsResource(BasePageResource):
     model = NewsPage
     template = 'news/index.jinja2'
 

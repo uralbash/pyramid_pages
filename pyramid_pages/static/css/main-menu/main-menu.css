@@ -118,6 +118,12 @@
       border-color: transparent transparent transparent #fff;
     }
 
+    .main-menu-list__item_in_current_branch
+    {
+      background: #992635;
+      z-index: 6000;
+    }
+
     .main-menu-list__item_state_active
     {
       background: #811621;
