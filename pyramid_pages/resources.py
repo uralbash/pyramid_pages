@@ -11,6 +11,7 @@ Base pages resources.
 """
 import re
 
+from sqlalchemy.orm import object_session
 from pyramid.threadlocal import get_current_registry
 
 from . import CONFIG_MODELS
@@ -37,26 +38,28 @@ class BasePageResource(object):
     attr = 'page_with_redirect'
     template = 'pyramid_pages/index.jinja2'
 
-    def __init__(self, node, request=None, prefix=None):
+    def __init__(self,
+                 node, prefix=None, request=None, parent=None,
+                 *args, **kwargs):
         """ Make resource of node for traversal URL dispath.
 
         :node: instance of page
         :pages_config: config for pyramid_pages from your app
         :resources: list of all resources in config
         :prefix: URL prefix for current node
+        :parent: if exist it assignet to ``__parent__`` attribute
         """
         settings = get_current_registry().settings
         self.node = node
         self.pages_config = settings[CONFIG_MODELS]
         self.resources = resources_of_config(self.pages_config)
-        self.prefix = self.get_prefix(prefix)
+        self.prefix = prefix or self.get_prefix()
+        self.parent = parent
 
-    def get_prefix(self, prefix=None):
+    def get_prefix(self):
         """ Each resource defined in config for pages as dict. This method
         returns key from config where located current resource.
         """
-        if prefix:
-            return prefix
         for key, value in self.pages_config.items():
             if not hasattr(value, '__iter__'):
                 value = (value, )
@@ -64,6 +67,14 @@ class BasePageResource(object):
                 if type(self.node) == item\
                         or type(self.node) == getattr(item, 'model', None):
                     return key
+
+    def resource_of_node(self, node, parent=None):
+        return resource_of_node(self.resources, node)(
+            node, parent=parent or self.parent)
+
+    @property
+    def dbsession(self):
+        return object_session(self.node)
 
     @property
     def __name__(self):
@@ -78,8 +89,14 @@ class BasePageResource(object):
         return None
 
     @property
+    def name(self):
+        return self.node.name
+
+    @property
     def __parent__(self):
-        if hasattr(self.node, 'parent'):
+        if self.parent:
+            return self.parent
+        elif hasattr(self.node, 'parent'):
             parent = self.node.parent
             return resource_of_node(self.resources, parent)(parent)
         elif self.node:
@@ -87,9 +104,23 @@ class BasePageResource(object):
         return None
 
     def __getitem__(self, name):
-        for child in self.node.children:
+        for child in self.children:
             if child.slug == name:
-                return resource_of_node(self.resources, child)(child)
+                return self.resource_of_node(child.node)
+
+    @property
+    def slug(self):
+        return getattr(self.node, 'slug', None)
+
+    @property
+    def children(self):
+        for child in self.node.children:
+            yield self.resource_of_node(child)
+
+    @property
+    def children_qty(self):
+        return len([child for child in self.children
+                    if child.node.visible and child.node.in_menu])
 
     def __resource_url__(self, request, info):
         """ Some hook for prefix and doplication root slash.
@@ -134,8 +165,7 @@ def models_of_config(config):
     resources = resources_of_config(config)
     models = []
     for resource in resources:
-        if not hasattr(resource, '__table__')\
-                and hasattr(resource, 'model'):
+        if not hasattr(resource, '__table__') and hasattr(resource, 'model'):
             models.append(resource.model)
         else:
             models.append(resource)

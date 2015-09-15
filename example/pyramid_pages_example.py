@@ -30,10 +30,12 @@ from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.sql import func
 from pyramid.session import SignedCookieSessionFactory
 from sqlalchemy_mptt import mptt_sessionmaker
-from pyramid.location import lineage
-from pyramid_pages.common import Menu
 from pyramid_pages.models import FlatPageMixin, MpttPageMixin, RedirectMixin
-from pyramid_pages.resources import BasePageResource
+from pyramid_pages.resources import (
+    BasePageResource,
+    resource_of_node,
+    resources_of_config
+)
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -132,20 +134,32 @@ class Fixtures(object):
             self.session.flush()
         transaction.commit()
 
-
-def add_globals(event):
-    event['lineage'] = lineage
-    event['page_menu'] = Menu(DBSession, WebPage).mptt
-    event['news_menu'] = Menu(DBSession, NewsPage).flat
-    event['gallery_menu'] = Menu(DBSession, Gallery).mptt
-
-
 models = {
     '': WebPage,
     'pages': WebPage,
     'news': NewsResource,
     'gallery': GalleryResource,
 }
+
+
+def add_globals(event):
+    class menu(object):
+        resources = resources_of_config(models)
+
+        def __init__(self, model):
+            self.nodes = DBSession.query(model)
+            self.template = 'pyramid_pages/menu/flat.jinja2'
+            if hasattr(model, 'parent'):
+                self.nodes = self.nodes.filter_by(parent=None)
+                self.template = 'pyramid_pages/menu/mptt.jinja2'
+
+        def __iter__(self):
+            for node in self.nodes:
+                yield resource_of_node(self.resources, node)(node)
+
+    event['pages_menu'] = menu(WebPage)
+    event['news_menu'] = menu(NewsPage)
+    event['gallery_menu'] = menu(Gallery)
 
 
 def main(global_settings, **settings):

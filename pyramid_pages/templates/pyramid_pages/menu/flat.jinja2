@@ -4,7 +4,7 @@
                 {% if node == context.node or node == page %}
                   main-menu-list__item_state_current
                 {% endif %}">
-            <a href="{{ request.resource_url(resource_of_node(node)) }}"
+            <a href="{{ request.resource_url(context.resource_of_node(node)) }}"
               class="main-menu-list__item-link">
               {{ node.name }}
             </a>

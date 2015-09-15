@@ -21,10 +21,7 @@ from sacrud.common import ClassProperty
 from sacrud.exttype import SlugType, ChoiceType
 from sqlalchemy.orm import foreign, relationship
 from sqlalchemy_mptt import BaseNestedSets
-from sqlalchemy.orm.session import Session
 from sqlalchemy.ext.declarative import declared_attr
-
-from .common import Menu
 
 REDIRECT_CHOICES = (
     ('200', 'OK (200)'),
@@ -49,23 +46,11 @@ class PageMixin(object):
 
 
 class MpttPageMixin(BaseNestedSets, PageMixin):
-
-    menu_template = 'pyramid_pages/menu/mptt.jinja2'
-
-    def get_menu(self, **kwargs):
-        table = self.__class__
-        session = Session.object_session(self)
-        return Menu(session, table).mptt(**kwargs)
+    pass
 
 
 class FlatPageMixin(PageMixin):
-
-    menu_template = 'pyramid_pages/menu/flat.jinja2'
-
-    def get_menu(self):
-        table = self.__class__
-        session = Session.object_session(self)
-        return Menu(session, table).flat()
+    pass
 
 
 class RecursionPageMixin(PageMixin):

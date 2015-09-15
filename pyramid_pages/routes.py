@@ -11,6 +11,7 @@ Routes for pyramid_pages
 """
 from sqlalchemy import or_
 from pyramid.events import BeforeRender
+from pyramid.location import lineage
 from pyramid.httpexceptions import HTTPNotFound
 
 from . import CONFIG_MODELS, CONFIG_DBSESSION
@@ -24,14 +25,7 @@ from .resources import (
 
 
 def add_globals(event):
-    settings = event['request'].registry.settings
-    pages_config = settings[CONFIG_MODELS]
-    resources = resources_of_config(pages_config)
-
-    def _resource_of_node(node):
-        return resource_of_node(resources, node)(node)
-
-    event['resource_of_node'] = _resource_of_node
+    event['lineage'] = lineage
 
 
 def page_factory(request):
@@ -78,8 +72,13 @@ def page_factory(request):
         if not hasattr(resource, '__table__')\
                 and hasattr(resource, 'model'):
             table = resource.model
+        else:
+            table = resource
 
-        nodes = dbsession.query(table or resource)
+        if not hasattr(table, 'slug'):
+            continue
+
+        nodes = dbsession.query(table)
         if hasattr(table, 'parent_id'):
             nodes = nodes.filter(or_(
                 table.parent_id == None,  # noqa
@@ -89,7 +88,7 @@ def page_factory(request):
             if not node.slug:
                 continue
             resource = resource_of_node(resources, node)
-            tree[node.slug] = resource(node, prefix)
+            tree[node.slug] = resource(node, prefix=prefix)
     return tree
 
 
@@ -100,6 +99,8 @@ def home_page_factory(request):
     models = models_of_config(config)
     resources = resources_of_config(config)
     for table in models:
+        if not hasattr(table, 'slug'):
+            continue
         node = dbsession.query(table).filter(table.slug == '/').first()
         if node:
             return resource_of_node(resources, node)(node)
