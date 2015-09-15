@@ -11,10 +11,9 @@ Base pages resources.
 """
 import re
 
-from sqlalchemy.orm import object_session
 from pyramid.threadlocal import get_current_registry
 
-from . import CONFIG_MODELS
+from . import CONFIG_MODELS, CONFIG_DBSESSION
 from .views import PageView
 
 
@@ -49,9 +48,10 @@ class BasePageResource(object):
         :prefix: URL prefix for current node
         :parent: if exist it assignet to ``__parent__`` attribute
         """
-        settings = get_current_registry().settings
+        self.settings = get_current_registry().settings
         self.node = node
-        self.pages_config = settings[CONFIG_MODELS]
+        self.dbsession = self.settings[CONFIG_DBSESSION]
+        self.pages_config = self.settings[CONFIG_MODELS]
         self.resources = resources_of_config(self.pages_config)
         self.prefix = prefix or self.get_prefix()
         self.parent = parent
@@ -71,10 +71,6 @@ class BasePageResource(object):
     def resource_of_node(self, node, parent=None):
         return resource_of_node(self.resources, node)(
             node, parent=parent or self.parent)
-
-    @property
-    def dbsession(self):
-        return object_session(self.node)
 
     @property
     def __name__(self):

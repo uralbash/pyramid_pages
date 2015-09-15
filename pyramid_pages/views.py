@@ -23,7 +23,7 @@ class PageView(object):
         self.context = context
         self.page = context.node
 
-        if not self.page.visible:
+        if not getattr(self.page, 'visible', False):
             raise HTTPNotFound
 
     def page_with_redirect(self):
