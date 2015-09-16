@@ -150,7 +150,8 @@ def add_globals(event):
             self.nodes = DBSession.query(model)
             self.template = 'pyramid_pages/menu/flat.jinja2'
             if hasattr(model, 'parent'):
-                self.nodes = self.nodes.filter_by(parent=None)
+                self.nodes = self.nodes.filter_by(parent=None)\
+                    .order_by(model.tree_id)
                 self.template = 'pyramid_pages/menu/mptt.jinja2'
 
         def __iter__(self):
