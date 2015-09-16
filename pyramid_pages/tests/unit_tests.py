@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid_pages.resources import BasePageResource
 from pyramid_pages.views import PageView
 
-from . import NewsPage, UnitTestBase, WebPage, settings
+from . import NewsPage, UnitTestBase, WebPage
 from pyramid_pages_example import Gallery
 
 
@@ -188,7 +188,6 @@ class TestPageView(UnitTestBase):
         redirect_url  = None
         redirect_page = 2
         """
-        self.request.registry.settings = settings
 
         def do_it(redirect_code):
             self.drop_db()
@@ -223,6 +222,7 @@ class TestPageView(UnitTestBase):
 
             # 301
             context = BasePageResource(node1)
+            context.dbsession = self.dbsession
             view = PageView(context, self.request).page_with_redirect()
             self.assertEqual(view.status_code, redirect_code)
             self.assertEqual(view.location, 'http://example.com/node2/')

@@ -16,7 +16,7 @@ import unittest
 from pyramid import testing
 from webtest import TestApp
 from sqlalchemy import engine_from_config
-from pyramid_pages import CONFIG_MODELS
+from pyramid_pages import CONFIG_MODELS, CONFIG_DBSESSION
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_mptt import mptt_sessionmaker
 from pyramid.threadlocal import get_current_registry
@@ -67,6 +67,7 @@ class UnitTestBase(BaseTestCase):
         self.config = testing.setUp(request=self.request)
         super(UnitTestBase, self).setUp()
         get_current_registry().settings[CONFIG_MODELS] = models
+        get_current_registry().settings[CONFIG_DBSESSION] = self.dbsession
 
 
 class IntegrationTestBase(BaseTestCase):
