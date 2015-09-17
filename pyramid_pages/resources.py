@@ -127,9 +127,7 @@ class BasePageResource(object):
         return info['app_url'] + separator + info['virtual_path']
 
     def __repr__(self):
-        if not hasattr(self.node, 'name'):
-            return '{}'.format(self.node)
-        return '<{}>'.format(self.node.name.encode('utf-8'))
+        return self.name
 
 
 def resource_of_node(resources, node):
