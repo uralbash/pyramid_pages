@@ -18,7 +18,7 @@ from sqlalchemy import (
     UnicodeText
 )
 from sacrud.common import ClassProperty
-from sacrud.exttype import SlugType, ChoiceType
+from saexttype import SlugType, ChoiceType
 from sqlalchemy.orm import foreign, relationship
 from sqlalchemy_mptt import BaseNestedSets
 from sqlalchemy.ext.declarative import declared_attr
@@ -54,8 +54,9 @@ class FlatPageMixin(PageMixin):
 
 
 class RecursionPageMixin(PageMixin):
-    """ model with single parent_id field """
-    pass
+    """
+    Model with single parent_id field
+    """
 
 
 class SeoMixin(object):
@@ -120,7 +121,9 @@ class BaseSacrudMpttPage(
         RedirectMixin,
         MpttPageMixin
 ):
-    pass
+    """
+    Base mptt page class for :mod:`pyramid_sacrud`.
+    """
 
 
 class BaseSacrudFlatPage(
@@ -129,4 +132,6 @@ class BaseSacrudFlatPage(
         RedirectMixin,
         FlatPageMixin
 ):
-    pass
+    """
+    Base flat page class for :mod:`pyramid_sacrud`.
+    """

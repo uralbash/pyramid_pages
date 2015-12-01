@@ -1,3 +1,4 @@
 pyramid
 sacrud>=0.2.5
+saexttype
 sqlalchemy_mptt>=0.1.8

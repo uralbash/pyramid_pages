@@ -1,4 +1,5 @@
 include requirements.txt
+include requirements-test.txt
 include README.rst
 recursive-include pyramid_pages/templates *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.jinja2 *.js *.html *.xml
 recursive-include pyramid_pages/static *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.jinja2 *.js *.html *.xml
