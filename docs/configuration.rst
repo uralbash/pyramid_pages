@@ -5,7 +5,7 @@ Custom model for tree pages
 ---------------------------
 
 To build a tree, using the model from `sqlalchemy_mptt
-<https://github.com/ITCase/sqlalchemy_mptt>`_.
+<https://github.com/uralbash/sqlalchemy_mptt>`_.
 
 .. note::
 
@@ -13,7 +13,7 @@ To build a tree, using the model from `sqlalchemy_mptt
   | Plans to add a recursive model with only `parent_id` field.
 
 Create model of tree pages. For more detail see example `pyramid_pages_example
-<https://github.com/ITCase/pyramid_pages/blob/master/example/pyramid_pages_example.py>`_.
+<https://github.com/uralbash/pyramid_pages/blob/master/example/pyramid_pages_example.py>`_.
 
 .. no-code-block:: python
 
@@ -34,7 +34,7 @@ Create model of tree pages. For more detail see example `pyramid_pages_example
        id = Column('id', Integer, primary_key=True)
        date = Column(Date, default=func.now())
 
-If you use `pyramid_sacrud <https://github.com/ITCase/pyramid_sacrud>`_, you
+If you use `pyramid_sacrud <https://github.com/uralbash/pyramid_sacrud>`_, you
 can inherited from :class:`~pyramid_pages.models.BaseSacrudMpttPage` or
 :class:`~pyramid_pages.models.BaseSacrudFlatPage` or just use
 :class:`~pyramid_pages.models.SacrudOptions`. 

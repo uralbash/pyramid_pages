@@ -119,7 +119,7 @@ class BasePageResource(object):
                     if child.node.visible and child.node.in_menu])
 
     def __resource_url__(self, request, info):
-        """ Some hook for prefix and doplication root slash.
+        """ Some hook for prefix and duplication root slash.
         """
         separator = '/{}'.format(self.prefix) if self.prefix else ''
         # XXX: I feel a dissonance here

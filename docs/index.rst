@@ -32,8 +32,8 @@ Tutorials and Cookbook Recipes
 Support and Development
 =======================
 
-To report bugs, use the `issue tracker <https://github.com/ITCase/pyramid_pages/issues>`_
-or `waffle board <https://waffle.io/ITCase/pyramid_pages>`_.
+To report bugs, use the `issue tracker
+<https://github.com/uralbash/pyramid_pages/issues>`_.
 
 We welcome any contribution: suggestions, ideas, commits with new futures, bug
 fixes, refactoring, docs, tests, translations etc

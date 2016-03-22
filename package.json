@@ -3,16 +3,16 @@
   "title": "Pyramid Pages",
   "description": "pyramid_pages provides a collections of pages to your Pyramid application. This is very similar to django.contrib.flatpages but with a tree structure and traversal algorithm in URL dispath.",
   "version": "0.0.1",
-  "homepage": "https://github.com/ITCase/pyramid_pages",
+  "homepage": "https://github.com/uralbash/pyramid_pages",
   "author": {
-    "name": "ITCase",
-    "email": "info@itcase.pro"
+    "name": "uralbash",
+    "email": "sacrud@uralbash.ru"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:ITCase/pyramid_pages.git"
+    "url": "git@github.com:uralbash/pyramid_pages.git"
   },
-  "bugs": "https://github.com/ITCase/pyramid_pages/issues",
+  "bugs": "https://github.com/uralbash/pyramid_pages/issues",
   "licenses": [
     {
       "type": "MIT",

@@ -70,11 +70,11 @@
     {
         "id": "7",
         "in_menu": 1,
-        "name": "Компания ITCase",
+        "name": "Фонд Город Без Наркотиков",
         "parent_id": "5",
         "redirect_type": "302",
-        "redirect_url": "http://itcase.pro/",
-        "slug": "kompania-itcase",
+        "redirect_url": "http://nobf.ru/",
+        "slug": "fond-gbn",
         "tree_id": 1,
         "visible": 1
     },

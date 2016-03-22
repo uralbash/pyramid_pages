@@ -6,7 +6,7 @@ github
 
 .. code-block:: bash
 
-    pip install git+http://github.com/ITCase/pyramid_pages.git
+    pip install git+http://github.com/uralbash/pyramid_pages.git
 
 PyPi
 ----
@@ -20,5 +20,6 @@ source
 
 .. code-block:: bash
 
-    git clone git+http://github.com/ITCase/pyramid_pages.git
-    python setup.py develop
+    git clone git+http://github.com/uralbash/pyramid_pages.git
+    cd pyramid_pages
+    pip install -e .
