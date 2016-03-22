@@ -15,7 +15,7 @@ class BasePageView(object):
                      status=301)
 
     def test_redirect_302_page(self):
-        self.app.get('/pages/about-company/redirect-301/kompania-itcase/',
+        self.app.get('/pages/about-company/redirect-301/fond-gbn/',
                      status=302)
 
     def test_bad_page_source(self):
