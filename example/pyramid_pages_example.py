@@ -12,8 +12,6 @@ Main for example
 import os
 import json
 
-from zope.sqlalchemy import ZopeTransactionExtension
-
 import transaction
 from sqlalchemy import (
     Date,
@@ -30,13 +28,15 @@ from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.sql import func
 from pyramid.session import SignedCookieSessionFactory
 from sqlalchemy_mptt import mptt_sessionmaker
+from zope.sqlalchemy import ZopeTransactionExtension
+from sqlalchemy.ext.declarative import declarative_base
+
 from pyramid_pages.models import FlatPageMixin, MpttPageMixin, RedirectMixin
 from pyramid_pages.resources import (
     BasePageResource,
     resource_of_node,
     resources_of_config
 )
-from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 DBSession = scoped_session(
@@ -143,7 +143,8 @@ models = {
 
 
 def add_globals(event):
-    class menu(object):
+
+    class Menu(object):
         resources = resources_of_config(models)
 
         def __init__(self, model):
@@ -158,9 +159,9 @@ def add_globals(event):
             for node in self.nodes:
                 yield resource_of_node(self.resources, node)(node)
 
-    event['pages_menu'] = menu(WebPage)
-    event['news_menu'] = menu(NewsPage)
-    event['gallery_menu'] = menu(Gallery)
+    event['pages_menu'] = Menu(WebPage)
+    event['news_menu'] = Menu(NewsPage)
+    event['gallery_menu'] = Menu(Gallery)
 
 
 def main(global_settings, **settings):
