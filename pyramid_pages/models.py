@@ -17,7 +17,6 @@ from sqlalchemy import (
     ForeignKey,
     UnicodeText
 )
-from sacrud.common import ClassProperty
 from saexttype import SlugType, ChoiceType
 from sqlalchemy.orm import foreign, relationship
 from sqlalchemy_mptt import BaseNestedSets
@@ -73,46 +72,47 @@ class RedirectMixin(object):
     redirect_type = Column(ChoiceType(choices=REDIRECT_CHOICES))
 
     @declared_attr
-    def redirect_page(cls):
+    def redirect_page(self):
         return Column(
             Integer,
             ForeignKey(
-                '{}.{}'.format(cls.__tablename__, cls.get_pk_name()),
+                '{}.{}'.format(self.__tablename__, self.get_pk_name()),
                 ondelete='CASCADE')
         )
 
     @declared_attr
-    def redirect(cls):
-        pk = getattr(cls, cls.get_pk_name())
+    def redirect(self):
+        pk = getattr(self, self.get_pk_name())
         return relationship(
-            cls, foreign_keys=[cls.redirect_page],
-            remote_side='{}.{}'.format(cls.__name__, cls.get_pk_name()),
-            primaryjoin=lambda: foreign(cls.redirect_page) == pk,
+            self, foreign_keys=[self.redirect_page],
+            remote_side='{}.{}'.format(self.__name__, self.get_pk_name()),
+            primaryjoin=lambda: foreign(self.redirect_page) == pk,
         )
 
 
 class SacrudOptions(object):
 
-    @ClassProperty
-    def sacrud_detail_col(cls):
-        options = [
-            ('', [cls.name, cls.slug, cls.visible, cls.in_menu,
-                  cls.description, getattr(cls, 'parent', None)])
-        ]
-        if all(hasattr(cls, name)
-               for name in ('redirect_url', 'redirect', 'redirect_type')):
-            options.append(
-                ('Redirection', [cls.redirect_url, cls.redirect,
-                                 cls.redirect_type])
-            )
-        if all(hasattr(cls, name)
-               for name in ('seo_title', 'seo_keywords', 'seo_description',
-                            'seo_metatags')):
-            options.append(
-                ('SEO', [cls.seo_title, cls.seo_keywords, cls.seo_description,
-                         cls.seo_metatags])
-            )
-        return options
+    pass
+    # @ClassProperty
+    # def sacrud_detail_col(cls):
+    #     options = [
+    #         ('', [cls.name, cls.slug, cls.visible, cls.in_menu,
+    #               cls.description, getattr(cls, 'parent', None)])
+    #     ]
+    #     if all(hasattr(cls, name)
+    #            for name in ('redirect_url', 'redirect', 'redirect_type')):
+    #         options.append(
+    #             ('Redirection', [cls.redirect_url, cls.redirect,
+    #                              cls.redirect_type])
+    #         )
+    #     if all(hasattr(cls, name)
+    #            for name in ('seo_title', 'seo_keywords', 'seo_description',
+    #                         'seo_metatags')):
+    #         options.append(
+    #             ('SEO', [cls.seo_title, cls.seo_keywords, cls.seo_description,
+    #                      cls.seo_metatags])
+    #         )
+    #     return options
 
 
 class BaseSacrudMpttPage(
