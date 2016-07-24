@@ -128,7 +128,7 @@ class Fixtures(object):
     def add(self, model, fixtures):
         here = os.path.dirname(os.path.realpath(__file__))
         file = open(os.path.join(here, fixtures))
-        fixtures = json.loads(file.read())
+        fixtures = json.loads(file.read(), encoding='utf-8')
         for fixture in fixtures:
             self.session.add(model(**fixture))
             self.session.flush()
