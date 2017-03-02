@@ -1,0 +1,280 @@
+[
+    {
+        "id": "100",
+        "in_menu": 1,
+        "name": "Countries",
+        "slug": "countries",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "101",
+        "in_menu": 1,
+        "name": "Africa",
+        "parent_id": "100",
+        "slug": "africa",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "102",
+        "in_menu": 1,
+        "name": "Algeria",
+        "parent_id": "101",
+        "slug": "algeria",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "103",
+        "in_menu": 1,
+        "name": "Marocco",
+        "parent_id": "101",
+        "slug": "marocco",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "104",
+        "in_menu": 1,
+        "name": "Libya",
+        "parent_id": "101",
+        "slug": "libya",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "105",
+        "in_menu": 1,
+        "name": "Somalia",
+        "parent_id": "101",
+        "slug": "somalia",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "106",
+        "in_menu": 1,
+        "name": "Kenya",
+        "parent_id": "101",
+        "slug": "kenya",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "107",
+        "in_menu": 1,
+        "name": "Mauritania",
+        "parent_id": "101",
+        "slug": "mauritania",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "108",
+        "in_menu": 1,
+        "name": "South Africa",
+        "parent_id": "101",
+        "slug": "foo19",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "200",
+        "in_menu": 1,
+        "name": "America",
+        "parent_id": "100",
+        "slug": "america",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "201",
+        "in_menu": 1,
+        "name": "North-America",
+        "parent_id": "200",
+        "slug": "north-america",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "202",
+        "in_menu": 1,
+        "name": "Canada",
+        "parent_id": "201",
+        "slug": "Canada",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "203",
+        "in_menu": 1,
+        "name": "USA",
+        "parent_id": "201",
+        "slug": "usa",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "300",
+        "in_menu": 1,
+        "name": "Middle-America",
+        "parent_id": "200",
+        "slug": "middle-america",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "301",
+        "in_menu": 1,
+        "name": "Mexico",
+        "parent_id": "300",
+        "slug": "mexico",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "302",
+        "in_menu": 1,
+        "name": "Honduras",
+        "parent_id": "300",
+        "slug": "honduras",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "303",
+        "in_menu": 1,
+        "name": "Guatemala",
+        "parent_id": "300",
+        "slug": "guatemala",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "400",
+        "in_menu": 1,
+        "name": "South-America",
+        "parent_id": "200",
+        "slug": "south-america",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "401",
+        "in_menu": 1,
+        "name": "Brazil",
+        "parent_id": "400",
+        "slug": "brazil",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "402",
+        "in_menu": 1,
+        "name": "Argentina",
+        "parent_id": "400",
+        "slug": "argentina",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "403",
+        "in_menu": 1,
+        "name": "Uruguay",
+        "parent_id": "400",
+        "slug": "uruguay",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "404",
+        "in_menu": 1,
+        "name": "Chile",
+        "parent_id": "400",
+        "slug": "chile",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "500",
+        "in_menu": 1,
+        "name": "Asia",
+        "parent_id": "100",
+        "slug": "asia",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "501",
+        "in_menu": 1,
+        "name": "China",
+        "parent_id": "500",
+        "slug": "china",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "502",
+        "in_menu": 1,
+        "name": "India",
+        "parent_id": "500",
+        "slug": "india",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "503",
+        "in_menu": 1,
+        "name": "Malaysia",
+        "parent_id": "500",
+        "slug": "malaysia",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "504",
+        "in_menu": 1,
+        "name": "Thailand",
+        "parent_id": "500",
+        "slug": "thailand",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "505",
+        "in_menu": 1,
+        "name": "Vietnam",
+        "parent_id": "500",
+        "slug": "vietnam",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "506",
+        "in_menu": 1,
+        "name": "Singapore",
+        "parent_id": "500",
+        "slug": "singapore",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "507",
+        "in_menu": 1,
+        "name": "Indonesia",
+        "parent_id": "500",
+        "slug": "indonesia",
+        "tree_id": "2",
+        "visible": 1
+    },
+    {
+        "id": "508",
+        "in_menu": 1,
+        "name": "Mongolia",
+        "parent_id": "500",
+        "slug": "mongolia",
+        "tree_id": "2",
+        "visible": 1
+    }
+]

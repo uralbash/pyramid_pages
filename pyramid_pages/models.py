@@ -9,6 +9,7 @@
 """
 Models for page.
 """
+# SQLAlchemy
 from sqlalchemy import (
     Column,
     String,
@@ -17,10 +18,12 @@ from sqlalchemy import (
     ForeignKey,
     UnicodeText
 )
-from saexttype import SlugType, ChoiceType
 from sqlalchemy.orm import foreign, relationship
-from sqlalchemy_mptt import BaseNestedSets
 from sqlalchemy.ext.declarative import declared_attr
+
+# third-party
+from saexttype import SlugType, ChoiceType
+from sqlalchemy_mptt import BaseNestedSets
 
 REDIRECT_CHOICES = (
     ('200', 'OK (200)'),
@@ -109,7 +112,8 @@ class SacrudOptions(object):
     #            for name in ('seo_title', 'seo_keywords', 'seo_description',
     #                         'seo_metatags')):
     #         options.append(
-    #             ('SEO', [cls.seo_title, cls.seo_keywords, cls.seo_description,
+    #             ('SEO', [cls.seo_title, cls.seo_keywords,
+    #                      cls.seo_description,
     #                      cls.seo_metatags])
     #         )
     #     return options

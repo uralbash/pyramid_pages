@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>{% include 'pyramid_pages/title.jinja2' %}</title>
+    {% include 'pyramid_pages/meta.jinja2' %}
+    <link href="{{ request.static_url('pyramid_pages:static/favicon.ico') }}" rel="shortcut icon" type="image/x-icon" />
+    <link href="{{ request.static_url('pyramid_pages:static/css/__pyramid_pages.css') }}" rel="stylesheet" />
+
+    <link href="/pyramid_pages_example_static/css/__main.css" rel="stylesheet" />
+    <script src="/pyramid_pages_example_static/js/__main.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapper__inner">
+            <div class="page clearfix">
+                <div class="main-menu clearfix">
+                    <div class="main-menu-title">
+                        <a href="/" class="main-menu-title__link">Pyramid Pages</a>
+                    </div>
+                    {% with menu=pages_menu %}
+                        {% include menu.template with context %}
+                    {% endwith %}
+                </div>
+                <div class="page-inner">
+                    <div class="page__left">
+                        <div class="main-menu main-menu_type_vertical clearfix">
+                            <div class="main-menu-title">News</div>
+                                {% with menu=news_menu %}
+                                    {% include menu.template with context %}
+                                {% endwith %}
+                        </div>
+                    </div>
+                    <div class="page__middle clearfix">
+                        {% block breadcrumbs %}
+                            {% include "breadcrumbs.jinja2" %}
+                        {% endblock %}
+                        {% block content %}
+                            <div class="page-title">{{ page.name }}</div>
+                            <div class="content">{{ page.description|safe or '' }}</div>
+                        {% endblock %}
+                    </div>
+                    <div class="page__right">
+                        <div class="main-menu main-menu_type_right clearfix">
+                            <div class="main-menu-title">Gallery</div>
+                                {% with menu=gallery_menu %}
+                                    {% include menu.template with context %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ request.static_url('pyramid_pages:static/js/__pyramid_pages.js') }}"></script>
+</body>
+</html>
+

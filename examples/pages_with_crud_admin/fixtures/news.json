@@ -1,0 +1,30 @@
+[
+    {
+        "description": "Pyramid - Hacker T-Shirt, designed by artist Felix Laflamme, is now available for online purchase via the Pylons Project Store - Hacker page.",
+        "in_menu": 1,
+        "name": "Pyramid - Hacker T-Shirt",
+        "slug": "pyramid-hacker-t-shirt",
+        "visible": 1
+    },
+    {
+        "description": "Pyramid 1.5 was released on April, 8 2014. Read the What's New In Pyramid 1.5 document for an overview of changes. Thanks to everyone who contributed to making this release possible.",
+        "in_menu": 1,
+        "name": "Pyramid 1.5 released",
+        "slug": "pyramid-1-5-released",
+        "visible": 1
+    },
+    {
+        "description": "Pyramid - Dashboard T-Shirt, designed by artist Felix Laflamme, is now available for online purchase via the Pylons Project Store - Dashboard page.",
+        "in_menu": 1,
+        "name": "Pyramid - Dashboard T-Shirt",
+        "slug": "pyramid-dashboard-t-shirt",
+        "visible": 1
+    },
+    {
+        "description": "The Pylons framework developers have merged efforts with the repoze.bfg framework under the Pylons Project Organization. Read about the Pylons Project and the joint effort, the Pyramid web framework, and notes on the merger.",
+        "in_menu": 1,
+        "name": "Pylons merges with repoze.bfg",
+        "slug": "pylons-merges-with-repoze-bfg",
+        "visible": 1
+    }
+]
