@@ -11,6 +11,7 @@ def read(name):
     with open(os.path.join(here, name)) as f:
         return f.read()
 
+
 setup(
     name='pyramid_pages_sacrud_example',
     version=version,
