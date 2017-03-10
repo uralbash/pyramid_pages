@@ -32,7 +32,7 @@ install:
   - pip install -r examples/pages/requirements.txt
   - pip install -r requirements-test.txt
   - python setup.py develop
-  - if [ -n "$LINK_CHECK" ];then pip install linkchecker; fi
+  - if [ -n "$LINK_CHECK" ];then pip install linkchecker requests>=2.2.0; fi
 
 script:
   # Nosetests
