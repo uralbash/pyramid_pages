@@ -29,7 +29,7 @@ matrix:
       env: LINK_CHECK=1
 
 install:
-  - pip install -r example/requirements.txt
+  - pip install -r examples/pages/requirements.txt
   - python setup.py develop
   - if [ -n "$LINK_CHECK" ];then pip install linkchecker; fi
 
@@ -43,7 +43,7 @@ script:
   - if [ -z "$NO_RSTLINT" ]; then ./test.sh; fi
 
   # BDD
-  - cd example
+  - cd examples/pages
   - nohup python pyramid_pages_example.py&
   - sleep 5
   - cd ..
@@ -56,4 +56,4 @@ after_success:
   - coveralls
 
 after_failure:
-  cat example/nohup.out
+  cat examples/pages/nohup.out
