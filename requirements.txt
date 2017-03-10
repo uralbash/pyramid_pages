@@ -1,4 +1,4 @@
-pyramid
+pyramid>=1.6
 sacrud>=0.2.5
 saexttype
 sqlalchemy_mptt>=0.1.8

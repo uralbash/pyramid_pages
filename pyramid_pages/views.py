@@ -28,54 +28,71 @@ class PageView(object):
 
     def page_with_redirect(self):
 
-        if all([hasattr(self.page, attr)
-                for attr in ('redirect', 'redirect_url', 'redirect_page')]):
-            # Prohibit redirect both url and page
-            if self.page.redirect_url and self.page.redirect_page:
-                raise HTTPNotFound
+        if all([
+                hasattr(self.page, attr)
+                for attr in ('redirect', 'redirect_url', 'redirect_page')
+        ]):
+            redirect_type = '200'
 
-            # check redirect type
-            if not self.page.redirect_type and self.page.redirect_url:
-                redirect_type = '302'
-            elif not self.page.redirect_type and self.page.redirect_page:
-                redirect_type = '200'
-            else:
-                redirect_type = str(self.page.redirect_type)
-
-            # Prohibit redirect itself
-            if self.page.redirect == self.page and redirect_type != '200':
-                raise HTTPNotFound
-
-            # Redirect to Page
-            if self.page.redirect_page:
-                if not self.page.redirect.visible:
+            if self.context.phase0(self.request):
+                # Prohibit redirect both url and page
+                if self.page.redirect_url and self.page.redirect_page:
                     raise HTTPNotFound
-                if redirect_type == '200':
-                    self.page = self.page.redirect
-                    return render_to_response(
-                        getattr(self.page,
-                                'pyramid_pages_template',
-                                self.context.template),
-                        {'page': self.page},
-                        request=self.request
-                    )
+
+            if self.context.phase1(self.request):
+                # Check redirect type
+                if not self.page.redirect_type and self.page.redirect_url:
+                    redirect_type = '302'
+                elif not self.page.redirect_type and self.page.redirect_page:
+                    redirect_type = '200'
                 else:
-                    from .resources import (
-                        resource_of_node,
-                        resources_of_config
-                    )
-                    redirect = self.page.redirect
-                    pages_config = self.request.registry\
-                        .settings[CONFIG_MODELS]
-                    resources = resources_of_config(pages_config)
-                    resource = resource_of_node(resources, redirect)(redirect)
-                    redirect_resource_url = self.request.resource_url(resource)
-                    return Response(status_code=int(redirect_type),
-                                    location=redirect_resource_url)
-            # Redirect to URL
-            if self.page.redirect_url:
-                if redirect_type == '200':
+                    redirect_type = str(self.page.redirect_type)
+
+            if self.context.phase2(self.request):
+                # Prohibit redirect itself
+                if self.page.redirect == self.page and redirect_type != '200':
                     raise HTTPNotFound
-                return Response(status_code=int(redirect_type),
-                                location=self.page.redirect_url)
-        return {'page': self.page}
+
+            if self.context.phase3(self.request):
+                # Redirect to Page
+                if self.page.redirect_page:
+                    if not self.page.redirect.visible:
+                        raise HTTPNotFound
+                    if redirect_type == '200':
+                        self.page = self.page.redirect
+                        return render_to_response(
+                            getattr(self.page,
+                                    'pyramid_pages_template',
+                                    self.context.template),
+                            {'page': self.page},
+                            request=self.request
+                        )
+                    else:
+                        from .resources import (
+                            resource_of_node,
+                            resources_of_config
+                        )
+                        redirect = self.page.redirect
+                        pages_config = self.request.registry \
+                            .settings[CONFIG_MODELS]
+                        resources = resources_of_config(pages_config)
+                        resource = resource_of_node(
+                            resources, redirect)(redirect)
+                        redirect_resource_url = self.request.resource_url(
+                            resource)
+                        return Response(
+                            status_code=int(redirect_type),
+                            location=redirect_resource_url
+                        )
+
+            if self.context.phase4(self.request):
+                # Redirect to URL
+                if self.page.redirect_url:
+                    if redirect_type == '200':
+                        raise HTTPNotFound
+                    return Response(
+                        status_code=int(redirect_type),
+                        location=self.page.redirect_url
+                    )
+
+        return self.context.commit(self.request, self.page)

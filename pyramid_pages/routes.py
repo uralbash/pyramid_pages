@@ -48,7 +48,7 @@ def page_factory(request):
 
     if prefix not in config:
         # prepend {prefix} to *traverse
-        request.matchdict['traverse'] =\
+        request.matchdict['traverse'] = \
             tuple([prefix] + list(request.matchdict['traverse']))
         prefix = None
 
@@ -69,7 +69,7 @@ def page_factory(request):
     # Add top level nodes of resources in the tree
     for resource in resources:
         table = None
-        if not hasattr(resource, '__table__')\
+        if not hasattr(resource, '__table__') \
                 and hasattr(resource, 'model'):
             table = resource.model
         else:
@@ -115,7 +115,7 @@ def register_views(*args):
     pages_config = settings[CONFIG_MODELS]
     resources = resources_of_config(pages_config)
     for resource in resources:
-        if hasattr(resource, '__table__')\
+        if hasattr(resource, '__table__') \
                 and not hasattr(resource, 'model'):
             continue
         resource.model.pyramid_pages_template = resource.template
@@ -148,11 +148,5 @@ def includeme(config):
                     context=BasePageResource,
                     permission=PREFIX_PAGE)
 
-    import pkg_resources
-    pyramid_version = pkg_resources.get_distribution("pyramid").parsed_version
-    if pyramid_version >= pkg_resources.SetuptoolsVersion('1.6a1'):
-        # Allow you to change settings after including this function. This
-        # fuature works only in version 1.6 or above.
-        config.action('pyramid_pages_routes', register_views, args=(config, ))
-    else:
-        config.include(register_views)
+    # include register_view after config.commit
+    config.action('pyramid_pages_routes', register_views, args=(config, ))

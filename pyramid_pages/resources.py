@@ -129,6 +129,26 @@ class BasePageResource(object):
     def __repr__(self):
         return self.name
 
+    def phase0(self, request):
+        return True
+
+    def phase1(self, request):
+        return True
+
+    def phase2(self, request):
+        return True
+
+    def phase3(self, request):
+        return True
+
+    def phase4(self, request):
+        return True
+
+    def commit(self, request, page):
+        return {
+            'page': page
+        }
+
 
 def resource_of_node(resources, node):
     """ Returns resource of node.
