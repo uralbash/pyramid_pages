@@ -10,20 +10,36 @@
 Base classes for tests
 http://www.sontek.net/blog/2011/12/01/writing_tests_for_pyramid_and_sqlalchemy.html
 """
+# standard library
 import imp
 import unittest
 
-from pyramid import testing
-from webtest import TestApp
+# SQLAlchemy
 from sqlalchemy import engine_from_config
-from pyramid_pages import CONFIG_MODELS, CONFIG_DBSESSION
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy_mptt import mptt_sessionmaker
+
+# Pyramid
+from pyramid import testing
 from pyramid.threadlocal import get_current_registry
 
-imp.load_source('pyramid_pages_example', 'example/pyramid_pages_example.py')
+# third-party
+from webtest import TestApp
+from pyramid_pages import CONFIG_MODELS, CONFIG_DBSESSION
+from sqlalchemy_mptt import mptt_sessionmaker
 
-from pyramid_pages_example import Base, main, models, WebPage, NewsPage  # noqa
+imp.load_source(
+    'pyramid_pages_example',
+    'examples/pages/pyramid_pages_example.py'
+)
+
+from pyramid_pages_example import (  # noqa isort:skip
+    Base,
+    WebPage,
+    NewsPage,
+    main,
+    models
+)
+
 
 settings = {
     'sqlalchemy.url': 'sqlite:///test.sqlite',
