@@ -30,7 +30,7 @@ matrix:
 
 install:
   - pip install -r examples/pages/requirements.txt
-  - pip install -r examples/pages/requirements-test.txt
+  - pip install -r requirements-test.txt
   - python setup.py develop
   - if [ -n "$LINK_CHECK" ];then pip install linkchecker; fi
 
