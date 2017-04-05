@@ -52,7 +52,7 @@ Then add settings of :mod:`pyramid_pages`.
 
 .. no-code-block:: python
 
-    from youproject.models import MPTTPages, MPTTNews
+    from youproject.models import WebPage, NewsPage
 
     ...
 
@@ -71,7 +71,7 @@ If you use version of pyramid >= 1.6a1, there is a possibility put
 
 .. no-code-block:: python
 
-    from youproject.models import MPTTPages, MPTTNews
+    from youproject.models import WebPage, NewsPage
 
     ...
 
