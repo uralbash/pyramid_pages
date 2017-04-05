@@ -18,7 +18,6 @@ Create model of tree pages. For more detail see example `pyramid_pages_example
 .. no-code-block:: python
 
    from pyramid_pages.models import FlatPageMixin, MpttPageMixin, RedirectMixin
-   from sqlalchemy_mptt import BaseNestedSets
 
    ...
 
