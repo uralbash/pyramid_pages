@@ -1,4 +1,4 @@
-|Build Status| |Coverage Status| |Stories in Ready| |PyPi|
+|Build Status| |Coverage Status|
 
 pyramid_pages
 =============
@@ -17,8 +17,8 @@ See documentation http://pyramid-pages.readthedocs.org/en/master/
 Support and Development
 =======================
 
-To report bugs, use the `issue tracker <https://github.com/uralbash/pyramid_pages/issues>`_
-or `waffle board <https://waffle.io/uralbash/pyramid_pages>`_.
+To report bugs, use the `issue tracker
+<https://github.com/uralbash/pyramid_pages/issues>`_.
 
 We welcome any contribution: suggestions, ideas, commits with new futures, bug
 fixes, refactoring, docs, tests, translations etc
@@ -34,7 +34,3 @@ The project is licensed under the MIT license.
    :target: https://travis-ci.org/uralbash/pyramid_pages
 .. |Coverage Status| image:: https://coveralls.io/repos/uralbash/pyramid_pages/badge.png
    :target: https://coveralls.io/r/uralbash/pyramid_pages
-.. |Stories in Ready| image:: https://badge.waffle.io/uralbash/pyramid_pages.png?label=in%20progress&title=In%20Progress
-   :target: https://waffle.io/uralbash/pyramid_pages
-.. |PyPI| image:: http://img.shields.io/pypi/dm/pyramid_pages.svg
-   :target: https://pypi.python.org/pypi/pyramid_pages/
