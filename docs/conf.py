@@ -2,8 +2,6 @@
 from docutils.parsers.rst import directives
 from sphinx.directives.code import CodeBlock
 
-import itcase_sphinx_theme
-
 directives.register_directive('no-code-block', CodeBlock)
 
 # -- General configuration ------------------------------------------------
@@ -15,7 +13,6 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
-    'itcase_sphinx_theme',
 ]
 
 intersphinx_mapping = {
@@ -45,14 +42,6 @@ exclude_patterns = ['_build']
 pygments_style = 'sphinx'
 
 # -- Options for HTML output ----------------------------------------------
-
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-html_theme = 'itcase'
-
-# Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = [itcase_sphinx_theme.get_html_themes_path()]
-
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".

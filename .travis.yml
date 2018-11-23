@@ -6,7 +6,8 @@
 #
 # Distributed under terms of the MIT license.
 
-sudo: false
+dist: xenial
+sudo: required
 language: python
 
 notifications:
@@ -19,9 +20,10 @@ notifications:
     on_failure: always
 
 python:
-  - "3.3"
   - "3.4"
   - "3.5"
+  - "3.6"
+  - "3.7"
 
 matrix:
   include:
@@ -40,7 +42,7 @@ script:
   - python setup.py nosetests
 
   # Styles check
-  - if [ -z "$NO_RSTLINT" ]; then ./test.sh; fi
+  # - if [ -z "$NO_RSTLINT" ]; then ./test.sh; fi
 
   # BDD
   - cd example
