@@ -28,7 +28,7 @@ from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.sql import func
 from pyramid.session import SignedCookieSessionFactory
 from sqlalchemy_mptt import mptt_sessionmaker
-from zope.sqlalchemy import ZopeTransactionExtension
+from zope.sqlalchemy import register
 from sqlalchemy.ext.declarative import declarative_base
 
 from pyramid_pages.models import FlatPageMixin, MpttPageMixin, RedirectMixin
@@ -41,9 +41,10 @@ from pyramid_pages.resources import (
 Base = declarative_base()
 DBSession = scoped_session(
     mptt_sessionmaker(
-        sessionmaker(extension=ZopeTransactionExtension())
+        sessionmaker()
     )
 )
+register(DBSession)
 
 CONFIG_SQLALCHEMY_URL = 'sqlalchemy.url'
 CONFIG_PYRAMID_PAGES_MODELS = 'pyramid_pages.models'

@@ -150,9 +150,9 @@ def includeme(config):
 
     import pkg_resources
     pyramid_version = pkg_resources.get_distribution("pyramid").parsed_version
-    if pyramid_version >= pkg_resources.SetuptoolsVersion('1.6a1'):
-        # Allow you to change settings after including this function. This
-        # fuature works only in version 1.6 or above.
-        config.action('pyramid_pages_routes', register_views, args=(config, ))
-    else:
-        config.include(register_views)
+    #  if pyramid_version >= pkg_resources.SetuptoolsVersion('1.6a1'):
+    # Allow you to change settings after including this function. This
+    # fuature works only in version 1.6 or above.
+    config.action('pyramid_pages_routes', register_views, args=(config, ))
+    #  else:
+    #      config.include(register_views)
