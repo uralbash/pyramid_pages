@@ -5,7 +5,7 @@ pyramid_pages
 
 **pyramid_pages** provides a collections of pages to your Pyramid application.
 This is very similar to **django.contrib.flatpages** but with a tree structure
-and traversal algorithm in URL dispath.
+and traversal algorithm in URL dispatch.
 
 See documentation http://pyramid-pages.readthedocs.io
 

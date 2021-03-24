@@ -40,7 +40,7 @@ class BasePageResource(object):
     def __init__(self,
                  node, prefix=None, request=None, parent=None,
                  *args, **kwargs):
-        """ Make resource of node for traversal URL dispath.
+        """ Make resource of node for traversal URL dispatch.
 
         :node: instance of page
         :pages_config: config for pyramid_pages from your app
